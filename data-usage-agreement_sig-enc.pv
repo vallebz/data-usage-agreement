@@ -1,4 +1,4 @@
-(* This is a ProVerif description of the Protocol Flow from the SISSI architecture. *)
+(* This is a ProVerif description of the Protocol Flow from the Verifiable Consent architecture. *)
 
 (* START keys *)
 type SecretKey.
@@ -283,6 +283,8 @@ query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:
     ==>
     event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2,msg_3,msg_4)) .
 
+(* Checking for non-repudiation *)
+
 (* 
 event_client received resource 
 ==> event_server has agreed 
@@ -308,11 +310,10 @@ query resource:bitstring, policyA:bitstring, policyB:bitstring, shape:bitstring;
 (* MAIN *)
 
 free sk_e:SecretKey.
+free sk_c:SecretKey [private].
+free sk_s:SecretKey [private].
 
-process (*use root process for setup *)
-    (*declare secret keys*)
-    new sk_c:SecretKey;
-    new sk_s:SecretKey;
+process (*use root process for setup *) 
     (*advertise public keys*)
     out(h,pk(sk_c));
     out(h,pk(sk_s));
