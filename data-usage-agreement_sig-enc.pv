@@ -182,7 +182,6 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     (* ab. decrypt deconstruct *)
     let (
         sig_K:bitstring, 
-        m'_uri:bitstring, 
         nonce_0:bitstring, 
         m_uri:bitstring, 
         pk'_s:PublicKey, 
@@ -193,7 +192,7 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     (* c. check signatures *)
     if check((gx,gy),sig_K,pk_c) then
     (* d. check content *)
-    if m'_uri = m_uri then
+    (* if m'_uri = m_uri then *)
     (* e. create new message content *)
     new m_shape:bitstring;
     new m_Aoffer:bitstring;

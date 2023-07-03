@@ -1,4 +1,4 @@
-(* This is a ProVerif description of the Protocol Flow from the SISSI architecture. *)
+(* This is a ProVerif description of the Protocol Flow from the Verifiable Consent architecture. *)
 
 (* START keys *)
 type SecretKey.
