@@ -1,0 +1,517 @@
+File "data-usage-agreement_encryption.pv", line 137, characters 49-53:
+Warning: identifier m_uri rebound.
+Process 0 (that is, the initial process):
+{1}new sk_c: SecretKey;
+{2}new sk_s: SecretKey;
+{3}out(h, pk(sk_c));
+{4}out(h, pk(sk_s));
+(
+    {5}!
+    {6}let sk: SecretKey = sk_c in
+    {7}let pk_s: PublicKey = pk(sk_s) in
+    {8}let talksOnlyToHonest: bool = true in
+    {9}new m_uri: bitstring;
+    {10}new nonce_0: bitstring;
+    {11}let m_0: bitstring = aenc((nonce_0,m_uri,pk_s,pk(sk)),pk_s) in
+    {12}out(h, m_0);
+    {13}in(h, m_1: bitstring);
+    {14}let m'_1: bitstring = adec(m_1,sk) in
+    {15}let (nonce'_0: bitstring,nonce_1: bitstring,pk'_c: PublicKey,pk'_s: PublicKey,m_shape: bitstring,m_Aoffer: bitstring,m_Brequest: bitstring,sig_1: bitstring) = m'_1 in
+    {16}if check((nonce_0,pk(sk),m_shape,m_Aoffer,m_Brequest),sig_1,pk_s) then
+    {17}if (nonce'_0 = nonce_0) then
+    {18}if (pk'_c = pk(sk)) then
+    {19}let m_presentation: bitstring = m_shape in
+    {20}let m_Aagreement: bitstring = m_Aoffer in
+    {21}let m_Brequirement: bitstring = m_Brequest in
+    {22}new nonce_2: bitstring;
+    {23}let sig_2: bitstring = sig((nonce_1,pk_s,m_presentation,m_Aagreement,m_Brequirement),sk) in
+    {24}let m_2: bitstring = aenc((nonce_1,nonce_2,m_uri,m_presentation,m_Aagreement,m_Brequirement,sig_2),pk_s) in
+    {25}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2);
+    {26}out(h, m_2);
+    {27}in(h, m_3: bitstring);
+    {28}let m'_3: bitstring = adec(m_3,sk) in
+    {29}let (nonce'_2: bitstring,m'_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_2: bitstring,sig_3: bitstring) = m'_3 in
+    {30}if check((nonce_2,pk(sk),m_Bagreement,m_Aagreement,sig_2),sig_3,pk_s) then
+    {31}if (nonce'_2 = nonce_2) then
+    {32}if (m_Brequirement = m_Bagreement) then
+    {33}if (m_Aagreement = m'_Aagreement) then
+    {34}if (sig_2 = sig'_2) then
+    {35}if (m_uri = m'_uri) then
+    {36}out(h, Client_Completes);
+    {37}if talksOnlyToHonest then
+    {38}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3)
+) | (
+    {39}!
+    {40}let sk_1: SecretKey = sk_c in
+    {41}let pk_s_1: PublicKey = pk(sk_e) in
+    {42}let talksOnlyToHonest_1: bool = false in
+    {43}new m_uri_1: bitstring;
+    {44}new nonce_0_1: bitstring;
+    {45}let m_0_1: bitstring = aenc((nonce_0_1,m_uri_1,pk_s_1,pk(sk_1)),pk_s_1) in
+    {46}out(h, m_0_1);
+    {47}in(h, m: bitstring);
+    {48}let m': bitstring = adec(m,sk_1) in
+    {49}let (nonce'_0_1: bitstring,nonce: bitstring,pk'_c_1: PublicKey,pk'_s_1: PublicKey,m_shape_1: bitstring,m_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_4: bitstring) = m' in
+    {50}if check((nonce_0_1,pk(sk_1),m_shape_1,m_Aoffer_1,m_Brequest_1),sig_4,pk_s_1) then
+    {51}if (nonce'_0_1 = nonce_0_1) then
+    {52}if (pk'_c_1 = pk(sk_1)) then
+    {53}let m_presentation_1: bitstring = m_shape_1 in
+    {54}let m_Aagreement_1: bitstring = m_Aoffer_1 in
+    {55}let m_Brequirement_1: bitstring = m_Brequest_1 in
+    {56}new nonce_3: bitstring;
+    {57}let sig_5: bitstring = sig((nonce,pk_s_1,m_presentation_1,m_Aagreement_1,m_Brequirement_1),sk_1) in
+    {58}let m_4: bitstring = aenc((nonce,nonce_3,m_uri_1,m_presentation_1,m_Aagreement_1,m_Brequirement_1,sig_5),pk_s_1) in
+    {59}event auth_ClientSendsLastMessageToServer(m_0_1,m,m_4);
+    {60}out(h, m_4);
+    {61}in(h, m_5: bitstring);
+    {62}let m'_2: bitstring = adec(m_5,sk_1) in
+    {63}let (nonce': bitstring,m'_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig': bitstring,sig_6: bitstring) = m'_2 in
+    {64}if check((nonce_3,pk(sk_1),m_Bagreement_1,m_Aagreement_1,sig_5),sig_6,pk_s_1) then
+    {65}if (nonce' = nonce_3) then
+    {66}if (m_Brequirement_1 = m_Bagreement_1) then
+    {67}if (m_Aagreement_1 = m'_Aagreement_1) then
+    {68}if (sig_5 = sig') then
+    {69}if (m_uri_1 = m'_uri_1) then
+    {70}out(h, Client_Completes);
+    {71}if talksOnlyToHonest_1 then
+    {72}event auth_ClientCompletesProtocol(m_0_1,m,m_4,m_5)
+) | (
+    {73}!
+    {74}let sk_2: SecretKey = sk_s in
+    {75}let pk_c: PublicKey = pk(sk_c) in
+    {76}let talksOnlyToHonest_2: bool = true in
+    {77}in(h, m_0_2: bitstring);
+    {78}let (nonce_0_2: bitstring,m_uri_2: bitstring,pk'_s_2: PublicKey,pk'_c_2: PublicKey) = adec(m_0_2,sk_2) in
+    {79}if ((pk'_s_2,pk'_c_2) = (pk(sk_2),pk_c)) then
+    {80}new m_shape_2: bitstring;
+    {81}new m_Aoffer_2: bitstring;
+    {82}new m_Brequest_2: bitstring;
+    {83}new nonce_4: bitstring;
+    {84}let sig_7: bitstring = sig((nonce_0_2,pk_c,m_shape_2,m_Aoffer_2,m_Brequest_2),sk_2) in
+    {85}let m_6: bitstring = aenc((nonce_0_2,nonce_4,pk_c,pk(sk_2),m_shape_2,m_Aoffer_2,m_Brequest_2,sig_7),pk_c) in
+    {86}out(h, m_6);
+    {87}in(h, m_7: bitstring);
+    {88}let m'_4: bitstring = adec(m_7,sk_2) in
+    {89}let (nonce'_1: bitstring,nonce_5: bitstring,m_uri_3: bitstring,m_presentation_2: bitstring,m_Aagreement_2: bitstring,m_Brequirement_2: bitstring,sig_8: bitstring) = m'_4 in
+    {90}if check((nonce_4,pk(sk_2),m_presentation_2,m_Aagreement_2,m_Brequirement_2),sig_8,pk_c) then
+    {91}if (nonce'_1 = nonce_4) then
+    {92}if (m_Aoffer_2 = m_Aagreement_2) then
+    {93}if (m_Brequest_2 = m_Brequirement_2) then
+    {94}if (m_shape_2 = m_presentation_2) then
+    {95}new m_resource_2: bitstring;
+    {96}let m_Bagreement_2: bitstring = m_Brequirement_2 in
+    {97}let sig_9: bitstring = sig((nonce_5,pk_c,m_Bagreement_2,m_Aagreement_2,sig_8),sk_2) in
+    {98}let m_8: bitstring = aenc((nonce_5,m_uri_3,m_resource_2,m_Bagreement_2,m_Aagreement_2,sig_8,sig_9),pk_c) in
+    {99}event auth_ServerSendsLastMessageToClient(m_0_2,m_6,m_7,m_8);
+    {100}out(h, m_8);
+    {101}out(h, Server_Completes);
+    {102}if talksOnlyToHonest_2 then
+    {103}event auth_ServerCompletesProtocol(m_0_2,m_6,m_7)
+) | (
+    {104}!
+    {105}let sk_3: SecretKey = sk_s in
+    {106}let pk_c_1: PublicKey = pk(sk_e) in
+    {107}let talksOnlyToHonest_3: bool = false in
+    {108}in(h, m_0_3: bitstring);
+    {109}let (nonce_0_3: bitstring,m_uri_4: bitstring,pk'_s_3: PublicKey,pk'_c_3: PublicKey) = adec(m_0_3,sk_3) in
+    {110}if ((pk'_s_3,pk'_c_3) = (pk(sk_3),pk_c_1)) then
+    {111}new m_shape_3: bitstring;
+    {112}new m_Aoffer_3: bitstring;
+    {113}new m_Brequest_3: bitstring;
+    {114}new nonce_6: bitstring;
+    {115}let sig_10: bitstring = sig((nonce_0_3,pk_c_1,m_shape_3,m_Aoffer_3,m_Brequest_3),sk_3) in
+    {116}let m_9: bitstring = aenc((nonce_0_3,nonce_6,pk_c_1,pk(sk_3),m_shape_3,m_Aoffer_3,m_Brequest_3,sig_10),pk_c_1) in
+    {117}out(h, m_9);
+    {118}in(h, m_10: bitstring);
+    {119}let m'_5: bitstring = adec(m_10,sk_3) in
+    {120}let (nonce'_3: bitstring,nonce_7: bitstring,m_uri_5: bitstring,m_presentation_3: bitstring,m_Aagreement_3: bitstring,m_Brequirement_3: bitstring,sig_11: bitstring) = m'_5 in
+    {121}if check((nonce_6,pk(sk_3),m_presentation_3,m_Aagreement_3,m_Brequirement_3),sig_11,pk_c_1) then
+    {122}if (nonce'_3 = nonce_6) then
+    {123}if (m_Aoffer_3 = m_Aagreement_3) then
+    {124}if (m_Brequest_3 = m_Brequirement_3) then
+    {125}if (m_shape_3 = m_presentation_3) then
+    {126}new m_resource_3: bitstring;
+    {127}let m_Bagreement_3: bitstring = m_Brequirement_3 in
+    {128}let sig_12: bitstring = sig((nonce_7,pk_c_1,m_Bagreement_3,m_Aagreement_3,sig_11),sk_3) in
+    {129}let m_11: bitstring = aenc((nonce_7,m_uri_5,m_resource_3,m_Bagreement_3,m_Aagreement_3,sig_11,sig_12),pk_c_1) in
+    {130}event auth_ServerSendsLastMessageToClient(m_0_3,m_9,m_10,m_11);
+    {131}out(h, m_11);
+    {132}out(h, Server_Completes);
+    {133}if talksOnlyToHonest_3 then
+    {134}event auth_ServerCompletesProtocol(m_0_3,m_9,m_10)
+)
+
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}new sk_c: SecretKey;
+{2}new sk_s: SecretKey;
+{3}out(h, pk(sk_c));
+{4}out(h, pk(sk_s));
+(
+    {5}!
+    {9}new m_uri: bitstring;
+    {10}new nonce_0: bitstring;
+    {7}let pk_s: PublicKey = pk(sk_s) in
+    {6}let sk: SecretKey = sk_c in
+    {11}let m_0: bitstring = aenc((nonce_0,m_uri,pk_s,pk(sk)),pk_s) in
+    {12}out(h, m_0);
+    {13}in(h, m_1: bitstring);
+    {14}let m'_1: bitstring = adec(m_1,sk) in
+    {15}let (nonce'_0: bitstring,nonce_1: bitstring,pk'_c: PublicKey,pk'_s: PublicKey,m_shape: bitstring,m_Aoffer: bitstring,m_Brequest: bitstring,sig_1: bitstring) = m'_1 in
+    {16}if check((nonce_0,pk(sk),m_shape,m_Aoffer,m_Brequest),sig_1,pk_s) then
+    {17}if (nonce'_0 = nonce_0) then
+    {18}if (pk'_c = pk(sk)) then
+    {22}new nonce_2: bitstring;
+    {21}let m_Brequirement: bitstring = m_Brequest in
+    {20}let m_Aagreement: bitstring = m_Aoffer in
+    {19}let m_presentation: bitstring = m_shape in
+    {23}let sig_2: bitstring = sig((nonce_1,pk_s,m_presentation,m_Aagreement,m_Brequirement),sk) in
+    {24}let m_2: bitstring = aenc((nonce_1,nonce_2,m_uri,m_presentation,m_Aagreement,m_Brequirement,sig_2),pk_s) in
+    {25}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2);
+    {26}out(h, m_2);
+    {27}in(h, m_3: bitstring);
+    {28}let m'_3: bitstring = adec(m_3,sk) in
+    {29}let (nonce'_2: bitstring,m'_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_2: bitstring,sig_3: bitstring) = m'_3 in
+    {30}if check((nonce_2,pk(sk),m_Bagreement,m_Aagreement,sig_2),sig_3,pk_s) then
+    {31}if (nonce'_2 = nonce_2) then
+    {32}if (m_Brequirement = m_Bagreement) then
+    {33}if (m_Aagreement = m'_Aagreement) then
+    {34}if (sig_2 = sig'_2) then
+    {35}if (m_uri = m'_uri) then
+    {36}out(h, Client_Completes);
+    {8}let talksOnlyToHonest: bool = true in
+    {37}if talksOnlyToHonest then
+    {38}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3)
+) | (
+    {39}!
+    {43}new m_uri_1: bitstring;
+    {44}new nonce_0_1: bitstring;
+    {41}let pk_s_1: PublicKey = pk(sk_e) in
+    {40}let sk_1: SecretKey = sk_c in
+    {45}let m_0_1: bitstring = aenc((nonce_0_1,m_uri_1,pk_s_1,pk(sk_1)),pk_s_1) in
+    {46}out(h, m_0_1);
+    {47}in(h, m: bitstring);
+    {48}let m': bitstring = adec(m,sk_1) in
+    {49}let (nonce'_0_1: bitstring,nonce: bitstring,pk'_c_1: PublicKey,pk'_s_1: PublicKey,m_shape_1: bitstring,m_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_4: bitstring) = m' in
+    {50}if check((nonce_0_1,pk(sk_1),m_shape_1,m_Aoffer_1,m_Brequest_1),sig_4,pk_s_1) then
+    {51}if (nonce'_0_1 = nonce_0_1) then
+    {52}if (pk'_c_1 = pk(sk_1)) then
+    {56}new nonce_3: bitstring;
+    {55}let m_Brequirement_1: bitstring = m_Brequest_1 in
+    {54}let m_Aagreement_1: bitstring = m_Aoffer_1 in
+    {53}let m_presentation_1: bitstring = m_shape_1 in
+    {57}let sig_5: bitstring = sig((nonce,pk_s_1,m_presentation_1,m_Aagreement_1,m_Brequirement_1),sk_1) in
+    {58}let m_4: bitstring = aenc((nonce,nonce_3,m_uri_1,m_presentation_1,m_Aagreement_1,m_Brequirement_1,sig_5),pk_s_1) in
+    {59}event auth_ClientSendsLastMessageToServer(m_0_1,m,m_4);
+    {60}out(h, m_4);
+    {61}in(h, m_5: bitstring);
+    {62}let m'_2: bitstring = adec(m_5,sk_1) in
+    {63}let (nonce': bitstring,m'_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig': bitstring,sig_6: bitstring) = m'_2 in
+    {64}if check((nonce_3,pk(sk_1),m_Bagreement_1,m_Aagreement_1,sig_5),sig_6,pk_s_1) then
+    {65}if (nonce' = nonce_3) then
+    {66}if (m_Brequirement_1 = m_Bagreement_1) then
+    {67}if (m_Aagreement_1 = m'_Aagreement_1) then
+    {68}if (sig_5 = sig') then
+    {69}if (m_uri_1 = m'_uri_1) then
+    {70}out(h, Client_Completes);
+    {42}let talksOnlyToHonest_1: bool = false in
+    {71}if talksOnlyToHonest_1 then
+    {72}event auth_ClientCompletesProtocol(m_0_1,m,m_4,m_5)
+) | (
+    {73}!
+    {77}in(h, m_0_2: bitstring);
+    {74}let sk_2: SecretKey = sk_s in
+    {78}let (nonce_0_2: bitstring,m_uri_2: bitstring,pk'_s_2: PublicKey,pk'_c_2: PublicKey) = adec(m_0_2,sk_2) in
+    {75}let pk_c: PublicKey = pk(sk_c) in
+    {79}if ((pk'_s_2,pk'_c_2) = (pk(sk_2),pk_c)) then
+    {80}new m_shape_2: bitstring;
+    {81}new m_Aoffer_2: bitstring;
+    {82}new m_Brequest_2: bitstring;
+    {83}new nonce_4: bitstring;
+    {84}let sig_7: bitstring = sig((nonce_0_2,pk_c,m_shape_2,m_Aoffer_2,m_Brequest_2),sk_2) in
+    {85}let m_6: bitstring = aenc((nonce_0_2,nonce_4,pk_c,pk(sk_2),m_shape_2,m_Aoffer_2,m_Brequest_2,sig_7),pk_c) in
+    {86}out(h, m_6);
+    {87}in(h, m_7: bitstring);
+    {88}let m'_4: bitstring = adec(m_7,sk_2) in
+    {89}let (nonce'_1: bitstring,nonce_5: bitstring,m_uri_3: bitstring,m_presentation_2: bitstring,m_Aagreement_2: bitstring,m_Brequirement_2: bitstring,sig_8: bitstring) = m'_4 in
+    {90}if check((nonce_4,pk(sk_2),m_presentation_2,m_Aagreement_2,m_Brequirement_2),sig_8,pk_c) then
+    {91}if (nonce'_1 = nonce_4) then
+    {92}if (m_Aoffer_2 = m_Aagreement_2) then
+    {93}if (m_Brequest_2 = m_Brequirement_2) then
+    {94}if (m_shape_2 = m_presentation_2) then
+    {95}new m_resource_2: bitstring;
+    {96}let m_Bagreement_2: bitstring = m_Brequirement_2 in
+    {97}let sig_9: bitstring = sig((nonce_5,pk_c,m_Bagreement_2,m_Aagreement_2,sig_8),sk_2) in
+    {98}let m_8: bitstring = aenc((nonce_5,m_uri_3,m_resource_2,m_Bagreement_2,m_Aagreement_2,sig_8,sig_9),pk_c) in
+    {99}event auth_ServerSendsLastMessageToClient(m_0_2,m_6,m_7,m_8);
+    {100}out(h, m_8);
+    {101}out(h, Server_Completes);
+    {76}let talksOnlyToHonest_2: bool = true in
+    {102}if talksOnlyToHonest_2 then
+    {103}event auth_ServerCompletesProtocol(m_0_2,m_6,m_7)
+) | (
+    {104}!
+    {108}in(h, m_0_3: bitstring);
+    {105}let sk_3: SecretKey = sk_s in
+    {109}let (nonce_0_3: bitstring,m_uri_4: bitstring,pk'_s_3: PublicKey,pk'_c_3: PublicKey) = adec(m_0_3,sk_3) in
+    {106}let pk_c_1: PublicKey = pk(sk_e) in
+    {110}if ((pk'_s_3,pk'_c_3) = (pk(sk_3),pk_c_1)) then
+    {111}new m_shape_3: bitstring;
+    {112}new m_Aoffer_3: bitstring;
+    {113}new m_Brequest_3: bitstring;
+    {114}new nonce_6: bitstring;
+    {115}let sig_10: bitstring = sig((nonce_0_3,pk_c_1,m_shape_3,m_Aoffer_3,m_Brequest_3),sk_3) in
+    {116}let m_9: bitstring = aenc((nonce_0_3,nonce_6,pk_c_1,pk(sk_3),m_shape_3,m_Aoffer_3,m_Brequest_3,sig_10),pk_c_1) in
+    {117}out(h, m_9);
+    {118}in(h, m_10: bitstring);
+    {119}let m'_5: bitstring = adec(m_10,sk_3) in
+    {120}let (nonce'_3: bitstring,nonce_7: bitstring,m_uri_5: bitstring,m_presentation_3: bitstring,m_Aagreement_3: bitstring,m_Brequirement_3: bitstring,sig_11: bitstring) = m'_5 in
+    {121}if check((nonce_6,pk(sk_3),m_presentation_3,m_Aagreement_3,m_Brequirement_3),sig_11,pk_c_1) then
+    {122}if (nonce'_3 = nonce_6) then
+    {123}if (m_Aoffer_3 = m_Aagreement_3) then
+    {124}if (m_Brequest_3 = m_Brequirement_3) then
+    {125}if (m_shape_3 = m_presentation_3) then
+    {126}new m_resource_3: bitstring;
+    {127}let m_Bagreement_3: bitstring = m_Brequirement_3 in
+    {128}let sig_12: bitstring = sig((nonce_7,pk_c_1,m_Bagreement_3,m_Aagreement_3,sig_11),sk_3) in
+    {129}let m_11: bitstring = aenc((nonce_7,m_uri_5,m_resource_3,m_Bagreement_3,m_Aagreement_3,sig_11,sig_12),pk_c_1) in
+    {130}event auth_ServerSendsLastMessageToClient(m_0_3,m_9,m_10,m_11);
+    {131}out(h, m_11);
+    {132}out(h, Server_Completes);
+    {107}let talksOnlyToHonest_3: bool = false in
+    {133}if talksOnlyToHonest_3 then
+    {134}event auth_ServerCompletesProtocol(m_0_3,m_9,m_10)
+)
+
+-- Query not attacker(Client_Completes[]) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query not attacker(Client_Completes[])
+goal reachable: attacker(Client_Completes[])
+
+Derivation:
+Abbreviations:
+nonce_0_4 = nonce_0[!1 = @sid]
+m_uri_6 = m_uri[!1 = @sid]
+nonce_8 = nonce_4[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_shape_4 = m_shape_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Brequest_4 = m_Brequest_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+nonce_9 = nonce_2[m_1 = aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),!1 = @sid]
+m_resource_4 = m_resource_2[m_7 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])),m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+
+1. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) may be sent to the attacker at output {12}.
+attacker(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[]))).
+
+2. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) that the attacker may have by 1 may be received at input {77}.
+So the message aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])) may be sent to the attacker at output {86}.
+attacker(aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[]))).
+
+3. The message aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])) that the attacker may have by 2 may be received at input {13}.
+So the message aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])) may be sent to the attacker at output {26}.
+attacker(aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[]))).
+
+4. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) that the attacker may have by 1 may be received at input {77}.
+The message aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])) that the attacker may have by 3 may be received at input {87}.
+So the message aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[]),sig((nonce_9,pk(sk_c[]),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),sk_s[])),pk(sk_c[])) may be sent to the attacker at output {100}.
+attacker(aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[]),sig((nonce_9,pk(sk_c[]),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),sk_s[])),pk(sk_c[]))).
+
+5. The message aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])) that the attacker may have by 2 may be received at input {13}.
+The message aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[]),sig((nonce_9,pk(sk_c[]),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),sk_s[])),pk(sk_c[])) that the attacker may have by 4 may be received at input {27}.
+So the message Client_Completes[] may be sent to the attacker at output {36}.
+attacker(Client_Completes[]).
+
+6. By 5, attacker(Client_Completes[]).
+The goal is reached, represented in the following fact:
+attacker(Client_Completes[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+new sk_c: SecretKey creating sk_c_1 at {1}
+
+new sk_s: SecretKey creating sk_s_1 at {2}
+
+out(h, ~M) with ~M = pk(sk_c_1) at {3}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s_1) at {4}
+
+new m_uri: bitstring creating m_uri_6 at {9} in copy a
+
+new nonce_0: bitstring creating nonce_0_4 at {10} in copy a
+
+out(h, ~M_2) with ~M_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)) at {12} in copy a
+
+in(h, ~M_2) with ~M_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)) at {77} in copy a_1
+
+new m_shape_2: bitstring creating m_shape_4 at {80} in copy a_1
+
+new m_Aoffer_2: bitstring creating m_Aoffer_4 at {81} in copy a_1
+
+new m_Brequest_2: bitstring creating m_Brequest_4 at {82} in copy a_1
+
+new nonce_4: bitstring creating nonce_8 at {83} in copy a_1
+
+out(h, ~M_3) with ~M_3 = aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)) at {86} in copy a_1
+
+in(h, ~M_3) with ~M_3 = aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)) at {13} in copy a
+
+new nonce_2: bitstring creating nonce_9 at {22} in copy a
+
+event auth_ClientSendsLastMessageToServer(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1))) at {25} in copy a
+
+out(h, ~M_4) with ~M_4 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)) at {26} in copy a
+
+in(h, ~M_4) with ~M_4 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)) at {87} in copy a_1
+
+new m_resource_2: bitstring creating m_resource_4 at {95} in copy a_1
+
+event auth_ServerSendsLastMessageToClient(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)),aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1))) at {99} in copy a_1
+
+out(h, ~M_5) with ~M_5 = aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1)) at {100} in copy a_1
+
+out(h, ~M_6) with ~M_6 = Server_Completes at {101} in copy a_1
+
+event auth_ServerCompletesProtocol(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1))) at {103} in copy a_1
+
+in(h, ~M_5) with ~M_5 = aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1)) at {27} in copy a
+
+out(h, ~M_7) with ~M_7 = Client_Completes at {36} in copy a
+
+event auth_ClientCompletesProtocol(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)),aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1))) at {38} in copy a
+
+The attacker has the message ~M_7 = Client_Completes.
+A trace has been found.
+RESULT not attacker(Client_Completes[]) is false.
+-- Query not attacker(Server_Completes[]) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query not attacker(Server_Completes[])
+goal reachable: attacker(Server_Completes[])
+
+Derivation:
+Abbreviations:
+nonce_0_4 = nonce_0[!1 = @sid]
+m_uri_6 = m_uri[!1 = @sid]
+nonce_8 = nonce_4[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_shape_4 = m_shape_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Brequest_4 = m_Brequest_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+nonce_9 = nonce_2[m_1 = aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),!1 = @sid]
+
+1. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) may be sent to the attacker at output {12}.
+attacker(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[]))).
+
+2. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) that the attacker may have by 1 may be received at input {77}.
+So the message aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])) may be sent to the attacker at output {86}.
+attacker(aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[]))).
+
+3. The message aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])) that the attacker may have by 2 may be received at input {13}.
+So the message aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])) may be sent to the attacker at output {26}.
+attacker(aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[]))).
+
+4. The message aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])) that the attacker may have by 1 may be received at input {77}.
+The message aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])) that the attacker may have by 3 may be received at input {87}.
+So the message Server_Completes[] may be sent to the attacker at output {101}.
+attacker(Server_Completes[]).
+
+5. By 4, attacker(Server_Completes[]).
+The goal is reached, represented in the following fact:
+attacker(Server_Completes[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+new sk_c: SecretKey creating sk_c_1 at {1}
+
+new sk_s: SecretKey creating sk_s_1 at {2}
+
+out(h, ~M) with ~M = pk(sk_c_1) at {3}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s_1) at {4}
+
+new m_uri: bitstring creating m_uri_6 at {9} in copy a
+
+new nonce_0: bitstring creating nonce_0_4 at {10} in copy a
+
+out(h, ~M_2) with ~M_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)) at {12} in copy a
+
+in(h, ~M_2) with ~M_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)) at {77} in copy a_1
+
+new m_shape_2: bitstring creating m_shape_4 at {80} in copy a_1
+
+new m_Aoffer_2: bitstring creating m_Aoffer_4 at {81} in copy a_1
+
+new m_Brequest_2: bitstring creating m_Brequest_4 at {82} in copy a_1
+
+new nonce_4: bitstring creating nonce_8 at {83} in copy a_1
+
+out(h, ~M_3) with ~M_3 = aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)) at {86} in copy a_1
+
+in(h, ~M_3) with ~M_3 = aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)) at {13} in copy a
+
+new nonce_2: bitstring creating nonce_9 at {22} in copy a
+
+event auth_ClientSendsLastMessageToServer(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1))) at {25} in copy a
+
+out(h, ~M_4) with ~M_4 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)) at {26} in copy a
+
+in(h, ~M_4) with ~M_4 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)) at {87} in copy a_1
+
+new m_resource_2: bitstring creating m_resource_4 at {95} in copy a_1
+
+event auth_ServerSendsLastMessageToClient(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1)),aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1))) at {99} in copy a_1
+
+out(h, ~M_5) with ~M_5 = aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1),sig((nonce_9,pk(sk_c_1),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),sk_s_1)),pk(sk_c_1)) at {100} in copy a_1
+
+out(h, ~M_6) with ~M_6 = Server_Completes at {101} in copy a_1
+
+event auth_ServerCompletesProtocol(aenc((nonce_0_4,m_uri_6,pk(sk_s_1),pk(sk_c_1)),pk(sk_s_1)),aenc((nonce_0_4,nonce_8,pk(sk_c_1),pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s_1)),pk(sk_c_1)),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s_1),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c_1)),pk(sk_s_1))) at {103} in copy a_1
+
+The attacker has the message ~M_6 = Server_Completes.
+A trace has been found.
+RESULT not attacker(Server_Completes[]) is false.
+-- Query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3))
+goal reachable: begin(auth_ServerSendsLastMessageToClient(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])),aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[]),sig((nonce_9,pk(sk_c[]),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),sk_s[])),pk(sk_c[])))) -> end(auth_ClientCompletesProtocol(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])),aenc((nonce_9,m_uri_6,m_resource_4,m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[]),sig((nonce_9,pk(sk_c[]),m_Brequest_4,m_Aoffer_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),sk_s[])),pk(sk_c[]))))
+Abbreviations:
+nonce_0_4 = nonce_0[!1 = @sid]
+m_uri_6 = m_uri[!1 = @sid]
+nonce_8 = nonce_4[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_shape_4 = m_shape_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Brequest_4 = m_Brequest_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+nonce_9 = nonce_2[m_1 = aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),!1 = @sid]
+m_resource_4 = m_resource_2[m_7 = aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])),m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+RESULT event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) is true.
+-- Query event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2))
+goal reachable: begin(auth_ClientSendsLastMessageToServer(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[])))) -> end(auth_ServerCompletesProtocol(aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),aenc((nonce_8,nonce_9,m_uri_6,m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_8,pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_c[])),pk(sk_s[]))))
+Abbreviations:
+nonce_0_4 = nonce_0[!1 = @sid]
+m_uri_6 = m_uri[!1 = @sid]
+nonce_8 = nonce_4[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_shape_4 = m_shape_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+m_Brequest_4 = m_Brequest_2[m_0_2 = aenc((nonce_0_4,m_uri_6,pk(sk_s[]),pk(sk_c[])),pk(sk_s[])),!1 = @sid_1]
+nonce_9 = nonce_2[m_1 = aenc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_shape_4,m_Aoffer_4,m_Brequest_4,sig((nonce_0_4,pk(sk_c[]),m_shape_4,m_Aoffer_4,m_Brequest_4),sk_s[])),pk(sk_c[])),!1 = @sid]
+RESULT event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) is true.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not attacker(Client_Completes[]) is false.
+
+Query not attacker(Server_Completes[]) is false.
+
+Query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) is true.
+
+Query event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) is true.
+
+--------------------------------------------------------------
+

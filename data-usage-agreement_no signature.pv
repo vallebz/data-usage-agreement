@@ -1,0 +1,235 @@
+(* This is a ProVerif description of the Protocol Flow from the SISSI architecture. *)
+
+(* START keys *)
+type SecretKey.
+type PublicKey.
+fun pk(SecretKey):PublicKey.
+(* END keys *)
+
+(* START asymmetric encryption *)
+fun aenc(bitstring(*the message*), PublicKey):bitstring (*asymmetric encrypt input msg*).
+reduc forall msg:bitstring,sk:SecretKey; adec(aenc(msg,pk(sk)),sk)=msg (*asymmetric decrypt*).
+(* END Asymmetric encryption *)
+
+(* (* START digital signature *)
+fun sig(bitstring(*the message*), SecretKey):bitstring(*the signature value*).
+reduc forall msg:bitstring,sk:SecretKey; check(msg,sig(msg,sk),pk(sk))=true (*check(msg,sigVal,pk)*).
+(* END digital signature *) *)
+
+(*DEFS*)
+
+(* Communication *)
+free h:channel.
+
+free Client_Completes:bitstring [private].
+free Server_Completes:bitstring [private].
+
+(* Agreement Events *)
+event auth_ClientSendsLastMessageToServer(bitstring,bitstring,bitstring).
+event auth_ServerCompletesProtocol(bitstring,bitstring,bitstring).
+
+event auth_ServerSendsLastMessageToClient(bitstring,bitstring,bitstring,bitstring).
+event auth_ClientCompletesProtocol(bitstring,bitstring,bitstring,bitstring).
+
+event clientReceivedResource(bitstring,bitstring,bitstring).
+event serverHasAgreed(bitstring,bitstring,bitstring).
+event clientHasAgreed(bitstring,bitstring,bitstring).
+event serverHasOffered(bitstring,bitstring,bitstring).
+
+
+
+
+(* START process macros ~ agent *)
+
+(** START Client **)
+let client(sk:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
+
+(* TODO do stuff *)
+
+
+    new m_uri:bitstring;
+    new nonce_0:bitstring;
+    let m_0:bitstring = aenc((nonce_0, m_uri, pk_s, pk(sk)),pk_s) in
+    out(h,m_0);
+
+
+    in(h,m_1:bitstring);
+    (* a. Entschlüsseln *)
+    let m'_1 = adec(m_1,sk) in
+    (* b. deconstruct *)
+    let (nonce'_0:bitstring, nonce_1:bitstring, pk'_c:PublicKey, pk'_s:PublicKey, m_shape:bitstring, m_Aoffer:bitstring, m_Brequest:bitstring) = m'_1 in
+    (* c. check Signatures *)
+    (* if check((nonce_0, pk(sk), m_shape,m_Aoffer,m_Brequest), sig_1, pk_s) then *)
+    (* d. check content *)
+    if nonce'_0 = nonce_0 then
+    if pk'_c = pk(sk) then
+   
+    (* 1. *)
+    let m_presentation:bitstring = m_shape in
+    let m_Aagreement:bitstring = m_Aoffer in
+    let m_Brequirement:bitstring = m_Brequest in
+    new nonce_2:bitstring;
+    (* 2. *)
+    (* let sig_2:bitstring = sig((nonce_1, pk_s, m_presentation,m_Aagreement,m_Brequirement), sk) in *)
+    (* 3. *)
+    let m_2:bitstring = aenc( (nonce_1, nonce_2, m_uri, m_presentation, m_Aagreement, m_Brequirement) , pk_s) in
+    (* 4. *)
+    event clientHasAgreed(m_presentation, m_Aagreement, m_Brequirement);
+    event auth_ClientSendsLastMessageToServer(m_0, m_1, m_2);
+    out(h,m_2);
+
+
+
+
+    in(h,m_3:bitstring);
+    (* a. Entschlüsseln *)
+    let m'_3 = adec(m_3,sk) in
+    (* b. deconstruct *)
+    let (nonce'_2:bitstring, m'_uri:bitstring, m_resource:bitstring, m_Bagreement:bitstring, m'_Aagreement:bitstring) = m'_3 in
+    (* c. check signatures *)
+    (* if check((nonce_2, pk(sk), m_Bagreement, m_Aagreement, sig_2), sig_3, pk_s) then *)
+    (* d. check content *)
+    if nonce'_2 = nonce_2 then
+    if m_Bagreement = m_Brequirement then
+    if m'_Aagreement = m_Aagreement then
+    (* if sig_2 = sig'_2 then *)
+    if m'_uri = m_uri then
+
+
+
+
+    (* Client about to complete protocol! *)
+    out(h, Client_Completes);
+    if talksOnlyToHonest then
+    (* event_at_the_very_end_of_role_R *)
+    event clientReceivedResource(m_resource, m_Bagreement, m'_Aagreement);
+    event auth_ClientCompletesProtocol(m_0, m_1, m_2, m_3) ;
+    0.
+(** END Client **)
+
+(** START Server **)
+let server(sk:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
+
+(* TODO do stuff *)
+
+
+    in(h,m_0:bitstring);
+    (* ab. Entschlüsseln+deconstruct *)
+    let (nonce_0:bitstring, m_uri:bitstring, pk'_s:PublicKey, pk'_c:PublicKey) = adec(m_0,sk) in
+    (* check content *)
+    if (pk'_s,pk'_c) = (pk(sk),pk_c) then
+    (* out-of-band - check if public *)
+
+    (* 1. Inhalt der Nachricht *)
+    new m_shape:bitstring;
+    new m_Aoffer:bitstring;
+    new m_Brequest:bitstring;
+    new nonce_1:bitstring;
+    (* 2. Signatur der Nachricht (inlc. nonce und Empfänger via pk_x)*)
+    (* let sig_1:bitstring = sig((nonce_0, pk_c, m_shape,m_Aoffer,m_Brequest), sk) in *)
+    (* 3. Verschlüsseln der Nachricht *)
+    let m_1:bitstring = aenc((nonce_0, nonce_1, pk_c, pk(sk), m_shape, m_Aoffer, m_Brequest), pk_c) in
+    (* 4. Senden der Nachricht *)
+    event serverHasOffered(m_shape, m_Aoffer, m_Brequest);
+    out(h,m_1);
+
+
+
+
+
+
+
+    in(h,m_2:bitstring);
+    (* a. Entschlüsseln *)
+    let m'_2 = adec(m_2,sk) in
+    (* b. deconstruct *)
+    let (nonce'_1:bitstring, nonce_2:bitstring, m_uri:bitstring, m_presentation:bitstring, m_Aagreement:bitstring, m_Brequirement:bitstring) = m'_2 in
+    (* c. Signatures *)
+    (* if check((nonce_1, pk(sk), m_presentation,m_Aagreement,m_Brequirement), sig_2, pk_c) then *)
+    (* d. content *)
+    if nonce'_1 = nonce_1 then
+    if m_Aagreement = m_Aoffer then
+    if m_Brequirement = m_Brequest then
+    if m_presentation = m_shape then
+
+    (* 1. *)
+    new m_resource:bitstring;
+    let m_Bagreement:bitstring = m_Brequirement in
+    (* 2. *)
+    (* let sig_3 = sig((nonce_2, pk_c, m_Bagreement, m_Aagreement, sig_2), sk) in *)
+    (* 3. *)
+    let m_3:bitstring = aenc( (nonce_2, m_uri, m_resource, m_Bagreement, m_Aagreement), pk_c) in
+    (* 4. *)
+    event serverHasAgreed(m_resource, m_Bagreement, m_Aagreement);
+    event auth_ServerSendsLastMessageToClient(m_0, m_1, m_2, m_3);
+    out (h,m_3);
+
+    (* Server about to complete the protocol *)
+    out(h, Server_Completes);
+    if talksOnlyToHonest then
+    (* event_at_the_very_end_of_role_R *)
+    event auth_ServerCompletesProtocol(m_0,m_1,m_2);
+    0.
+(** END Server **)
+
+(* END process macros *)
+
+(* "Do the processes complete?" - sanity check*)
+query attacker(Client_Completes).
+query attacker(Server_Completes).
+
+
+(* Checking for "Agreement" *)
+
+(*
+event_at_the_very_end_of_role_R
+==>
+event_just_before_the_last_send_message_of_S
+*)
+(* 
+query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring;
+    event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3))
+    ==>
+    event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) .
+
+
+query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring;
+    event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2))
+    ==>
+    event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) . *)
+
+(* client received resource > server has agreed > client has agreed > server has offered  *)
+query resource:bitstring, offer:bitstring, request:bitstring, shape:bitstring;
+    inj-event(clientReceivedResource(resource, request, offer))
+    ==>
+    (
+        inj-event(serverHasAgreed(resource, request, offer))
+        ==>
+        (
+            inj-event(clientHasAgreed(shape, offer, request))
+            ==>
+            inj-event(serverHasOffered(shape, offer, request))
+        )
+    ) .
+
+
+
+(* MAIN *)
+
+free sk_e:SecretKey.
+
+process (*use root process for setup *)
+    (*declare secret keys*)
+    new sk_c:SecretKey;
+    new sk_s:SecretKey;
+    (*advertise public keys*)
+    out(h,pk(sk_c));
+    out(h,pk(sk_s));
+    (*let agents dance*)
+    ( (
+         !client   (sk_c, pk(sk_s), true)
+       | !client   (sk_c, pk(sk_e), false)
+       | !server   (sk_s, pk(sk_c), true)
+       | !server   (sk_s, pk(sk_e), false)
+       (* dishonest clients and dishonest servers are impersonated by "the attacker" *)
+    ) )

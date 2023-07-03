@@ -1,0 +1,974 @@
+File "data-usage-agreement_0.pv", line 93, characters 7-9:
+Warning: identifier m_0 rebound.
+Process 0 (that is, the initial process):
+{1}new sk_c: SecretKey;
+{2}new sk_s: SecretKey;
+{3}out(h, pk(sk_c));
+{4}out(h, pk(sk_s));
+(
+    {5}!
+    {6}let sk: SecretKey = sk_c in
+    {7}let pk_s: PublicKey = pk(sk_s) in
+    {8}let talksOnlyToHonest: bool = true in
+    {9}new m_uri: bitstring;
+    {10}let m_0: bitstring = m_uri in
+    {11}out(h, m_0);
+    {12}in(h, m_1: bitstring);
+    {13}let (m_shape: bitstring,sig_shape: bitstring,m_Aoffer: bitstring,sig_Aoffer: bitstring,m_Brequest: bitstring,sig_Brequest: bitstring) = m_1 in
+    {14}let m_presentation: bitstring = m_shape in
+    {15}let sig_presentation: bitstring = sig(m_presentation,sk) in
+    {16}let m_Aagreement: bitstring = m_Aoffer in
+    {17}let sig_Aagreement_client: bitstring = sig(m_Aagreement,sk) in
+    {18}let m_Brequirement: bitstring = m_Brequest in
+    {19}let sig_Brequirement: bitstring = sig(m_Brequirement,sk) in
+    {20}let m_2: bitstring = (m_0,m_presentation,sig_presentation,m_Aagreement,sig_Aagreement_client,m_Brequirement,sig_Brequirement) in
+    {21}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2);
+    {22}out(h, m_2);
+    {23}in(h, m_3: bitstring);
+    {24}let (m'_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,sig_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_Aagreement_client: bitstring,sig_Aagreement_server: bitstring) = m_3 in
+    {25}if (m_Brequirement = m_Bagreement) then
+    {26}if (m_Aagreement = m'_Aagreement) then
+    {27}if (sig_Aagreement_client = sig'_Aagreement_client) then
+    {28}if (m_uri = m'_uri) then
+    {29}if check(m_Bagreement,sig_Bagreement,pk_s) then
+    {30}if check((m'_Aagreement,sig'_Aagreement_client),sig_Aagreement_server,pk_s) then
+    {31}out(h, Client_Completes);
+    {32}if talksOnlyToHonest then
+    {33}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3)
+) | (
+    {34}!
+    {35}let sk_1: SecretKey = sk_c in
+    {36}let pk_s_1: PublicKey = pk(sk_e) in
+    {37}let talksOnlyToHonest_1: bool = false in
+    {38}new m_uri_1: bitstring;
+    {39}let m_0_1: bitstring = m_uri_1 in
+    {40}out(h, m_0_1);
+    {41}in(h, m: bitstring);
+    {42}let (m_shape_1: bitstring,sig_shape_1: bitstring,m_Aoffer_1: bitstring,sig_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_Brequest_1: bitstring) = m in
+    {43}let m_presentation_1: bitstring = m_shape_1 in
+    {44}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_1) in
+    {45}let m_Aagreement_1: bitstring = m_Aoffer_1 in
+    {46}let sig_Aagreement_client_1: bitstring = sig(m_Aagreement_1,sk_1) in
+    {47}let m_Brequirement_1: bitstring = m_Brequest_1 in
+    {48}let sig_Brequirement_1: bitstring = sig(m_Brequirement_1,sk_1) in
+    {49}let m_4: bitstring = (m_0_1,m_presentation_1,sig_presentation_1,m_Aagreement_1,sig_Aagreement_client_1,m_Brequirement_1,sig_Brequirement_1) in
+    {50}event auth_ClientSendsLastMessageToServer(m_0_1,m,m_4);
+    {51}out(h, m_4);
+    {52}in(h, m_5: bitstring);
+    {53}let (m'_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,sig_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_Aagreement_server_1: bitstring) = m_5 in
+    {54}if (m_Brequirement_1 = m_Bagreement_1) then
+    {55}if (m_Aagreement_1 = m'_Aagreement_1) then
+    {56}if (sig_Aagreement_client_1 = sig'_Aagreement_client_1) then
+    {57}if (m_uri_1 = m'_uri_1) then
+    {58}if check(m_Bagreement_1,sig_Bagreement_1,pk_s_1) then
+    {59}if check((m'_Aagreement_1,sig'_Aagreement_client_1),sig_Aagreement_server_1,pk_s_1) then
+    {60}out(h, Client_Completes);
+    {61}if talksOnlyToHonest_1 then
+    {62}event auth_ClientCompletesProtocol(m_0_1,m,m_4,m_5)
+) | (
+    {63}!
+    {64}let sk_2: SecretKey = sk_s in
+    {65}let pk_c: PublicKey = pk(sk_c) in
+    {66}let talksOnlyToHonest_2: bool = true in
+    {67}in(h, m_0_2: bitstring);
+    {68}new m_shape_2: bitstring;
+    {69}let sig_shape_2: bitstring = sig(m_shape_2,sk_2) in
+    {70}new m_Aoffer_2: bitstring;
+    {71}let sig_Aoffer_2: bitstring = sig(m_Aoffer_2,sk_2) in
+    {72}new m_Brequest_2: bitstring;
+    {73}let sig_Brequest_2: bitstring = sig(m_Brequest_2,sk_2) in
+    {74}let m_6: bitstring = (m_shape_2,sig_shape_2,m_Aoffer_2,sig_Aoffer_2,m_Brequest_2,sig_Brequest_2) in
+    {75}out(h, m_6);
+    {76}in(h, m_7: bitstring);
+    {77}let (m_0_3: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_Aagreement_2: bitstring,sig_Aagreement_client_2: bitstring,m_Brequirement_2: bitstring,sig_Brequirement_2: bitstring) = m_7 in
+    {78}if (m_Aoffer_2 = m_Aagreement_2) then
+    {79}if check(m_Aagreement_2,sig_Aagreement_client_2,pk_c) then
+    {80}if (m_Brequest_2 = m_Brequirement_2) then
+    {81}if check(m_Brequirement_2,sig_Brequirement_2,pk_c) then
+    {82}if (m_shape_2 = m_presentation_2) then
+    {83}if check(m_presentation_2,sig_presentation_2,pk_c) then
+    {84}new m_resource_2: bitstring;
+    {85}let m_Bagreement_2: bitstring = m_Brequirement_2 in
+    {86}let sig_Bagreement_2: bitstring = sig(m_Bagreement_2,sk_2) in
+    {87}let sig_Aagreement_server_2: bitstring = sig((m_Aagreement_2,sig_Aagreement_client_2),sk_2) in
+    {88}let m_8: bitstring = (m_0_3,m_resource_2,m_Bagreement_2,sig_Bagreement_2,m_Aagreement_2,sig_Aagreement_client_2,sig_Aagreement_server_2) in
+    {89}event auth_ServerSendsLastMessageToClient(m_0_3,m_6,m_7,m_8);
+    {90}out(h, m_8);
+    {91}out(h, Server_Completes);
+    {92}if talksOnlyToHonest_2 then
+    {93}event auth_ServerCompletesProtocol(m_0_3,m_6,m_7)
+) | (
+    {94}!
+    {95}let sk_3: SecretKey = sk_s in
+    {96}let pk_c_1: PublicKey = pk(sk_e) in
+    {97}let talksOnlyToHonest_3: bool = false in
+    {98}in(h, m_0_4: bitstring);
+    {99}new m_shape_3: bitstring;
+    {100}let sig_shape_3: bitstring = sig(m_shape_3,sk_3) in
+    {101}new m_Aoffer_3: bitstring;
+    {102}let sig_Aoffer_3: bitstring = sig(m_Aoffer_3,sk_3) in
+    {103}new m_Brequest_3: bitstring;
+    {104}let sig_Brequest_3: bitstring = sig(m_Brequest_3,sk_3) in
+    {105}let m_9: bitstring = (m_shape_3,sig_shape_3,m_Aoffer_3,sig_Aoffer_3,m_Brequest_3,sig_Brequest_3) in
+    {106}out(h, m_9);
+    {107}in(h, m_10: bitstring);
+    {108}let (m_0_5: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_Aagreement_3: bitstring,sig_Aagreement_client_3: bitstring,m_Brequirement_3: bitstring,sig_Brequirement_3: bitstring) = m_10 in
+    {109}if (m_Aoffer_3 = m_Aagreement_3) then
+    {110}if check(m_Aagreement_3,sig_Aagreement_client_3,pk_c_1) then
+    {111}if (m_Brequest_3 = m_Brequirement_3) then
+    {112}if check(m_Brequirement_3,sig_Brequirement_3,pk_c_1) then
+    {113}if (m_shape_3 = m_presentation_3) then
+    {114}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
+    {115}new m_resource_3: bitstring;
+    {116}let m_Bagreement_3: bitstring = m_Brequirement_3 in
+    {117}let sig_Bagreement_3: bitstring = sig(m_Bagreement_3,sk_3) in
+    {118}let sig_Aagreement_server_3: bitstring = sig((m_Aagreement_3,sig_Aagreement_client_3),sk_3) in
+    {119}let m_11: bitstring = (m_0_5,m_resource_3,m_Bagreement_3,sig_Bagreement_3,m_Aagreement_3,sig_Aagreement_client_3,sig_Aagreement_server_3) in
+    {120}event auth_ServerSendsLastMessageToClient(m_0_5,m_9,m_10,m_11);
+    {121}out(h, m_11);
+    {122}out(h, Server_Completes);
+    {123}if talksOnlyToHonest_3 then
+    {124}event auth_ServerCompletesProtocol(m_0_5,m_9,m_10)
+)
+
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}new sk_c: SecretKey;
+{2}new sk_s: SecretKey;
+{3}out(h, pk(sk_c));
+{4}out(h, pk(sk_s));
+(
+    {5}!
+    {9}new m_uri: bitstring;
+    {10}let m_0: bitstring = m_uri in
+    {11}out(h, m_0);
+    {12}in(h, m_1: bitstring);
+    {13}let (m_shape: bitstring,sig_shape: bitstring,m_Aoffer: bitstring,sig_Aoffer: bitstring,m_Brequest: bitstring,sig_Brequest: bitstring) = m_1 in
+    {18}let m_Brequirement: bitstring = m_Brequest in
+    {6}let sk: SecretKey = sk_c in
+    {19}let sig_Brequirement: bitstring = sig(m_Brequirement,sk) in
+    {16}let m_Aagreement: bitstring = m_Aoffer in
+    {17}let sig_Aagreement_client: bitstring = sig(m_Aagreement,sk) in
+    {14}let m_presentation: bitstring = m_shape in
+    {15}let sig_presentation: bitstring = sig(m_presentation,sk) in
+    {20}let m_2: bitstring = (m_0,m_presentation,sig_presentation,m_Aagreement,sig_Aagreement_client,m_Brequirement,sig_Brequirement) in
+    {21}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2);
+    {22}out(h, m_2);
+    {23}in(h, m_3: bitstring);
+    {24}let (m'_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,sig_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_Aagreement_client: bitstring,sig_Aagreement_server: bitstring) = m_3 in
+    {25}if (m_Brequirement = m_Bagreement) then
+    {26}if (m_Aagreement = m'_Aagreement) then
+    {27}if (sig_Aagreement_client = sig'_Aagreement_client) then
+    {28}if (m_uri = m'_uri) then
+    {7}let pk_s: PublicKey = pk(sk_s) in
+    {29}if check(m_Bagreement,sig_Bagreement,pk_s) then
+    {30}if check((m'_Aagreement,sig'_Aagreement_client),sig_Aagreement_server,pk_s) then
+    {31}out(h, Client_Completes);
+    {8}let talksOnlyToHonest: bool = true in
+    {32}if talksOnlyToHonest then
+    {33}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3)
+) | (
+    {34}!
+    {38}new m_uri_1: bitstring;
+    {39}let m_0_1: bitstring = m_uri_1 in
+    {40}out(h, m_0_1);
+    {41}in(h, m: bitstring);
+    {42}let (m_shape_1: bitstring,sig_shape_1: bitstring,m_Aoffer_1: bitstring,sig_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_Brequest_1: bitstring) = m in
+    {47}let m_Brequirement_1: bitstring = m_Brequest_1 in
+    {35}let sk_1: SecretKey = sk_c in
+    {48}let sig_Brequirement_1: bitstring = sig(m_Brequirement_1,sk_1) in
+    {45}let m_Aagreement_1: bitstring = m_Aoffer_1 in
+    {46}let sig_Aagreement_client_1: bitstring = sig(m_Aagreement_1,sk_1) in
+    {43}let m_presentation_1: bitstring = m_shape_1 in
+    {44}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_1) in
+    {49}let m_4: bitstring = (m_0_1,m_presentation_1,sig_presentation_1,m_Aagreement_1,sig_Aagreement_client_1,m_Brequirement_1,sig_Brequirement_1) in
+    {50}event auth_ClientSendsLastMessageToServer(m_0_1,m,m_4);
+    {51}out(h, m_4);
+    {52}in(h, m_5: bitstring);
+    {53}let (m'_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,sig_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_Aagreement_server_1: bitstring) = m_5 in
+    {54}if (m_Brequirement_1 = m_Bagreement_1) then
+    {55}if (m_Aagreement_1 = m'_Aagreement_1) then
+    {56}if (sig_Aagreement_client_1 = sig'_Aagreement_client_1) then
+    {57}if (m_uri_1 = m'_uri_1) then
+    {36}let pk_s_1: PublicKey = pk(sk_e) in
+    {58}if check(m_Bagreement_1,sig_Bagreement_1,pk_s_1) then
+    {59}if check((m'_Aagreement_1,sig'_Aagreement_client_1),sig_Aagreement_server_1,pk_s_1) then
+    {60}out(h, Client_Completes);
+    {37}let talksOnlyToHonest_1: bool = false in
+    {61}if talksOnlyToHonest_1 then
+    {62}event auth_ClientCompletesProtocol(m_0_1,m,m_4,m_5)
+) | (
+    {63}!
+    {67}in(h, m_0_2: bitstring);
+    {68}new m_shape_2: bitstring;
+    {70}new m_Aoffer_2: bitstring;
+    {72}new m_Brequest_2: bitstring;
+    {64}let sk_2: SecretKey = sk_s in
+    {73}let sig_Brequest_2: bitstring = sig(m_Brequest_2,sk_2) in
+    {71}let sig_Aoffer_2: bitstring = sig(m_Aoffer_2,sk_2) in
+    {69}let sig_shape_2: bitstring = sig(m_shape_2,sk_2) in
+    {74}let m_6: bitstring = (m_shape_2,sig_shape_2,m_Aoffer_2,sig_Aoffer_2,m_Brequest_2,sig_Brequest_2) in
+    {75}out(h, m_6);
+    {76}in(h, m_7: bitstring);
+    {77}let (m_0_3: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_Aagreement_2: bitstring,sig_Aagreement_client_2: bitstring,m_Brequirement_2: bitstring,sig_Brequirement_2: bitstring) = m_7 in
+    {78}if (m_Aoffer_2 = m_Aagreement_2) then
+    {65}let pk_c: PublicKey = pk(sk_c) in
+    {79}if check(m_Aagreement_2,sig_Aagreement_client_2,pk_c) then
+    {80}if (m_Brequest_2 = m_Brequirement_2) then
+    {81}if check(m_Brequirement_2,sig_Brequirement_2,pk_c) then
+    {82}if (m_shape_2 = m_presentation_2) then
+    {83}if check(m_presentation_2,sig_presentation_2,pk_c) then
+    {84}new m_resource_2: bitstring;
+    {87}let sig_Aagreement_server_2: bitstring = sig((m_Aagreement_2,sig_Aagreement_client_2),sk_2) in
+    {85}let m_Bagreement_2: bitstring = m_Brequirement_2 in
+    {86}let sig_Bagreement_2: bitstring = sig(m_Bagreement_2,sk_2) in
+    {88}let m_8: bitstring = (m_0_3,m_resource_2,m_Bagreement_2,sig_Bagreement_2,m_Aagreement_2,sig_Aagreement_client_2,sig_Aagreement_server_2) in
+    {89}event auth_ServerSendsLastMessageToClient(m_0_3,m_6,m_7,m_8);
+    {90}out(h, m_8);
+    {91}out(h, Server_Completes);
+    {66}let talksOnlyToHonest_2: bool = true in
+    {92}if talksOnlyToHonest_2 then
+    {93}event auth_ServerCompletesProtocol(m_0_3,m_6,m_7)
+) | (
+    {94}!
+    {98}in(h, m_0_4: bitstring);
+    {99}new m_shape_3: bitstring;
+    {101}new m_Aoffer_3: bitstring;
+    {103}new m_Brequest_3: bitstring;
+    {95}let sk_3: SecretKey = sk_s in
+    {104}let sig_Brequest_3: bitstring = sig(m_Brequest_3,sk_3) in
+    {102}let sig_Aoffer_3: bitstring = sig(m_Aoffer_3,sk_3) in
+    {100}let sig_shape_3: bitstring = sig(m_shape_3,sk_3) in
+    {105}let m_9: bitstring = (m_shape_3,sig_shape_3,m_Aoffer_3,sig_Aoffer_3,m_Brequest_3,sig_Brequest_3) in
+    {106}out(h, m_9);
+    {107}in(h, m_10: bitstring);
+    {108}let (m_0_5: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_Aagreement_3: bitstring,sig_Aagreement_client_3: bitstring,m_Brequirement_3: bitstring,sig_Brequirement_3: bitstring) = m_10 in
+    {109}if (m_Aoffer_3 = m_Aagreement_3) then
+    {96}let pk_c_1: PublicKey = pk(sk_e) in
+    {110}if check(m_Aagreement_3,sig_Aagreement_client_3,pk_c_1) then
+    {111}if (m_Brequest_3 = m_Brequirement_3) then
+    {112}if check(m_Brequirement_3,sig_Brequirement_3,pk_c_1) then
+    {113}if (m_shape_3 = m_presentation_3) then
+    {114}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
+    {115}new m_resource_3: bitstring;
+    {118}let sig_Aagreement_server_3: bitstring = sig((m_Aagreement_3,sig_Aagreement_client_3),sk_3) in
+    {116}let m_Bagreement_3: bitstring = m_Brequirement_3 in
+    {117}let sig_Bagreement_3: bitstring = sig(m_Bagreement_3,sk_3) in
+    {119}let m_11: bitstring = (m_0_5,m_resource_3,m_Bagreement_3,sig_Bagreement_3,m_Aagreement_3,sig_Aagreement_client_3,sig_Aagreement_server_3) in
+    {120}event auth_ServerSendsLastMessageToClient(m_0_5,m_9,m_10,m_11);
+    {121}out(h, m_11);
+    {122}out(h, Server_Completes);
+    {97}let talksOnlyToHonest_3: bool = false in
+    {123}if talksOnlyToHonest_3 then
+    {124}event auth_ServerCompletesProtocol(m_0_5,m_9,m_10)
+)
+
+-- Query not attacker(Client_Completes[]) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query not attacker(Client_Completes[])
+goal reachable: attacker(Client_Completes[])
+
+Derivation:
+Abbreviations:
+m_uri_2 = m_uri_1[!1 = @sid]
+m_uri_3 = m_uri[!1 = @sid_1]
+
+1. The attacker has some term sig_Brequest_4.
+attacker(sig_Brequest_4).
+
+2. The attacker has some term msg.
+attacker(msg).
+
+3. The attacker has some term sig_Aoffer_4.
+attacker(sig_Aoffer_4).
+
+4. The attacker has some term m_Aagreement_4.
+attacker(m_Aagreement_4).
+
+5. The attacker has some term sig_shape_4.
+attacker(sig_shape_4).
+
+6. The attacker has some term m_presentation_4.
+attacker(m_presentation_4).
+
+7. By 6, the attacker may know m_presentation_4.
+By 5, the attacker may know sig_shape_4.
+By 4, the attacker may know m_Aagreement_4.
+By 3, the attacker may know sig_Aoffer_4.
+By 2, the attacker may know msg.
+By 1, the attacker may know sig_Brequest_4.
+Using the function 6-tuple the attacker may obtain (m_presentation_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,msg,sig_Brequest_4).
+attacker((m_presentation_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,msg,sig_Brequest_4)).
+
+8. The attacker initially knows sk_e[].
+attacker(sk_e[]).
+
+9. The attacker has some term sig_Brequest_5.
+attacker(sig_Brequest_5).
+
+10. The attacker has some term m_Brequirement_4.
+attacker(m_Brequirement_4).
+
+11. The attacker has some term sig_Aoffer_5.
+attacker(sig_Aoffer_5).
+
+12. The attacker has some term m_Aagreement_5.
+attacker(m_Aagreement_5).
+
+13. The attacker has some term sig_shape_5.
+attacker(sig_shape_5).
+
+14. By 4, the attacker may know m_Aagreement_4.
+By 13, the attacker may know sig_shape_5.
+By 12, the attacker may know m_Aagreement_5.
+By 11, the attacker may know sig_Aoffer_5.
+By 10, the attacker may know m_Brequirement_4.
+By 9, the attacker may know sig_Brequest_5.
+Using the function 6-tuple the attacker may obtain (m_Aagreement_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5).
+attacker((m_Aagreement_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5)).
+
+15. The message (m_Aagreement_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5) that the attacker may have by 14 may be received at input {12}.
+So the message (m_uri_3,m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_3,m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[]))).
+
+16. By 15, the attacker may know (m_uri_3,m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_Aagreement_4,sk_c[]).
+attacker(sig(m_Aagreement_4,sk_c[])).
+
+17. By 4, the attacker may know m_Aagreement_4.
+By 16, the attacker may know sig(m_Aagreement_4,sk_c[]).
+Using the function 2-tuple the attacker may obtain (m_Aagreement_4,sig(m_Aagreement_4,sk_c[])).
+attacker((m_Aagreement_4,sig(m_Aagreement_4,sk_c[]))).
+
+18. By 17, the attacker may know (m_Aagreement_4,sig(m_Aagreement_4,sk_c[])).
+By 8, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[]).
+attacker(sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[])).
+
+19. By 2, the attacker may know msg.
+By 8, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig(msg,sk_e[]).
+attacker(sig(msg,sk_e[])).
+
+20. The attacker has some term m_resource_4.
+attacker(m_resource_4).
+
+21. The message m_uri_2 may be sent to the attacker at output {40}.
+attacker(m_uri_2).
+
+22. By 21, the attacker may know m_uri_2.
+By 20, the attacker may know m_resource_4.
+By 2, the attacker may know msg.
+By 19, the attacker may know sig(msg,sk_e[]).
+By 4, the attacker may know m_Aagreement_4.
+By 16, the attacker may know sig(m_Aagreement_4,sk_c[]).
+By 18, the attacker may know sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[]).
+Using the function 7-tuple the attacker may obtain (m_uri_2,m_resource_4,msg,sig(msg,sk_e[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[])).
+attacker((m_uri_2,m_resource_4,msg,sig(msg,sk_e[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[]))).
+
+23. The message (m_presentation_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,msg,sig_Brequest_4) that the attacker may have by 7 may be received at input {41}.
+The message (m_uri_2,m_resource_4,msg,sig(msg,sk_e[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),sig((m_Aagreement_4,sig(m_Aagreement_4,sk_c[])),sk_e[])) that the attacker may have by 22 may be received at input {52}.
+So the message Client_Completes[] may be sent to the attacker at output {60}.
+attacker(Client_Completes[]).
+
+24. By 23, attacker(Client_Completes[]).
+The goal is reached, represented in the following fact:
+attacker(Client_Completes[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+new sk_c: SecretKey creating sk_c_1 at {1}
+
+new sk_s: SecretKey creating sk_s_1 at {2}
+
+out(h, ~M) with ~M = pk(sk_c_1) at {3}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s_1) at {4}
+
+new m_uri_1: bitstring creating m_uri_2 at {38} in copy a
+
+out(h, ~M_2) with ~M_2 = m_uri_2 at {40} in copy a
+
+new m_uri: bitstring creating m_uri_3 at {9} in copy a_1
+
+out(h, ~M_3) with ~M_3 = m_uri_3 at {11} in copy a_1
+
+in(h, (a_2,a_3,a_4,a_5,a_6,a_7)) at {12} in copy a_1
+
+event auth_ClientSendsLastMessageToServer(m_uri_3,(a_2,a_3,a_4,a_5,a_6,a_7),(m_uri_3,a_2,sig(a_2,sk_c_1),a_4,sig(a_4,sk_c_1),a_6,sig(a_6,sk_c_1))) at {21} in copy a_1
+
+out(h, (~M_4,~M_5,~M_6,~M_7,~M_8,~M_9,~M_10)) with ~M_4 = m_uri_3, ~M_5 = a_2, ~M_6 = sig(a_2,sk_c_1), ~M_7 = a_4, ~M_8 = sig(a_4,sk_c_1), ~M_9 = a_6, ~M_10 = sig(a_6,sk_c_1) at {22} in copy a_1
+
+in(h, (a_8,a_9,a_2,a_10,a_11,a_12)) at {41} in copy a
+
+event auth_ClientSendsLastMessageToServer(m_uri_2,(a_8,a_9,a_2,a_10,a_11,a_12),(m_uri_2,a_8,sig(a_8,sk_c_1),a_2,sig(a_2,sk_c_1),a_11,sig(a_11,sk_c_1))) at {50} in copy a
+
+out(h, (~M_11,~M_12,~M_13,~M_14,~M_15,~M_16,~M_17)) with ~M_11 = m_uri_2, ~M_12 = a_8, ~M_13 = sig(a_8,sk_c_1), ~M_14 = a_2, ~M_15 = sig(a_2,sk_c_1), ~M_16 = a_11, ~M_17 = sig(a_11,sk_c_1) at {51} in copy a
+
+in(h, (~M_2,a_13,a_11,sig(a_11,sk_e),a_2,~M_6,sig((a_2,~M_6),sk_e))) with ~M_2 = m_uri_2, ~M_6 = sig(a_2,sk_c_1), sig((a_2,~M_6),sk_e) = sig((a_2,sig(a_2,sk_c_1)),sk_e) at {52} in copy a
+
+out(h, ~M_18) with ~M_18 = Client_Completes at {60} in copy a
+
+The attacker has the message ~M_18 = Client_Completes.
+A trace has been found.
+RESULT not attacker(Client_Completes[]) is false.
+-- Query not attacker(Server_Completes[]) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query not attacker(Server_Completes[])
+goal reachable: attacker(Server_Completes[])
+
+Derivation:
+Abbreviations:
+m_shape_4 = m_shape_2[m_0_2 = m_0_6,!1 = @sid]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = m_0_6,!1 = @sid]
+m_Brequest_4 = m_Brequest_2[m_0_2 = m_0_6,!1 = @sid]
+m_uri_2 = m_uri[!1 = @sid_1]
+m_uri_3 = m_uri[!1 = @sid_2]
+m_uri_4 = m_uri[!1 = @sid_3]
+
+1. The attacker has some term m_0_6.
+attacker(m_0_6).
+
+2. The attacker has some term sig_Brequest_4.
+attacker(sig_Brequest_4).
+
+3. The attacker has some term m_Brequirement_4.
+attacker(m_Brequirement_4).
+
+4. The attacker has some term sig_Aoffer_4.
+attacker(sig_Aoffer_4).
+
+5. The attacker has some term m_Aagreement_4.
+attacker(m_Aagreement_4).
+
+6. The attacker has some term sig_shape_4.
+attacker(sig_shape_4).
+
+7. The message m_0_6 that the attacker may have by 1 may be received at input {67}.
+So the message (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])) may be sent to the attacker at output {75}.
+attacker((m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[]))).
+
+8. By 7, the attacker may know (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])).
+Using the function 5-proj-6-tuple the attacker may obtain m_Brequest_4.
+attacker(m_Brequest_4).
+
+9. By 8, the attacker may know m_Brequest_4.
+By 6, the attacker may know sig_shape_4.
+By 5, the attacker may know m_Aagreement_4.
+By 4, the attacker may know sig_Aoffer_4.
+By 3, the attacker may know m_Brequirement_4.
+By 2, the attacker may know sig_Brequest_4.
+Using the function 6-tuple the attacker may obtain (m_Brequest_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,m_Brequirement_4,sig_Brequest_4).
+attacker((m_Brequest_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,m_Brequirement_4,sig_Brequest_4)).
+
+10. The message (m_Brequest_4,sig_shape_4,m_Aagreement_4,sig_Aoffer_4,m_Brequirement_4,sig_Brequest_4) that the attacker may have by 9 may be received at input {12}.
+So the message (m_uri_4,m_Brequest_4,sig(m_Brequest_4,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_4,m_Brequest_4,sig(m_Brequest_4,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[]))).
+
+11. By 10, the attacker may know (m_uri_4,m_Brequest_4,sig(m_Brequest_4,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_Brequest_4,sk_c[]).
+attacker(sig(m_Brequest_4,sk_c[])).
+
+12. The attacker has some term sig_Brequest_5.
+attacker(sig_Brequest_5).
+
+13. The attacker has some term m_Brequirement_5.
+attacker(m_Brequirement_5).
+
+14. The attacker has some term sig_Aoffer_5.
+attacker(sig_Aoffer_5).
+
+15. The attacker has some term m_Aagreement_5.
+attacker(m_Aagreement_5).
+
+16. The attacker has some term sig_shape_5.
+attacker(sig_shape_5).
+
+17. By 7, the attacker may know (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])).
+Using the function 3-proj-6-tuple the attacker may obtain m_Aoffer_4.
+attacker(m_Aoffer_4).
+
+18. By 17, the attacker may know m_Aoffer_4.
+By 16, the attacker may know sig_shape_5.
+By 15, the attacker may know m_Aagreement_5.
+By 14, the attacker may know sig_Aoffer_5.
+By 13, the attacker may know m_Brequirement_5.
+By 12, the attacker may know sig_Brequest_5.
+Using the function 6-tuple the attacker may obtain (m_Aoffer_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_5,sig_Brequest_5).
+attacker((m_Aoffer_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_5,sig_Brequest_5)).
+
+19. The message (m_Aoffer_4,sig_shape_5,m_Aagreement_5,sig_Aoffer_5,m_Brequirement_5,sig_Brequest_5) that the attacker may have by 18 may be received at input {12}.
+So the message (m_uri_3,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_3,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[]))).
+
+20. By 19, the attacker may know (m_uri_3,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_Aoffer_4,sk_c[]).
+attacker(sig(m_Aoffer_4,sk_c[])).
+
+21. The attacker has some term sig_Brequest_6.
+attacker(sig_Brequest_6).
+
+22. The attacker has some term m_Brequirement_6.
+attacker(m_Brequirement_6).
+
+23. The attacker has some term sig_Aoffer_6.
+attacker(sig_Aoffer_6).
+
+24. The attacker has some term m_Aagreement_6.
+attacker(m_Aagreement_6).
+
+25. The attacker has some term sig_shape_6.
+attacker(sig_shape_6).
+
+26. By 7, the attacker may know (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])).
+Using the function 1-proj-6-tuple the attacker may obtain m_shape_4.
+attacker(m_shape_4).
+
+27. By 26, the attacker may know m_shape_4.
+By 25, the attacker may know sig_shape_6.
+By 24, the attacker may know m_Aagreement_6.
+By 23, the attacker may know sig_Aoffer_6.
+By 22, the attacker may know m_Brequirement_6.
+By 21, the attacker may know sig_Brequest_6.
+Using the function 6-tuple the attacker may obtain (m_shape_4,sig_shape_6,m_Aagreement_6,sig_Aoffer_6,m_Brequirement_6,sig_Brequest_6).
+attacker((m_shape_4,sig_shape_6,m_Aagreement_6,sig_Aoffer_6,m_Brequirement_6,sig_Brequest_6)).
+
+28. The message (m_shape_4,sig_shape_6,m_Aagreement_6,sig_Aoffer_6,m_Brequirement_6,sig_Brequest_6) that the attacker may have by 27 may be received at input {12}.
+So the message (m_uri_2,m_shape_4,sig(m_shape_4,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_2,m_shape_4,sig(m_shape_4,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[]))).
+
+29. By 28, the attacker may know (m_uri_2,m_shape_4,sig(m_shape_4,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_shape_4,sk_c[]).
+attacker(sig(m_shape_4,sk_c[])).
+
+30. The attacker has some term m_0_7.
+attacker(m_0_7).
+
+31. By 30, the attacker may know m_0_7.
+By 26, the attacker may know m_shape_4.
+By 29, the attacker may know sig(m_shape_4,sk_c[]).
+By 17, the attacker may know m_Aoffer_4.
+By 20, the attacker may know sig(m_Aoffer_4,sk_c[]).
+By 8, the attacker may know m_Brequest_4.
+By 11, the attacker may know sig(m_Brequest_4,sk_c[]).
+Using the function 7-tuple the attacker may obtain (m_0_7,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])).
+attacker((m_0_7,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[]))).
+
+32. The message m_0_6 that the attacker may have by 1 may be received at input {67}.
+The message (m_0_7,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])) that the attacker may have by 31 may be received at input {76}.
+So the message Server_Completes[] may be sent to the attacker at output {91}.
+attacker(Server_Completes[]).
+
+33. By 32, attacker(Server_Completes[]).
+The goal is reached, represented in the following fact:
+attacker(Server_Completes[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+new sk_c: SecretKey creating sk_c_1 at {1}
+
+new sk_s: SecretKey creating sk_s_1 at {2}
+
+out(h, ~M) with ~M = pk(sk_c_1) at {3}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s_1) at {4}
+
+new m_uri: bitstring creating m_uri_2 at {9} in copy a
+
+out(h, ~M_2) with ~M_2 = m_uri_2 at {11} in copy a
+
+new m_uri: bitstring creating m_uri_3 at {9} in copy a_1
+
+out(h, ~M_3) with ~M_3 = m_uri_3 at {11} in copy a_1
+
+new m_uri: bitstring creating m_uri_4 at {9} in copy a_2
+
+out(h, ~M_4) with ~M_4 = m_uri_4 at {11} in copy a_2
+
+in(h, a_3) at {67} in copy a_4
+
+new m_shape_2: bitstring creating m_shape_4 at {68} in copy a_4
+
+new m_Aoffer_2: bitstring creating m_Aoffer_4 at {70} in copy a_4
+
+new m_Brequest_2: bitstring creating m_Brequest_4 at {72} in copy a_4
+
+out(h, (~M_5,~M_6,~M_7,~M_8,~M_9,~M_10)) with ~M_5 = m_shape_4, ~M_6 = sig(m_shape_4,sk_s_1), ~M_7 = m_Aoffer_4, ~M_8 = sig(m_Aoffer_4,sk_s_1), ~M_9 = m_Brequest_4, ~M_10 = sig(m_Brequest_4,sk_s_1) at {75} in copy a_4
+
+in(h, (~M_5,a_5,a_6,a_7,a_8,a_9)) with ~M_5 = m_shape_4 at {12} in copy a_2
+
+event auth_ClientSendsLastMessageToServer(m_uri_4,(m_shape_4,a_5,a_6,a_7,a_8,a_9),(m_uri_4,m_shape_4,sig(m_shape_4,sk_c_1),a_6,sig(a_6,sk_c_1),a_8,sig(a_8,sk_c_1))) at {21} in copy a_2
+
+out(h, (~M_11,~M_12,~M_13,~M_14,~M_15,~M_16,~M_17)) with ~M_11 = m_uri_4, ~M_12 = m_shape_4, ~M_13 = sig(m_shape_4,sk_c_1), ~M_14 = a_6, ~M_15 = sig(a_6,sk_c_1), ~M_16 = a_8, ~M_17 = sig(a_8,sk_c_1) at {22} in copy a_2
+
+in(h, (~M_7,a_10,a_11,a_12,a_13,a_14)) with ~M_7 = m_Aoffer_4 at {12} in copy a_1
+
+event auth_ClientSendsLastMessageToServer(m_uri_3,(m_Aoffer_4,a_10,a_11,a_12,a_13,a_14),(m_uri_3,m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),a_11,sig(a_11,sk_c_1),a_13,sig(a_13,sk_c_1))) at {21} in copy a_1
+
+out(h, (~M_18,~M_19,~M_20,~M_21,~M_22,~M_23,~M_24)) with ~M_18 = m_uri_3, ~M_19 = m_Aoffer_4, ~M_20 = sig(m_Aoffer_4,sk_c_1), ~M_21 = a_11, ~M_22 = sig(a_11,sk_c_1), ~M_23 = a_13, ~M_24 = sig(a_13,sk_c_1) at {22} in copy a_1
+
+in(h, (~M_9,a_15,a_16,a_17,a_18,a_19)) with ~M_9 = m_Brequest_4 at {12} in copy a
+
+event auth_ClientSendsLastMessageToServer(m_uri_2,(m_Brequest_4,a_15,a_16,a_17,a_18,a_19),(m_uri_2,m_Brequest_4,sig(m_Brequest_4,sk_c_1),a_16,sig(a_16,sk_c_1),a_18,sig(a_18,sk_c_1))) at {21} in copy a
+
+out(h, (~M_25,~M_26,~M_27,~M_28,~M_29,~M_30,~M_31)) with ~M_25 = m_uri_2, ~M_26 = m_Brequest_4, ~M_27 = sig(m_Brequest_4,sk_c_1), ~M_28 = a_16, ~M_29 = sig(a_16,sk_c_1), ~M_30 = a_18, ~M_31 = sig(a_18,sk_c_1) at {22} in copy a
+
+in(h, (a_20,~M_5,~M_13,~M_7,~M_20,~M_9,~M_27)) with ~M_5 = m_shape_4, ~M_13 = sig(m_shape_4,sk_c_1), ~M_7 = m_Aoffer_4, ~M_20 = sig(m_Aoffer_4,sk_c_1), ~M_9 = m_Brequest_4, ~M_27 = sig(m_Brequest_4,sk_c_1) at {76} in copy a_4
+
+new m_resource_2: bitstring creating m_resource_4 at {84} in copy a_4
+
+event auth_ServerSendsLastMessageToClient(a_20,(m_shape_4,sig(m_shape_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_s_1),m_Brequest_4,sig(m_Brequest_4,sk_s_1)),(a_20,m_shape_4,sig(m_shape_4,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_4,sig(m_Brequest_4,sk_c_1)),(a_20,m_resource_4,m_Brequest_4,sig(m_Brequest_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1))) at {89} in copy a_4
+
+out(h, (~M_32,~M_33,~M_34,~M_35,~M_36,~M_37,~M_38)) with ~M_32 = a_20, ~M_33 = m_resource_4, ~M_34 = m_Brequest_4, ~M_35 = sig(m_Brequest_4,sk_s_1), ~M_36 = m_Aoffer_4, ~M_37 = sig(m_Aoffer_4,sk_c_1), ~M_38 = sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1) at {90} in copy a_4
+
+out(h, ~M_39) with ~M_39 = Server_Completes at {91} in copy a_4
+
+event auth_ServerCompletesProtocol(a_20,(m_shape_4,sig(m_shape_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_s_1),m_Brequest_4,sig(m_Brequest_4,sk_s_1)),(a_20,m_shape_4,sig(m_shape_4,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_4,sig(m_Brequest_4,sk_c_1))) at {93} in copy a_4
+
+The attacker has the message ~M_39 = Server_Completes.
+A trace has been found.
+RESULT not attacker(Server_Completes[]) is false.
+-- Query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Starting query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3))
+goal reachable: attacker(m_resource_4) && begin(auth_ServerSendsLastMessageToClient(m_0_6,(m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])),(m_0_6,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),(m_0_6,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])))) && attacker(m_0_6) && attacker(m_presentation_4) && attacker(sig_shape_4) && attacker(m_0_7) && attacker(sig_Aoffer_4) && attacker(m_0_8) && attacker(sig_Brequest_4) -> end(auth_ClientCompletesProtocol(m_uri_2,(m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_5,sig_Brequest_4),(m_uri_2,m_presentation_4,sig(m_presentation_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[])),(m_uri_2,m_resource_4,m_Brequest_5,sig(m_Brequest_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]))))
+Abbreviations:
+m_uri_2 = m_uri[!1 = @sid]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = m_0_7,!1 = @sid_1]
+m_Brequest_5 = m_Brequest_3[m_0_4 = m_0_8,!1 = @sid_2]
+m_shape_4 = m_shape_2[m_0_2 = m_0_7,!1 = @sid_1]
+m_Brequest_4 = m_Brequest_2[m_0_2 = m_0_7,!1 = @sid_1]
+m_resource_5 = m_resource_2[m_7 = (m_0_6,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),m_0_2 = m_0_7,!1 = @sid_1]
+
+Derivation:
+Abbreviations:
+m_uri_2 = m_uri[!1 = @sid]
+m_Aoffer_4 = m_Aoffer_2[m_0_2 = m_0_6,!1 = @sid_1]
+m_Brequest_4 = m_Brequest_3[m_0_4 = m_0_7,!1 = @sid_2]
+m_shape_4 = m_shape_3[m_0_4 = m_0_7,!1 = @sid_2]
+m_Aoffer_5 = m_Aoffer_3[m_0_4 = m_0_7,!1 = @sid_2]
+m_shape_5 = m_shape_2[m_0_2 = m_0_6,!1 = @sid_1]
+m_Brequest_5 = m_Brequest_2[m_0_2 = m_0_6,!1 = @sid_1]
+m_resource_4 = m_resource_2[m_7 = (m_0_8,m_shape_5,sig(m_shape_5,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[])),m_0_2 = m_0_6,!1 = @sid_1]
+m_uri_3 = m_uri[!1 = @sid_3]
+m_uri_4 = m_uri[!1 = @sid_4]
+m_uri_5 = m_uri[!1 = @sid_5]
+
+1. We assume as hypothesis that
+attacker(sig_Brequest_4).
+
+2. We assume as hypothesis that
+attacker(m_0_7).
+
+3. The message m_0_7 that the attacker may have by 2 may be received at input {98}.
+So the message (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_5,sig(m_Aoffer_5,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])) may be sent to the attacker at output {106}.
+attacker((m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_5,sig(m_Aoffer_5,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[]))).
+
+4. By 3, the attacker may know (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_5,sig(m_Aoffer_5,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])).
+Using the function 5-proj-6-tuple the attacker may obtain m_Brequest_4.
+attacker(m_Brequest_4).
+
+5. We assume as hypothesis that
+attacker(sig_Aoffer_4).
+
+6. We assume as hypothesis that
+attacker(m_0_6).
+
+7. The message m_0_6 that the attacker may have by 6 may be received at input {67}.
+So the message (m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[])) may be sent to the attacker at output {75}.
+attacker((m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[]))).
+
+8. By 7, the attacker may know (m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[])).
+Using the function 3-proj-6-tuple the attacker may obtain m_Aoffer_4.
+attacker(m_Aoffer_4).
+
+9. We assume as hypothesis that
+attacker(sig_shape_4).
+
+10. We assume as hypothesis that
+attacker(m_presentation_4).
+
+11. By 10, the attacker may know m_presentation_4.
+By 9, the attacker may know sig_shape_4.
+By 8, the attacker may know m_Aoffer_4.
+By 5, the attacker may know sig_Aoffer_4.
+By 4, the attacker may know m_Brequest_4.
+By 1, the attacker may know sig_Brequest_4.
+Using the function 6-tuple the attacker may obtain (m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4).
+attacker((m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4)).
+
+12. The attacker has some term sig_Brequest_5.
+attacker(sig_Brequest_5).
+
+13. The attacker has some term m_Brequirement_4.
+attacker(m_Brequirement_4).
+
+14. The attacker has some term sig_Aoffer_5.
+attacker(sig_Aoffer_5).
+
+15. The attacker has some term m_Aagreement_4.
+attacker(m_Aagreement_4).
+
+16. The attacker has some term sig_shape_5.
+attacker(sig_shape_5).
+
+17. By 7, the attacker may know (m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[])).
+Using the function 5-proj-6-tuple the attacker may obtain m_Brequest_5.
+attacker(m_Brequest_5).
+
+18. By 17, the attacker may know m_Brequest_5.
+By 16, the attacker may know sig_shape_5.
+By 15, the attacker may know m_Aagreement_4.
+By 14, the attacker may know sig_Aoffer_5.
+By 13, the attacker may know m_Brequirement_4.
+By 12, the attacker may know sig_Brequest_5.
+Using the function 6-tuple the attacker may obtain (m_Brequest_5,sig_shape_5,m_Aagreement_4,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5).
+attacker((m_Brequest_5,sig_shape_5,m_Aagreement_4,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5)).
+
+19. The message (m_Brequest_5,sig_shape_5,m_Aagreement_4,sig_Aoffer_5,m_Brequirement_4,sig_Brequest_5) that the attacker may have by 18 may be received at input {12}.
+So the message (m_uri_5,m_Brequest_5,sig(m_Brequest_5,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_5,m_Brequest_5,sig(m_Brequest_5,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[]))).
+
+20. By 19, the attacker may know (m_uri_5,m_Brequest_5,sig(m_Brequest_5,sk_c[]),m_Aagreement_4,sig(m_Aagreement_4,sk_c[]),m_Brequirement_4,sig(m_Brequirement_4,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_Brequest_5,sk_c[]).
+attacker(sig(m_Brequest_5,sk_c[])).
+
+21. The attacker has some term sig_Brequest_6.
+attacker(sig_Brequest_6).
+
+22. The attacker has some term m_Brequirement_5.
+attacker(m_Brequirement_5).
+
+23. The attacker has some term sig_Aoffer_6.
+attacker(sig_Aoffer_6).
+
+24. The attacker has some term m_Aagreement_5.
+attacker(m_Aagreement_5).
+
+25. The attacker has some term sig_shape_6.
+attacker(sig_shape_6).
+
+26. By 8, the attacker may know m_Aoffer_4.
+By 25, the attacker may know sig_shape_6.
+By 24, the attacker may know m_Aagreement_5.
+By 23, the attacker may know sig_Aoffer_6.
+By 22, the attacker may know m_Brequirement_5.
+By 21, the attacker may know sig_Brequest_6.
+Using the function 6-tuple the attacker may obtain (m_Aoffer_4,sig_shape_6,m_Aagreement_5,sig_Aoffer_6,m_Brequirement_5,sig_Brequest_6).
+attacker((m_Aoffer_4,sig_shape_6,m_Aagreement_5,sig_Aoffer_6,m_Brequirement_5,sig_Brequest_6)).
+
+27. The message (m_Aoffer_4,sig_shape_6,m_Aagreement_5,sig_Aoffer_6,m_Brequirement_5,sig_Brequest_6) that the attacker may have by 26 may be received at input {12}.
+So the message (m_uri_4,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_4,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[]))).
+
+28. By 27, the attacker may know (m_uri_4,m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Aagreement_5,sig(m_Aagreement_5,sk_c[]),m_Brequirement_5,sig(m_Brequirement_5,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_Aoffer_4,sk_c[]).
+attacker(sig(m_Aoffer_4,sk_c[])).
+
+29. The attacker has some term sig_Brequest_7.
+attacker(sig_Brequest_7).
+
+30. The attacker has some term m_Brequirement_6.
+attacker(m_Brequirement_6).
+
+31. The attacker has some term sig_Aoffer_7.
+attacker(sig_Aoffer_7).
+
+32. The attacker has some term m_Aagreement_6.
+attacker(m_Aagreement_6).
+
+33. The attacker has some term sig_shape_7.
+attacker(sig_shape_7).
+
+34. By 7, the attacker may know (m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[])).
+Using the function 1-proj-6-tuple the attacker may obtain m_shape_5.
+attacker(m_shape_5).
+
+35. By 34, the attacker may know m_shape_5.
+By 33, the attacker may know sig_shape_7.
+By 32, the attacker may know m_Aagreement_6.
+By 31, the attacker may know sig_Aoffer_7.
+By 30, the attacker may know m_Brequirement_6.
+By 29, the attacker may know sig_Brequest_7.
+Using the function 6-tuple the attacker may obtain (m_shape_5,sig_shape_7,m_Aagreement_6,sig_Aoffer_7,m_Brequirement_6,sig_Brequest_7).
+attacker((m_shape_5,sig_shape_7,m_Aagreement_6,sig_Aoffer_7,m_Brequirement_6,sig_Brequest_7)).
+
+36. The message (m_shape_5,sig_shape_7,m_Aagreement_6,sig_Aoffer_7,m_Brequirement_6,sig_Brequest_7) that the attacker may have by 35 may be received at input {12}.
+So the message (m_uri_3,m_shape_5,sig(m_shape_5,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[])) may be sent to the attacker at output {22}.
+attacker((m_uri_3,m_shape_5,sig(m_shape_5,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[]))).
+
+37. By 36, the attacker may know (m_uri_3,m_shape_5,sig(m_shape_5,sk_c[]),m_Aagreement_6,sig(m_Aagreement_6,sk_c[]),m_Brequirement_6,sig(m_Brequirement_6,sk_c[])).
+Using the function 3-proj-7-tuple the attacker may obtain sig(m_shape_5,sk_c[]).
+attacker(sig(m_shape_5,sk_c[])).
+
+38. We assume as hypothesis that
+attacker(m_0_8).
+
+39. By 38, the attacker may know m_0_8.
+By 34, the attacker may know m_shape_5.
+By 37, the attacker may know sig(m_shape_5,sk_c[]).
+By 8, the attacker may know m_Aoffer_4.
+By 28, the attacker may know sig(m_Aoffer_4,sk_c[]).
+By 17, the attacker may know m_Brequest_5.
+By 20, the attacker may know sig(m_Brequest_5,sk_c[]).
+Using the function 7-tuple the attacker may obtain (m_0_8,m_shape_5,sig(m_shape_5,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[])).
+attacker((m_0_8,m_shape_5,sig(m_shape_5,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[]))).
+
+40. The message m_0_6 that the attacker may have by 6 may be received at input {67}.
+The message (m_0_8,m_shape_5,sig(m_shape_5,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[])) that the attacker may have by 39 may be received at input {76}.
+The event auth_ServerSendsLastMessageToClient(m_0_8,(m_shape_5,sig(m_shape_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_5,sig(m_Brequest_5,sk_s[])),(m_0_8,m_shape_5,sig(m_shape_5,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_5,sig(m_Brequest_5,sk_c[])),(m_0_8,m_resource_4,m_Brequest_5,sig(m_Brequest_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]))) may be executed at {89}.
+So the message (m_0_8,m_resource_4,m_Brequest_5,sig(m_Brequest_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])) may be sent to the attacker at output {90}.
+attacker((m_0_8,m_resource_4,m_Brequest_5,sig(m_Brequest_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]))).
+
+41. By 40, the attacker may know (m_0_8,m_resource_4,m_Brequest_5,sig(m_Brequest_5,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])).
+Using the function 7-proj-7-tuple the attacker may obtain sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]).
+attacker(sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])).
+
+42. By 3, the attacker may know (m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_5,sig(m_Aoffer_5,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])).
+Using the function 6-proj-6-tuple the attacker may obtain sig(m_Brequest_4,sk_s[]).
+attacker(sig(m_Brequest_4,sk_s[])).
+
+43. We assume as hypothesis that
+attacker(m_resource_5).
+
+44. The message m_uri_2 may be sent to the attacker at output {11}.
+attacker(m_uri_2).
+
+45. By 44, the attacker may know m_uri_2.
+By 43, the attacker may know m_resource_5.
+By 4, the attacker may know m_Brequest_4.
+By 42, the attacker may know sig(m_Brequest_4,sk_s[]).
+By 8, the attacker may know m_Aoffer_4.
+By 28, the attacker may know sig(m_Aoffer_4,sk_c[]).
+By 41, the attacker may know sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]).
+Using the function 7-tuple the attacker may obtain (m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])).
+attacker((m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]))).
+
+46. The message (m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4) that the attacker may have by 11 may be received at input {12}.
+The message (m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])) that the attacker may have by 45 may be received at input {23}.
+So event auth_ClientCompletesProtocol(m_uri_2,(m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4),(m_uri_2,m_presentation_4,sig(m_presentation_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),(m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[]))) may be executed at {33}.
+end(auth_ClientCompletesProtocol(m_uri_2,(m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4),(m_uri_2,m_presentation_4,sig(m_presentation_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),(m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])))).
+
+47. By 46, end(auth_ClientCompletesProtocol(m_uri_2,(m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4),(m_uri_2,m_presentation_4,sig(m_presentation_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),(m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])))).
+The goal is reached, represented in the following fact:
+end(auth_ClientCompletesProtocol(m_uri_2,(m_presentation_4,sig_shape_4,m_Aoffer_4,sig_Aoffer_4,m_Brequest_4,sig_Brequest_4),(m_uri_2,m_presentation_4,sig(m_presentation_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),(m_uri_2,m_resource_5,m_Brequest_4,sig(m_Brequest_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c[])),sk_s[])))).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+new sk_c: SecretKey creating sk_c_1 at {1}
+
+new sk_s: SecretKey creating sk_s_1 at {2}
+
+out(h, ~M) with ~M = pk(sk_c_1) at {3}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s_1) at {4}
+
+new m_uri: bitstring creating m_uri_2 at {9} in copy a
+
+out(h, ~M_2) with ~M_2 = m_uri_2 at {11} in copy a
+
+new m_uri: bitstring creating m_uri_3 at {9} in copy a_1
+
+out(h, ~M_3) with ~M_3 = m_uri_3 at {11} in copy a_1
+
+new m_uri: bitstring creating m_uri_4 at {9} in copy a_2
+
+out(h, ~M_4) with ~M_4 = m_uri_4 at {11} in copy a_2
+
+new m_uri: bitstring creating m_uri_5 at {9} in copy a_3
+
+out(h, ~M_5) with ~M_5 = m_uri_5 at {11} in copy a_3
+
+in(h, a_4) at {67} in copy a_5
+
+new m_shape_2: bitstring creating m_shape_4 at {68} in copy a_5
+
+new m_Aoffer_2: bitstring creating m_Aoffer_4 at {70} in copy a_5
+
+new m_Brequest_2: bitstring creating m_Brequest_4 at {72} in copy a_5
+
+out(h, (~M_6,~M_7,~M_8,~M_9,~M_10,~M_11)) with ~M_6 = m_shape_4, ~M_7 = sig(m_shape_4,sk_s_1), ~M_8 = m_Aoffer_4, ~M_9 = sig(m_Aoffer_4,sk_s_1), ~M_10 = m_Brequest_4, ~M_11 = sig(m_Brequest_4,sk_s_1) at {75} in copy a_5
+
+in(h, (~M_6,a_6,a_7,a_8,a_9,a_10)) with ~M_6 = m_shape_4 at {12} in copy a_3
+
+event auth_ClientSendsLastMessageToServer(m_uri_5,(m_shape_4,a_6,a_7,a_8,a_9,a_10),(m_uri_5,m_shape_4,sig(m_shape_4,sk_c_1),a_7,sig(a_7,sk_c_1),a_9,sig(a_9,sk_c_1))) at {21} in copy a_3
+
+out(h, (~M_12,~M_13,~M_14,~M_15,~M_16,~M_17,~M_18)) with ~M_12 = m_uri_5, ~M_13 = m_shape_4, ~M_14 = sig(m_shape_4,sk_c_1), ~M_15 = a_7, ~M_16 = sig(a_7,sk_c_1), ~M_17 = a_9, ~M_18 = sig(a_9,sk_c_1) at {22} in copy a_3
+
+in(h, (~M_8,a_11,a_12,a_13,a_14,a_15)) with ~M_8 = m_Aoffer_4 at {12} in copy a_2
+
+event auth_ClientSendsLastMessageToServer(m_uri_4,(m_Aoffer_4,a_11,a_12,a_13,a_14,a_15),(m_uri_4,m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),a_12,sig(a_12,sk_c_1),a_14,sig(a_14,sk_c_1))) at {21} in copy a_2
+
+out(h, (~M_19,~M_20,~M_21,~M_22,~M_23,~M_24,~M_25)) with ~M_19 = m_uri_4, ~M_20 = m_Aoffer_4, ~M_21 = sig(m_Aoffer_4,sk_c_1), ~M_22 = a_12, ~M_23 = sig(a_12,sk_c_1), ~M_24 = a_14, ~M_25 = sig(a_14,sk_c_1) at {22} in copy a_2
+
+in(h, (~M_10,a_16,a_17,a_18,a_19,a_20)) with ~M_10 = m_Brequest_4 at {12} in copy a_1
+
+event auth_ClientSendsLastMessageToServer(m_uri_3,(m_Brequest_4,a_16,a_17,a_18,a_19,a_20),(m_uri_3,m_Brequest_4,sig(m_Brequest_4,sk_c_1),a_17,sig(a_17,sk_c_1),a_19,sig(a_19,sk_c_1))) at {21} in copy a_1
+
+out(h, (~M_26,~M_27,~M_28,~M_29,~M_30,~M_31,~M_32)) with ~M_26 = m_uri_3, ~M_27 = m_Brequest_4, ~M_28 = sig(m_Brequest_4,sk_c_1), ~M_29 = a_17, ~M_30 = sig(a_17,sk_c_1), ~M_31 = a_19, ~M_32 = sig(a_19,sk_c_1) at {22} in copy a_1
+
+in(h, (a_21,~M_6,~M_14,~M_8,~M_21,~M_10,~M_28)) with ~M_6 = m_shape_4, ~M_14 = sig(m_shape_4,sk_c_1), ~M_8 = m_Aoffer_4, ~M_21 = sig(m_Aoffer_4,sk_c_1), ~M_10 = m_Brequest_4, ~M_28 = sig(m_Brequest_4,sk_c_1) at {76} in copy a_5
+
+new m_resource_2: bitstring creating m_resource_4 at {84} in copy a_5
+
+event auth_ServerSendsLastMessageToClient(a_21,(m_shape_4,sig(m_shape_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_s_1),m_Brequest_4,sig(m_Brequest_4,sk_s_1)),(a_21,m_shape_4,sig(m_shape_4,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_4,sig(m_Brequest_4,sk_c_1)),(a_21,m_resource_4,m_Brequest_4,sig(m_Brequest_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1))) at {89} in copy a_5
+
+out(h, (~M_33,~M_34,~M_35,~M_36,~M_37,~M_38,~M_39)) with ~M_33 = a_21, ~M_34 = m_resource_4, ~M_35 = m_Brequest_4, ~M_36 = sig(m_Brequest_4,sk_s_1), ~M_37 = m_Aoffer_4, ~M_38 = sig(m_Aoffer_4,sk_c_1), ~M_39 = sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1) at {90} in copy a_5
+
+out(h, ~M_40) with ~M_40 = Server_Completes at {91} in copy a_5
+
+event auth_ServerCompletesProtocol(a_21,(m_shape_4,sig(m_shape_4,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_s_1),m_Brequest_4,sig(m_Brequest_4,sk_s_1)),(a_21,m_shape_4,sig(m_shape_4,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_4,sig(m_Brequest_4,sk_c_1))) at {93} in copy a_5
+
+in(h, a_22) at {98} in copy a_23
+
+new m_shape_3: bitstring creating m_shape_5 at {99} in copy a_23
+
+new m_Aoffer_3: bitstring creating m_Aoffer_5 at {101} in copy a_23
+
+new m_Brequest_3: bitstring creating m_Brequest_5 at {103} in copy a_23
+
+out(h, (~M_41,~M_42,~M_43,~M_44,~M_45,~M_46)) with ~M_41 = m_shape_5, ~M_42 = sig(m_shape_5,sk_s_1), ~M_43 = m_Aoffer_5, ~M_44 = sig(m_Aoffer_5,sk_s_1), ~M_45 = m_Brequest_5, ~M_46 = sig(m_Brequest_5,sk_s_1) at {106} in copy a_23
+
+in(h, (a_24,a_25,~M_8,a_26,~M_45,a_27)) with ~M_8 = m_Aoffer_4, ~M_45 = m_Brequest_5 at {12} in copy a
+
+event auth_ClientSendsLastMessageToServer(m_uri_2,(a_24,a_25,m_Aoffer_4,a_26,m_Brequest_5,a_27),(m_uri_2,a_24,sig(a_24,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_5,sig(m_Brequest_5,sk_c_1))) at {21} in copy a
+
+out(h, (~M_47,~M_48,~M_49,~M_50,~M_51,~M_52,~M_53)) with ~M_47 = m_uri_2, ~M_48 = a_24, ~M_49 = sig(a_24,sk_c_1), ~M_50 = m_Aoffer_4, ~M_51 = sig(m_Aoffer_4,sk_c_1), ~M_52 = m_Brequest_5, ~M_53 = sig(m_Brequest_5,sk_c_1) at {22} in copy a
+
+in(h, (~M_2,a_28,~M_45,~M_46,~M_8,~M_21,~M_39)) with ~M_2 = m_uri_2, ~M_45 = m_Brequest_5, ~M_46 = sig(m_Brequest_5,sk_s_1), ~M_8 = m_Aoffer_4, ~M_21 = sig(m_Aoffer_4,sk_c_1), ~M_39 = sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1) at {23} in copy a
+
+out(h, ~M_54) with ~M_54 = Client_Completes at {31} in copy a
+
+event auth_ClientCompletesProtocol(m_uri_2,(a_24,a_25,m_Aoffer_4,a_26,m_Brequest_5,a_27),(m_uri_2,a_24,sig(a_24,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_5,sig(m_Brequest_5,sk_c_1)),(m_uri_2,a_28,m_Brequest_5,sig(m_Brequest_5,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1))) at {33} in copy a (goal)
+
+The event auth_ClientCompletesProtocol(m_uri_2,(a_24,a_25,m_Aoffer_4,a_26,m_Brequest_5,a_27),(m_uri_2,a_24,sig(a_24,sk_c_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),m_Brequest_5,sig(m_Brequest_5,sk_c_1)),(m_uri_2,a_28,m_Brequest_5,sig(m_Brequest_5,sk_s_1),m_Aoffer_4,sig(m_Aoffer_4,sk_c_1),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c_1)),sk_s_1))) is executed at {33} in copy a.
+A trace has been found.
+RESULT event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) is false.
+-- Query event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+200 rules inserted. Base: 183 rules (39 with conclusion selected). Queue: 651 rules.
+400 rules inserted. Base: 232 rules (39 with conclusion selected). Queue: 873 rules.
+600 rules inserted. Base: 232 rules (39 with conclusion selected). Queue: 873 rules.
+800 rules inserted. Base: 232 rules (39 with conclusion selected). Queue: 873 rules.
+1000 rules inserted. Base: 232 rules (39 with conclusion selected). Queue: 873 rules.
+1200 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+1400 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+1600 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+1800 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+2000 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+2200 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+2400 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+2600 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+2800 rules inserted. Base: 234 rules (40 with conclusion selected). Queue: 871 rules.
+3000 rules inserted. Base: 320 rules (169 with conclusion selected). Queue: 525 rules.
+3200 rules inserted. Base: 520 rules (368 with conclusion selected). Queue: 343 rules.
+3400 rules inserted. Base: 720 rules (567 with conclusion selected). Queue: 161 rules.
