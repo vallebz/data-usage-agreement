@@ -18,15 +18,15 @@ fun bitG(G):bitstring.
 reduc forall elem:G; unbitG(bitG(elem))=elem.
 (* END group *)
 
-(* START symmetric encryption *)
+(*(* START symmetric encryption *)
 fun enc(bitstring(*the message*), SymmetricKey):bitstring (*symmetric encrypt input msg*).
 reduc forall msg:bitstring,symk:SymmetricKey; dec(enc(msg,symk),symk)=msg (*symmetric decrypt*).
-(* END symmetric encryption *)
+(* END symmetric encryption *)*)
 
-(* (* START asymmetric encryption *)
+(* START asymmetric encryption *)
 fun aenc(bitstring(*the message*), PublicKey):bitstring (*asymmetric encrypt input msg*).
 reduc forall msg:bitstring,sk:SecretKey; adec(aenc(msg,pk(sk)),sk)=msg (*asymmetric decrypt*).
-(* END Asymmetric encryption *) *)
+(* END Asymmetric encryption *)
 
 (* START digital signature *)
 fun sig(bitstring(*the message*), SecretKey):bitstring(*the signature value*).
@@ -42,11 +42,11 @@ free Client_Completes:bitstring [private].
 free Server_Completes:bitstring [private].
 
 (* Agreement Events *)
-event auth_ClientSendsLastMessageToServer(bitstring,bitstring,bitstring,bitstring,bitstring).
-event auth_ServerCompletesProtocol(bitstring,bitstring,bitstring,bitstring,bitstring).
+event auth_ClientSendsLastMessageToServer(bitstring,bitstring,bitstring).
+event auth_ServerCompletesProtocol(bitstring,bitstring,bitstring).
 
-event auth_ServerSendsLastMessageToClient(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring).
-event auth_ClientCompletesProtocol(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring).
+event auth_ServerSendsLastMessageToClient(bitstring,bitstring,bitstring,bitstring).
+event auth_ClientCompletesProtocol(bitstring,bitstring,bitstring,bitstring).
 
 event clientReceivedResource(bitstring,bitstring,bitstring).
 event serverHasAgreed(bitstring,bitstring,bitstring).
@@ -61,34 +61,18 @@ event serverHasOffered(bitstring,bitstring,bitstring).
 (** START Client **)
 let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
 
-    (**)
-    new x:exponent;
-    let gx = g(x) in
-    let m'_0 = bitG(gx) in
-    let m_0 = m'_0 in
-    out(h, m_0);
-    (* Sent out Handshake-Request *)
-    (**)
-    (**)
-    (* Receive Handshake-Response *)
-    in(h,m_1:bitstring);
-    let (eGY:bitstring,m:bitstring) = m_1 in
-    let gy = unbitG(eGY) in
-    let K = GtoSymK(exp(gy,x)) in
-    let s_K = dec(m,K) in
-    if check((gy,gx), s_K, pk_s) then 
     new m_uri:bitstring;
     new nonce_0:bitstring;
-    let m'_2 = (sig((gx,gy), sk_c), nonce_0, m_uri, pk_s, pk(sk_c)) in
-    let m_2 = enc(m'_2, K) in
-    out(h,m_2);
+    let m'_0 = (nonce_0, m_uri, pk_s, pk(sk_c)) in
+    let m_0 = aenc(m'_0, pk_s) in
+    out(h,m_0);
     (* Sent out data request (enc) *)
     (**)
     (**)
     (* Receive data usage offer (enc) *)
-    in(h,m_3:bitstring);
+    in(h,m_1:bitstring);
     (* a. decrypt *)
-    let m'_3 = dec(m_3,K) in
+    let m'_1 = adec(m_1, sk_c) in
     (* b. deconstruct *)
     let (
         nonce'_0:bitstring, 
@@ -102,7 +86,7 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
         sig_Aoffer:bitstring,
         m_Brequest:bitstring,
         sig_Brequest:bitstring
-        ) = m'_3 in
+        ) = m'_1 in
     (* c. check signatures *)
     if check(m_shape, sig_shape, pk_s) then
     if check(m_Aoffer, sig_Aoffer, pk_s) then
@@ -121,16 +105,16 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let sig_Aagreement_client:bitstring = sig(m_Aagreement, sk_c) in
     let sig_Brequirement:bitstring = sig(m_Brequirement, sk_c) in
     (* g. encrypt *)
-    let m_4:bitstring = enc((nonce_1, nonce_2, m_uri, m_presentation, sig_presentation, m_Aagreement, sig_Aagreement_client, m_Brequirement, sig_Brequirement), K) in
+    let m_2:bitstring = aenc((nonce_1, nonce_2, m_uri, m_presentation, sig_presentation, m_Aagreement, sig_Aagreement_client, m_Brequirement, sig_Brequirement), pk_s) in
     (* h. send new message *)
     event clientHasAgreed(m_presentation, m_Aagreement, m_Brequirement);
-    event auth_ClientSendsLastMessageToServer(m_0, m_1, m_2, m_3, m_4);
-    out(h,m_4);
+    event auth_ClientSendsLastMessageToServer(m_0, m_1, m_2);
+    out(h,m_2);
 
 
-    in(h,m_5:bitstring);
+    in(h,m_3:bitstring);
     (* a. decrypt *)
-    let m'_5 = dec(m_5,K) in
+    let m'_3 = adec(m_3,sk_c) in
     (* b. deconstruct *)
     let (
         nonce'_2:bitstring, 
@@ -141,7 +125,7 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
         m'_Aagreement:bitstring,
         sig'_Aagreement_client:bitstring,
         sig_Aagreement_server:bitstring
-        ) = m'_5 in
+        ) = m'_3 in
     (* c. check signatures *)
     if check(m_Bagreement, sig_Bagreement, pk_s) then
     if check(m'_Aagreement, sig_Aagreement_server, pk_s) then
@@ -157,28 +141,15 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     if talksOnlyToHonest then
     (* event_at_the_very_end_of_role_R *)
     event clientReceivedResource(m_resource, m_Bagreement, m'_Aagreement);
-    event auth_ClientCompletesProtocol(m_0, m_1, m_2, m_3, m_4, m_5) ;
+    event auth_ClientCompletesProtocol(m_0, m_1, m_2, m_3) ;
     0.
 (** END Client **)
 
 (** START Server **)
 let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
 
-    (**)
-    (* Receive Handshake-Request *)
-    in(h, m_0:bitstring);
-    let gx= unbitG(m_0) in
-    new y:exponent;
-    let gy = g(y) in
-    let K = GtoSymK(exp(gx,y)) in
-    let m'_1 = sig((gy,gx),sk_s) in
-    let m_1 = (bitG(gy),enc(m'_1, K)) in
-    out(h,m_1); 
-    (* Sent out Handshake-Response *)
-    (**)
-    (**)
     (* Receive data request (enc) *)
-    in(h,m_2:bitstring);
+    in(h,m_0:bitstring);
     (* ab. decrypt deconstruct *)
     let (
         sig_K:bitstring, 
@@ -187,12 +158,11 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
         m_uri:bitstring, 
         pk'_s:PublicKey, 
         pk'_c:PublicKey
-        ) = dec(m_2,K) in
-    if (pk'_s,pk'_c) = (pk(sk_s),pk_c) then
+        ) = adec(m_0, sk_s) in
     (* out-of-band - check if public *)
     (* c. check signatures *)
-    if check((gx,gy),sig_K,pk_c) then
     (* d. check content *)
+    if (pk'_s, pk'_c) = (pk(sk_s), pk_c) then
     if m'_uri = m_uri then
     (* e. create new message content *)
     new m_shape:bitstring;
@@ -204,16 +174,16 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let sig_Aoffer:bitstring = sig(m_Aoffer, sk_s) in
     let sig_Brequest:bitstring = sig(m_Brequest, sk_s) in
     (* g. encrypt *)
-    let m_3:bitstring = enc((nonce_0, nonce_1, pk_c, pk(sk_s), m_uri, m_shape, sig_shape, m_Aoffer, sig_Aoffer, m_Brequest, sig_Brequest), K) in
+    let m_1:bitstring = aenc((nonce_0, nonce_1, pk_c, pk(sk_s), m_uri, m_shape, sig_shape, m_Aoffer, sig_Aoffer, m_Brequest, sig_Brequest), pk_c) in
     (* h. send new message *)
     event serverHasOffered(m_shape, m_Aoffer, m_Brequest);
-    out(h, m_3);
+    out(h, m_1);
     (* Sent out data usage offer (enc) *)
 
 
-    in(h,m_4:bitstring);
+    in(h,m_2:bitstring);
     (* a. decyrpt *)
-    let m'_4 = dec(m_4, K) in
+    let m'_2 = adec(m_2, sk_s) in
     (* b. deconstruct *)
     let (
         nonce'_1:bitstring, 
@@ -225,7 +195,7 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
         sig_Aagreement_client:bitstring,
         m_Brequirement:bitstring,
         sig_Brequirement:bitstring
-        ) = m'_4 in
+        ) = m'_2 in
     (* c. check signatures *)
     if check(m_presentation, sig_presentation, pk_c) then
     if check(m_Aagreement, sig_Aagreement_client, pk_c) then
@@ -243,17 +213,17 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let sig_Bagreement = sig(m_Bagreement, sk_s) in
     let sig_Aagreement_server = sig((m_Aagreement, sig_Aagreement_client), sk_s) in
     (* g. encyrpt *)
-    let m_5:bitstring = enc((nonce_2, m_uri, m_resource, m_Bagreement, sig_Bagreement, m_Aagreement, sig_Aagreement_client, sig_Aagreement_server), K) in
+    let m_3:bitstring = aenc((nonce_2, m_uri, m_resource, m_Bagreement, sig_Bagreement, m_Aagreement, sig_Aagreement_client, sig_Aagreement_server), pk_c) in
     (* h. send new message *)
     event serverHasAgreed(m_resource, m_Bagreement, m_Aagreement);
-    event auth_ServerSendsLastMessageToClient(m_0, m_1, m_2, m_3, m_4, m_5);
-    out (h,m_5);
+    event auth_ServerSendsLastMessageToClient(m_0, m_1, m_2, m_3);
+    out (h,m_3);
 
     (* Server about to complete the protocol *)
     out(h, Server_Completes);
     if talksOnlyToHonest then
     (* event_at_the_very_end_of_role_R *)
-    event auth_ServerCompletesProtocol(m_0, m_1, m_2, m_3, m_4);
+    event auth_ServerCompletesProtocol(m_0, m_1, m_2);
     0.
 (** END Server **)
 
@@ -272,16 +242,16 @@ event_at_the_very_end_of_role_R
 event_just_before_the_last_send_message_of_S
 *)
 
-query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:bitstring, msg_5:bitstring;
-    event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5))
+query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring;
+    event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3))
     ==>
-    event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) .
+    event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3)) .
 
 
-query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:bitstring;
-    event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4))
+query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring;
+    event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2))
     ==>
-    event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2,msg_3,msg_4)) .
+    event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2)) .
 
 (* 
 event_client received resource 
