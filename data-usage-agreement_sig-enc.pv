@@ -23,36 +23,45 @@ fun enc(bitstring(*the message*), SymmetricKey):bitstring (*symmetric encrypt in
 reduc forall msg:bitstring,symk:SymmetricKey; dec(enc(msg,symk),symk)=msg (*symmetric decrypt*).
 (* END symmetric encryption *)
 
-(* (* START asymmetric encryption *)
-fun aenc(bitstring(*the message*), PublicKey):bitstring (*asymmetric encrypt input msg*).
-reduc forall msg:bitstring,sk:SecretKey; adec(aenc(msg,pk(sk)),sk)=msg (*asymmetric decrypt*).
-(* END Asymmetric encryption *) *)
-
 (* START digital signature *)
 fun sig(bitstring(*the message*), SecretKey):bitstring(*the signature value*).
 reduc forall msg:bitstring,sk:SecretKey; check(msg,sig(msg,sk),pk(sk))=true (*check(msg,sigVal,pk)*).
 (* END digital signature *)
 
-(*DEFS*)
+(* DEFS *)
 
 (* Communication *)
 free h:channel.
+free m_uri:bitstring.
+free m_A_offer:bitstring.
+free m_B_request:bitstring.
+free m_shape:bitstring.
 
-free Client_Completes:bitstring [private].
-free Server_Completes:bitstring [private].
+fun ch(bitstring): channel.
+free resource_is_private: bitstring [private].
+
+(* Protocol Completes / Sanity checks *)
+free Client_completes:bitstring [private].
+free Server_completes:bitstring [private].
+
+(* Sharing Events *)
+event Client_received_resource(SecretKey, bitstring (* sk proves identity, m_resource *)).
+event Server_provided_resource(SecretKey, bitstring (* sk proves identity, m_resource *)).
+event Client_provided_credential(SecretKey, bitstring (* sk proves identity, m_presentation *)).
+event Server_received_credential(SecretKey, bitstring (* sk proves identity, m_presentation *)).
 
 (* Agreement Events *)
-event auth_ClientSendsLastMessageToServer(bitstring,bitstring,bitstring,bitstring,bitstring).
-event auth_ServerCompletesProtocol(bitstring,bitstring,bitstring,bitstring,bitstring).
+event Server_has_agreed(SecretKey, bitstring,bitstring (* sk_s, m_B_agreement, m_A_agreement_server *)).
+event Client_has_agreed(SecretKey, bitstring,bitstring (* sk_c, m_A_agreement, m_B_requirement *)).
+event Server_has_offered(SecretKey, bitstring,bitstring,bitstring (* sk_s, m_shape, m_A_offer, m_B_request *)).
 
-event auth_ServerSendsLastMessageToClient(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring).
-event auth_ClientCompletesProtocol(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring).
-
-event clientReceivedResource(bitstring,bitstring,bitstring).
-event serverHasAgreed(bitstring,bitstring,bitstring).
-event clientHasAgreed(bitstring,bitstring,bitstring).
-event serverHasOffered(bitstring,bitstring,bitstring).
-
+(* Non-Repudiation Events *)
+event Client_can_prove_server_has_offered(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring (* m_shape, sig_shape, m_A_offer, sig_A_offer, m_B_request, sig_B_request *)).
+event Client_can_prove_client_has_agreed(bitstring,bitstring,bitstring,bitstring (* m_A_agreement_client, sig_A_agreement_client, m_B_agreement, sig_B_agreement *)).
+event Client_can_prove_server_has_agreed(bitstring,bitstring,bitstring,bitstring (* m_A_agreement_server, sig_A_agreement_server, m_B_agreement, sig_B_agreement *)).
+event Server_can_prove_server_has_offered(bitstring,bitstring,bitstring,bitstring,bitstring,bitstring (* m_shape, sig_shape, m_A_offer, sig_A_offer, m_B_request, sig_B_request *)).
+event Server_can_prove_client_has_agreed(bitstring,bitstring,bitstring,bitstring (* m_A_agreement_client, sig_A_agreement_client, m_B_requirement, sig_B_requirement *)).
+event Server_can_prove_server_has_agreed(bitstring,bitstring,bitstring,bitstring (* m_A_agreement_server, sig_A_agreement_server, m_B_agreement, sig_B_agreement *)).
 
 
 
@@ -77,9 +86,7 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let K = GtoSymK(exp(gy,x)) in
     let s_K = dec(m,K) in
     if check((gy,gx), s_K, pk_s) then 
-    new m_uri:bitstring;
-    new nonce_0:bitstring;
-    let m'_2 = (sig((gx,gy), sk_c), nonce_0, m_uri, pk_s, pk(sk_c)) in
+    let m'_2 = (sig((gx,gy), sk_c), m_uri) in
     let m_2 = enc(m'_2, K) in
     out(h,m_2);
     (* Sent out data request (enc) *)
@@ -91,40 +98,29 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let m'_3 = dec(m_3,K) in
     (* b. deconstruct *)
     let (
-        nonce'_0:bitstring, 
-        nonce_1:bitstring, 
-        pk'_c:PublicKey, 
-        pk'_s:PublicKey,
         m'_uri:bitstring, 
-        m_shape:bitstring,
         sig_shape:bitstring, 
-        m_Aoffer:bitstring, 
-        sig_Aoffer:bitstring,
-        m_Brequest:bitstring,
-        sig_Brequest:bitstring
+        sig_A_offer:bitstring,
+        sig_B_request:bitstring
         ) = m'_3 in
     (* c. check signatures *)
     if check(m_shape, sig_shape, pk_s) then
-    if check(m_Aoffer, sig_Aoffer, pk_s) then
-    if check(m_Brequest, sig_Brequest, pk_s) then
+    if check(m_A_offer, sig_A_offer, pk_s) then
+    if check(m_B_request, sig_B_request, pk_s) then
     (* d. check content *)
     if m'_uri = m_uri then
-    if nonce'_0 = nonce_0 then
-    if pk'_c = pk(sk_c) then
     (* e. create new message content *)
     let m_presentation:bitstring = m_shape in
-    let m_Aagreement:bitstring = m_Aoffer in
-    let m_Brequirement:bitstring = m_Brequest in
-    new nonce_2:bitstring;
+    let m_A_agreement:bitstring = m_A_offer in
+    let m_B_requirement:bitstring = m_B_request in
     (* f. sign files *)
     let sig_presentation:bitstring = sig(m_presentation, sk_c) in
-    let sig_Aagreement_client:bitstring = sig(m_Aagreement, sk_c) in
-    let sig_Brequirement:bitstring = sig(m_Brequirement, sk_c) in
+    let sig_A_agreement_client:bitstring = sig(m_A_agreement, sk_c) in
+    let sig_B_requirement:bitstring = sig(m_B_requirement, sk_c) in
     (* g. encrypt *)
-    let m_4:bitstring = enc((nonce_1, nonce_2, m_uri, m_presentation, sig_presentation, m_Aagreement, sig_Aagreement_client, m_Brequirement, sig_Brequirement), K) in
+    let m_4:bitstring = enc((m_uri, m_presentation, sig_presentation, m_A_agreement, sig_A_agreement_client, m_B_requirement, sig_B_requirement), K) in
     (* h. send new message *)
-    event clientHasAgreed(m_presentation, m_Aagreement, m_Brequirement);
-    event auth_ClientSendsLastMessageToServer(m_0, m_1, m_2, m_3, m_4);
+    event Client_has_agreed(sk_c, m_A_agreement, m_B_requirement);
     out(h,m_4);
 
 
@@ -133,31 +129,31 @@ let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let m'_5 = dec(m_5,K) in
     (* b. deconstruct *)
     let (
-        nonce'_2:bitstring, 
-        m''_uri:bitstring, 
         m_resource:bitstring, 
-        m_Bagreement:bitstring,
-        sig_Bagreement:bitstring,
-        m'_Aagreement:bitstring,
+        m_B_agreement:bitstring,
+        sig_B_agreement:bitstring,
+        m'_A_agreement:bitstring,
         sig'_Aagreement_client:bitstring,
-        sig_Aagreement_server:bitstring
+        sig_A_agreement_server:bitstring
         ) = m'_5 in
     (* c. check signatures *)
-    if check(m_Bagreement, sig_Bagreement, pk_s) then
-    if check(m'_Aagreement, sig_Aagreement_server, pk_s) then
+    if check(m_B_agreement, sig_B_agreement, pk_s) then
+    if check(m'_A_agreement, sig_A_agreement_server, pk_s) then
     (* d. check content *)
-    if m''_uri = m_uri then
-    if nonce'_2 = nonce_2 then
-    if m_Bagreement = m_Brequirement then
-    if m'_Aagreement = m_Aagreement then
-    if sig'_Aagreement_client = sig_Aagreement_server then
+    if m_B_agreement = m_B_requirement then
+    if m'_A_agreement = m_A_agreement then
+    if sig'_Aagreement_client = sig_A_agreement_server then
 
     (* Client about to complete protocol! *)
-    out(h, Client_Completes);
+    out(h, Client_completes);
     if talksOnlyToHonest then
-    (* event_at_the_very_end_of_role_R *)
-    event clientReceivedResource(m_resource, m_Bagreement, m'_Aagreement);
-    event auth_ClientCompletesProtocol(m_0, m_1, m_2, m_3, m_4, m_5) ;
+    out(ch(m_resource),resource_is_private) |
+    (* event_at_the_very_end_of_role_R *)    
+    event Client_provided_credential(sk_c, m_presentation) |
+    event Client_received_resource(sk_c, m_resource) |
+    event Client_can_prove_server_has_offered(m_shape, sig_shape, m_A_offer, sig_A_offer, m_B_request, sig_B_request) |
+    event Client_can_prove_server_has_agreed(m_A_agreement, sig_A_agreement_server, m_B_agreement, sig_B_agreement ) |
+    event Client_can_prove_client_has_agreed(m_A_agreement, sig_A_agreement_client, m_B_agreement, sig_B_agreement);
     0.
 (** END Client **)
 
@@ -182,30 +178,22 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     (* ab. decrypt deconstruct *)
     let (
         sig_K:bitstring, 
-        nonce_0:bitstring, 
-        m_uri:bitstring, 
-        pk'_s:PublicKey, 
-        pk'_c:PublicKey
+        m'_uri:bitstring
         ) = dec(m_2,K) in
-    if (pk'_s,pk'_c) = (pk(sk_s),pk_c) then
     (* out-of-band - check if public *)
     (* c. check signatures *)
     if check((gx,gy),sig_K,pk_c) then
     (* d. check content *)
-    (* if m'_uri = m_uri then *)
+    if m'_uri = m_uri then
     (* e. create new message content *)
-    new m_shape:bitstring;
-    new m_Aoffer:bitstring;
-    new m_Brequest:bitstring;
-    new nonce_1:bitstring;
     (* f. sign message content *)
     let sig_shape:bitstring = sig(m_shape, sk_s) in
-    let sig_Aoffer:bitstring = sig(m_Aoffer, sk_s) in
-    let sig_Brequest:bitstring = sig(m_Brequest, sk_s) in
+    let sig_A_offer:bitstring = sig(m_A_offer, sk_s) in
+    let sig_B_request:bitstring = sig(m_B_request, sk_s) in
     (* g. encrypt *)
-    let m_3:bitstring = enc((nonce_0, nonce_1, pk_c, pk(sk_s), m_uri, m_shape, sig_shape, m_Aoffer, sig_Aoffer, m_Brequest, sig_Brequest), K) in
+    let m_3:bitstring = enc((m_uri, m_shape, sig_shape, m_A_offer, sig_A_offer, m_B_request, sig_B_request), K) in
     (* h. send new message *)
-    event serverHasOffered(m_shape, m_Aoffer, m_Brequest);
+    event Server_has_offered(sk_s, m_shape, m_A_offer, m_B_request);
     out(h, m_3);
     (* Sent out data usage offer (enc) *)
 
@@ -215,52 +203,54 @@ let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ wh
     let m'_4 = dec(m_4, K) in
     (* b. deconstruct *)
     let (
-        nonce'_1:bitstring, 
-        nonce_2:bitstring, 
         m''_uri:bitstring, 
         m_presentation:bitstring, 
         sig_presentation:bitstring,
-        m_Aagreement:bitstring,
-        sig_Aagreement_client:bitstring,
-        m_Brequirement:bitstring,
-        sig_Brequirement:bitstring
+        m_A_agreement:bitstring,
+        sig_A_agreement_client:bitstring,
+        m_B_requirement:bitstring,
+        sig_B_requirement:bitstring
         ) = m'_4 in
     (* c. check signatures *)
     if check(m_presentation, sig_presentation, pk_c) then
-    if check(m_Aagreement, sig_Aagreement_client, pk_c) then
-    if check(m_Brequirement, sig_Brequirement, pk_c) then
+    if check(m_A_agreement, sig_A_agreement_client, pk_c) then
+    if check(m_B_requirement, sig_B_requirement, pk_c) then
     (* d. check content *)
     if m''_uri = m_uri then
-    if nonce'_1 = nonce_1 then
-    if m_Aagreement = m_Aoffer then
-    if m_Brequirement = m_Brequest then
+    if m_A_agreement = m_A_offer then
+    if m_B_requirement = m_B_request then
     if m_presentation = m_shape then
     (* e. create new message content *)
     new m_resource:bitstring;
-    let m_Bagreement:bitstring = m_Brequirement in
+    let m_B_agreement:bitstring = m_B_requirement in
     (* f. sign message content *)
-    let sig_Bagreement = sig(m_Bagreement, sk_s) in
-    let sig_Aagreement_server = sig((m_Aagreement, sig_Aagreement_client), sk_s) in
+    let sig_B_agreement = sig(m_B_agreement, sk_s) in
+    let sig_A_agreement_server = sig((m_A_agreement, sig_A_agreement_client), sk_s) in
     (* g. encyrpt *)
-    let m_5:bitstring = enc((nonce_2, m_uri, m_resource, m_Bagreement, sig_Bagreement, m_Aagreement, sig_Aagreement_client, sig_Aagreement_server), K) in
+    let m_5:bitstring = enc((m_resource, m_B_agreement, sig_B_agreement, m_A_agreement, sig_A_agreement_client, sig_A_agreement_server), K) in
     (* h. send new message *)
-    event serverHasAgreed(m_resource, m_Bagreement, m_Aagreement);
-    event auth_ServerSendsLastMessageToClient(m_0, m_1, m_2, m_3, m_4, m_5);
+    event Server_has_agreed(sk_s, m_B_agreement, m_A_agreement) |
     out (h,m_5);
 
     (* Server about to complete the protocol *)
-    out(h, Server_Completes);
+    out(h, Server_completes);
     if talksOnlyToHonest then
+    out(ch(m_resource),resource_is_private) |
     (* event_at_the_very_end_of_role_R *)
-    event auth_ServerCompletesProtocol(m_0, m_1, m_2, m_3, m_4);
+    event Server_received_credential(sk_s, m_presentation) |
+    event Server_provided_resource(sk_s, m_resource) |
+    event Server_can_prove_server_has_offered(m_shape, sig_shape, m_A_offer, sig_A_offer, m_B_request, sig_B_request) |
+    event Server_can_prove_client_has_agreed(m_A_agreement, sig_A_agreement_client, m_B_requirement, sig_B_requirement) |
+    event Server_can_prove_server_has_agreed(m_A_agreement, sig_A_agreement_server, m_B_agreement, sig_B_agreement);
     0.
 (** END Server **)
 
 (* END process macros *)
 
 (* "Do the processes complete?" - sanity check*)
-query attacker(Client_Completes).
-query attacker(Server_Completes).
+query attacker(Client_completes).
+query attacker(Server_completes).
+query attacker(resource_is_private).
 
 
 (* Checking for "Agreement" *)
@@ -271,7 +261,7 @@ event_at_the_very_end_of_role_R
 event_just_before_the_last_send_message_of_S
 *)
 
-query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:bitstring, msg_5:bitstring;
+(* query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:bitstring, msg_5:bitstring;
     event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5))
     ==>
     event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) .
@@ -280,7 +270,7 @@ query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:
 query msg_0:bitstring, msg_1:bitstring, msg_2:bitstring, msg_3:bitstring, msg_4:bitstring;
     event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4))
     ==>
-    event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2,msg_3,msg_4)) .
+    event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2,msg_3,msg_4)) . *)
 
 (* Checking for non-repudiation *)
 
@@ -291,19 +281,88 @@ event_client received resource
 ==> event_server has offered  
 *)
 
-query resource:bitstring, policyA:bitstring, policyB:bitstring, shape:bitstring;
-    inj-event(clientReceivedResource(resource, policyB, policyA))
+(* query sk_c:SecretKey, sk_s:SecretKey, resource:bitstring, policyA:bitstring, policyB:bitstring, shape:bitstring, sig_policyA_client:bitstring, sig_policyA_server:bitstring, sig_policyB:bitstring;
+    inj-event(Client_received_resource(resource, policyB, policyA))
     ==>
-    (
-        inj-event(serverHasAgreed(resource, policyB, policyA))
-        ==>
-        (
-            inj-event(clientHasAgreed(shape, policyA, policyB))
-            ==>
-            inj-event(serverHasOffered(shape, policyA, policyB))
-        )
-    ) .
+    inj-event(Server_has_agreed(sk_s, policyB, sig_policyB, policyA, sig_policyA_client, sig_policyA_server))
+    &&
+    inj-event(Client_has_agreed(sk_c, shape, policyA, policyB))
+    &&
+    inj-event(Server_has_offered(sk_s, shape, policyA, policyB))
+    . *)
 
+query sk_s:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring;
+    inj-event(Client_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Server_has_agreed(sk_s,policyA,policyB))
+    .
+
+query sk_c:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring;
+    inj-event(Server_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Client_has_agreed(sk_c,policyA,policyB))
+    .
+
+query sk_s:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring, credential:bitstring, sig_credential:bitstring;
+    inj-event(Client_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Server_has_offered(sk_s,credential,policyA,policyB))
+    .
+
+query sk_s:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring, credential:bitstring, sig_credential:bitstring;
+    inj-event(Server_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Server_has_offered(sk_s,credential,policyA,policyB))
+    .
+
+query sk_s:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring;
+    inj-event(Server_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Server_has_agreed(sk_s,policyA,policyB))
+    .
+
+query sk_c:SecretKey, policyB:bitstring, policyA:bitstring, sig_policyA:bitstring, sig_policyB:bitstring;
+    inj-event(Client_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB))
+    ==> 
+    inj-event(Client_has_agreed(sk_c,policyA,policyB))
+    .
+
+(* IF client received, the server has offered and agreed *)
+query sk_c:SecretKey, sk_s:SecretKey, credential:bitstring,policyA:bitstring, policyB:bitstring, resource:bitstring;
+    inj-event(Client_received_resource(sk_c, resource))
+    ==>
+    inj-event(Server_has_agreed(sk_s,policyA,policyB))
+    &&
+    inj-event(Server_has_offered(sk_s,credential,policyA,policyB))
+    .
+
+(* IF server served, the client has agreed *)
+ query sk_c:SecretKey, sk_s:SecretKey, credential:bitstring,policyA:bitstring, policyB:bitstring, resource:bitstring;
+    inj-event(Server_provided_resource(sk_s,resource))
+    ==> 
+    inj-event(Client_has_agreed(sk_c,policyA,policyB))
+    .
+
+(* IF protocol fullfilled, everyone agreed *)
+query sk_c:SecretKey, sk_s:SecretKey, credential:bitstring,policyA:bitstring, policyB:bitstring, resource:bitstring;
+    inj-event(Client_received_resource(sk_c,resource))
+    ==>
+    inj-event(Server_has_agreed(sk_s,policyA,policyB))
+    &&
+    inj-event(Client_has_agreed(sk_c,policyA,policyB))
+    &&
+    inj-event(Server_has_offered(sk_s,credential,policyA,policyB))
+    . 
+
+query sk_c:SecretKey, sk_s:SecretKey, credential:bitstring,policyA:bitstring, policyB:bitstring, resource:bitstring;
+    inj-event(Server_provided_resource(sk_s,resource))
+    ==>
+    inj-event(Server_has_agreed(sk_s,policyA,policyB))
+    &&
+    inj-event(Client_has_agreed(sk_c,policyA,policyB))
+    &&
+    inj-event(Server_has_offered(sk_s,credential,policyA,policyB))
+    . 
 
 
 (* MAIN *)

@@ -23,200 +23,252 @@ Process 0 (that is, the initial process):
     {15}let K: SymmetricKey = GtoSymK(exp(gy,x)) in
     {16}let s_K: bitstring = dec(m,K) in
     {17}if check((gy,gx),s_K,pk_s) then
-    {18}new m_uri: bitstring;
-    {19}new nonce_0: bitstring;
-    {20}let m'_2: bitstring = (sig((gx,gy),sk_c_1),nonce_0,m_uri,pk_s,pk(sk_c_1)) in
-    {21}let m_2: bitstring = enc(m'_2,K) in
-    {22}out(h, m_2);
-    {23}in(h, m_3: bitstring);
-    {24}let m'_3: bitstring = dec(m_3,K) in
-    {25}let (nonce'_0: bitstring,nonce_1: bitstring,pk'_c: PublicKey,pk'_s: PublicKey,m'_uri: bitstring,m_shape: bitstring,sig_shape: bitstring,m_Aoffer: bitstring,sig_Aoffer: bitstring,m_Brequest: bitstring,sig_Brequest: bitstring) = m'_3 in
-    {26}if check(m_shape,sig_shape,pk_s) then
-    {27}if check(m_Aoffer,sig_Aoffer,pk_s) then
-    {28}if check(m_Brequest,sig_Brequest,pk_s) then
-    {29}if (m'_uri = m_uri) then
-    {30}if (nonce'_0 = nonce_0) then
-    {31}if (pk'_c = pk(sk_c_1)) then
-    {32}let m_presentation: bitstring = m_shape in
-    {33}let m_Aagreement: bitstring = m_Aoffer in
-    {34}let m_Brequirement: bitstring = m_Brequest in
-    {35}new nonce_2: bitstring;
-    {36}let sig_presentation: bitstring = sig(m_presentation,sk_c_1) in
-    {37}let sig_Aagreement_client: bitstring = sig(m_Aagreement,sk_c_1) in
-    {38}let sig_Brequirement: bitstring = sig(m_Brequirement,sk_c_1) in
-    {39}let m_4: bitstring = enc((nonce_1,nonce_2,m_uri,m_presentation,sig_presentation,m_Aagreement,sig_Aagreement_client,m_Brequirement,sig_Brequirement),K) in
-    {40}event clientHasAgreed(m_presentation,m_Aagreement,m_Brequirement);
-    {41}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2,m_3,m_4);
-    {42}out(h, m_4);
-    {43}in(h, m_5: bitstring);
-    {44}let m'_5: bitstring = dec(m_5,K) in
-    {45}let (nonce'_2: bitstring,m''_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,sig_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_Aagreement_client: bitstring,sig_Aagreement_server: bitstring) = m'_5 in
-    {46}if check(m_Bagreement,sig_Bagreement,pk_s) then
-    {47}if check(m'_Aagreement,sig_Aagreement_server,pk_s) then
-    {48}if (m''_uri = m_uri) then
-    {49}if (nonce'_2 = nonce_2) then
-    {50}if (m_Bagreement = m_Brequirement) then
-    {51}if (m'_Aagreement = m_Aagreement) then
-    {52}if (sig'_Aagreement_client = sig_Aagreement_server) then
-    {53}out(h, Client_Completes);
-    {54}if talksOnlyToHonest then
-    {55}event clientReceivedResource(m_resource,m_Bagreement,m'_Aagreement);
-    {56}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3,m_4,m_5)
+    {18}let m'_2: bitstring = (sig((gx,gy),sk_c_1),m_uri) in
+    {19}let m_2: bitstring = enc(m'_2,K) in
+    {20}out(h, m_2);
+    {21}in(h, m_3: bitstring);
+    {22}let m'_3: bitstring = dec(m_3,K) in
+    {23}let (m'_uri: bitstring,sig_shape: bitstring,sig_A_offer: bitstring,sig_B_request: bitstring) = m'_3 in
+    {24}if check(m_shape,sig_shape,pk_s) then
+    {25}if check(m_A_offer,sig_A_offer,pk_s) then
+    {26}if check(m_B_request,sig_B_request,pk_s) then
+    {27}if (m'_uri = m_uri) then
+    {28}let m_presentation: bitstring = m_shape in
+    {29}let m_A_agreement: bitstring = m_A_offer in
+    {30}let m_B_requirement: bitstring = m_B_request in
+    {31}let sig_presentation: bitstring = sig(m_presentation,sk_c_1) in
+    {32}let sig_A_agreement_client: bitstring = sig(m_A_agreement,sk_c_1) in
+    {33}let sig_B_requirement: bitstring = sig(m_B_requirement,sk_c_1) in
+    {34}let m_4: bitstring = enc((m_uri,m_presentation,sig_presentation,m_A_agreement,sig_A_agreement_client,m_B_requirement,sig_B_requirement),K) in
+    {35}event Client_has_agreed(sk_c_1,m_A_agreement,m_B_requirement);
+    {36}out(h, m_4);
+    {37}in(h, m_5: bitstring);
+    {38}let m'_5: bitstring = dec(m_5,K) in
+    {39}let (m_resource: bitstring,m_B_agreement: bitstring,sig_B_agreement: bitstring,m'_A_agreement: bitstring,sig'_Aagreement_client: bitstring,sig_A_agreement_server: bitstring) = m'_5 in
+    {40}if check(m_B_agreement,sig_B_agreement,pk_s) then
+    {41}if check(m'_A_agreement,sig_A_agreement_server,pk_s) then
+    {42}if (m_B_agreement = m_B_requirement) then
+    {43}if (m'_A_agreement = m_A_agreement) then
+    {44}if (sig'_Aagreement_client = sig_A_agreement_server) then
+    {45}out(h, Client_completes);
+    {46}if talksOnlyToHonest then
+    (
+        {47}out(ch(m_resource), resource_is_private)
+    ) | (
+        {48}event Client_provided_credential(sk_c_1,m_presentation)
+    ) | (
+        {49}event Client_received_resource(sk_c_1,m_resource)
+    ) | (
+        {50}event Client_can_prove_server_has_offered(m_shape,sig_shape,m_A_offer,sig_A_offer,m_B_request,sig_B_request)
+    ) | (
+        {51}event Client_can_prove_server_has_agreed(m_A_agreement,sig_A_agreement_server,m_B_agreement,sig_B_agreement)
+    ) | (
+        {52}event Client_can_prove_client_has_agreed(m_A_agreement,sig_A_agreement_client,m_B_agreement,sig_B_agreement)
+    )
 ) | (
-    {57}!
-    {58}let sk_c_2: SecretKey = sk_c in
-    {59}let pk_s_1: PublicKey = pk(sk_e) in
-    {60}let talksOnlyToHonest_1: bool = false in
-    {61}new x_1: exponent;
-    {62}let gx_1: G = g(x_1) in
-    {63}let m'_0_1: bitstring = bitG(gx_1) in
-    {64}let m_0_1: bitstring = m'_0_1 in
-    {65}out(h, m_0_1);
-    {66}in(h, m_6: bitstring);
-    {67}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
-    {68}let gy_1: G = unbitG(eGY_1) in
-    {69}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
-    {70}let s_K_1: bitstring = dec(m_7,K_1) in
-    {71}if check((gy_1,gx_1),s_K_1,pk_s_1) then
-    {72}new m_uri_1: bitstring;
-    {73}new nonce_0_1: bitstring;
-    {74}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),nonce_0_1,m_uri_1,pk_s_1,pk(sk_c_2)) in
-    {75}let m_8: bitstring = enc(m',K_1) in
-    {76}out(h, m_8);
-    {77}in(h, m_9: bitstring);
-    {78}let m'_1: bitstring = dec(m_9,K_1) in
-    {79}let (nonce'_0_1: bitstring,nonce: bitstring,pk'_c_1: PublicKey,pk'_s_1: PublicKey,m'_uri_1: bitstring,m_shape_1: bitstring,sig_shape_1: bitstring,m_Aoffer_1: bitstring,sig_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_Brequest_1: bitstring) = m'_1 in
-    {80}if check(m_shape_1,sig_shape_1,pk_s_1) then
-    {81}if check(m_Aoffer_1,sig_Aoffer_1,pk_s_1) then
-    {82}if check(m_Brequest_1,sig_Brequest_1,pk_s_1) then
-    {83}if (m'_uri_1 = m_uri_1) then
-    {84}if (nonce'_0_1 = nonce_0_1) then
-    {85}if (pk'_c_1 = pk(sk_c_2)) then
-    {86}let m_presentation_1: bitstring = m_shape_1 in
-    {87}let m_Aagreement_1: bitstring = m_Aoffer_1 in
-    {88}let m_Brequirement_1: bitstring = m_Brequest_1 in
-    {89}new nonce_3: bitstring;
-    {90}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_c_2) in
-    {91}let sig_Aagreement_client_1: bitstring = sig(m_Aagreement_1,sk_c_2) in
-    {92}let sig_Brequirement_1: bitstring = sig(m_Brequirement_1,sk_c_2) in
-    {93}let m_10: bitstring = enc((nonce,nonce_3,m_uri_1,m_presentation_1,sig_presentation_1,m_Aagreement_1,sig_Aagreement_client_1,m_Brequirement_1,sig_Brequirement_1),K_1) in
-    {94}event clientHasAgreed(m_presentation_1,m_Aagreement_1,m_Brequirement_1);
-    {95}event auth_ClientSendsLastMessageToServer(m_0_1,m_6,m_8,m_9,m_10);
-    {96}out(h, m_10);
-    {97}in(h, m_11: bitstring);
-    {98}let m'_4: bitstring = dec(m_11,K_1) in
-    {99}let (nonce': bitstring,m''_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,sig_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_Aagreement_server_1: bitstring) = m'_4 in
-    {100}if check(m_Bagreement_1,sig_Bagreement_1,pk_s_1) then
-    {101}if check(m'_Aagreement_1,sig_Aagreement_server_1,pk_s_1) then
-    {102}if (m''_uri_1 = m_uri_1) then
-    {103}if (nonce' = nonce_3) then
-    {104}if (m_Bagreement_1 = m_Brequirement_1) then
-    {105}if (m'_Aagreement_1 = m_Aagreement_1) then
-    {106}if (sig'_Aagreement_client_1 = sig_Aagreement_server_1) then
-    {107}out(h, Client_Completes);
-    {108}if talksOnlyToHonest_1 then
-    {109}event clientReceivedResource(m_resource_1,m_Bagreement_1,m'_Aagreement_1);
-    {110}event auth_ClientCompletesProtocol(m_0_1,m_6,m_8,m_9,m_10,m_11)
+    {53}!
+    {54}let sk_c_2: SecretKey = sk_c in
+    {55}let pk_s_1: PublicKey = pk(sk_e) in
+    {56}let talksOnlyToHonest_1: bool = false in
+    {57}new x_1: exponent;
+    {58}let gx_1: G = g(x_1) in
+    {59}let m'_0_1: bitstring = bitG(gx_1) in
+    {60}let m_0_1: bitstring = m'_0_1 in
+    {61}out(h, m_0_1);
+    {62}in(h, m_6: bitstring);
+    {63}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
+    {64}let gy_1: G = unbitG(eGY_1) in
+    {65}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
+    {66}let s_K_1: bitstring = dec(m_7,K_1) in
+    {67}if check((gy_1,gx_1),s_K_1,pk_s_1) then
+    {68}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),m_uri) in
+    {69}let m_8: bitstring = enc(m',K_1) in
+    {70}out(h, m_8);
+    {71}in(h, m_9: bitstring);
+    {72}let m'_1: bitstring = dec(m_9,K_1) in
+    {73}let (m'_uri_1: bitstring,sig_shape_1: bitstring,sig_A_offer_1: bitstring,sig_B_request_1: bitstring) = m'_1 in
+    {74}if check(m_shape,sig_shape_1,pk_s_1) then
+    {75}if check(m_A_offer,sig_A_offer_1,pk_s_1) then
+    {76}if check(m_B_request,sig_B_request_1,pk_s_1) then
+    {77}if (m'_uri_1 = m_uri) then
+    {78}let m_presentation_1: bitstring = m_shape in
+    {79}let m_A_agreement_1: bitstring = m_A_offer in
+    {80}let m_B_requirement_1: bitstring = m_B_request in
+    {81}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_c_2) in
+    {82}let sig_A_agreement_client_1: bitstring = sig(m_A_agreement_1,sk_c_2) in
+    {83}let sig_B_requirement_1: bitstring = sig(m_B_requirement_1,sk_c_2) in
+    {84}let m_10: bitstring = enc((m_uri,m_presentation_1,sig_presentation_1,m_A_agreement_1,sig_A_agreement_client_1,m_B_requirement_1,sig_B_requirement_1),K_1) in
+    {85}event Client_has_agreed(sk_c_2,m_A_agreement_1,m_B_requirement_1);
+    {86}out(h, m_10);
+    {87}in(h, m_11: bitstring);
+    {88}let m'_4: bitstring = dec(m_11,K_1) in
+    {89}let (m_resource_1: bitstring,m_B_agreement_1: bitstring,sig_B_agreement_1: bitstring,m'_A_agreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_A_agreement_server_1: bitstring) = m'_4 in
+    {90}if check(m_B_agreement_1,sig_B_agreement_1,pk_s_1) then
+    {91}if check(m'_A_agreement_1,sig_A_agreement_server_1,pk_s_1) then
+    {92}if (m_B_agreement_1 = m_B_requirement_1) then
+    {93}if (m'_A_agreement_1 = m_A_agreement_1) then
+    {94}if (sig'_Aagreement_client_1 = sig_A_agreement_server_1) then
+    {95}out(h, Client_completes);
+    {96}if talksOnlyToHonest_1 then
+    (
+        {97}out(ch(m_resource_1), resource_is_private)
+    ) | (
+        {98}event Client_provided_credential(sk_c_2,m_presentation_1)
+    ) | (
+        {99}event Client_received_resource(sk_c_2,m_resource_1)
+    ) | (
+        {100}event Client_can_prove_server_has_offered(m_shape,sig_shape_1,m_A_offer,sig_A_offer_1,m_B_request,sig_B_request_1)
+    ) | (
+        {101}event Client_can_prove_server_has_agreed(m_A_agreement_1,sig_A_agreement_server_1,m_B_agreement_1,sig_B_agreement_1)
+    ) | (
+        {102}event Client_can_prove_client_has_agreed(m_A_agreement_1,sig_A_agreement_client_1,m_B_agreement_1,sig_B_agreement_1)
+    )
 ) | (
-    {111}!
-    {112}let sk_s_1: SecretKey = sk_s in
-    {113}let pk_c: PublicKey = pk(sk_c) in
-    {114}let talksOnlyToHonest_2: bool = true in
-    {115}in(h, m_0_2: bitstring);
-    {116}let gx_2: G = unbitG(m_0_2) in
-    {117}new y: exponent;
-    {118}let gy_2: G = g(y) in
-    {119}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
-    {120}let m'_6: bitstring = sig((gy_2,gx_2),sk_s_1) in
-    {121}let m_12: bitstring = (bitG(gy_2),enc(m'_6,K_2)) in
-    {122}out(h, m_12);
-    {123}in(h, m_13: bitstring);
-    {124}let (sig_K: bitstring,nonce_0_2: bitstring,m_uri_2: bitstring,pk'_s_2: PublicKey,pk'_c_2: PublicKey) = dec(m_13,K_2) in
-    {125}if ((pk'_s_2,pk'_c_2) = (pk(sk_s_1),pk_c)) then
-    {126}if check((gx_2,gy_2),sig_K,pk_c) then
-    {127}new m_shape_2: bitstring;
-    {128}new m_Aoffer_2: bitstring;
-    {129}new m_Brequest_2: bitstring;
-    {130}new nonce_4: bitstring;
-    {131}let sig_shape_2: bitstring = sig(m_shape_2,sk_s_1) in
-    {132}let sig_Aoffer_2: bitstring = sig(m_Aoffer_2,sk_s_1) in
-    {133}let sig_Brequest_2: bitstring = sig(m_Brequest_2,sk_s_1) in
-    {134}let m_14: bitstring = enc((nonce_0_2,nonce_4,pk_c,pk(sk_s_1),m_uri_2,m_shape_2,sig_shape_2,m_Aoffer_2,sig_Aoffer_2,m_Brequest_2,sig_Brequest_2),K_2) in
-    {135}event serverHasOffered(m_shape_2,m_Aoffer_2,m_Brequest_2);
-    {136}out(h, m_14);
-    {137}in(h, m_15: bitstring);
-    {138}let m'_7: bitstring = dec(m_15,K_2) in
-    {139}let (nonce'_1: bitstring,nonce_5: bitstring,m''_uri_2: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_Aagreement_2: bitstring,sig_Aagreement_client_2: bitstring,m_Brequirement_2: bitstring,sig_Brequirement_2: bitstring) = m'_7 in
-    {140}if check(m_presentation_2,sig_presentation_2,pk_c) then
-    {141}if check(m_Aagreement_2,sig_Aagreement_client_2,pk_c) then
-    {142}if check(m_Brequirement_2,sig_Brequirement_2,pk_c) then
-    {143}if (m''_uri_2 = m_uri_2) then
-    {144}if (nonce'_1 = nonce_4) then
-    {145}if (m_Aagreement_2 = m_Aoffer_2) then
-    {146}if (m_Brequirement_2 = m_Brequest_2) then
-    {147}if (m_presentation_2 = m_shape_2) then
-    {148}new m_resource_2: bitstring;
-    {149}let m_Bagreement_2: bitstring = m_Brequirement_2 in
-    {150}let sig_Bagreement_2: bitstring = sig(m_Bagreement_2,sk_s_1) in
-    {151}let sig_Aagreement_server_2: bitstring = sig((m_Aagreement_2,sig_Aagreement_client_2),sk_s_1) in
-    {152}let m_16: bitstring = enc((nonce_5,m_uri_2,m_resource_2,m_Bagreement_2,sig_Bagreement_2,m_Aagreement_2,sig_Aagreement_client_2,sig_Aagreement_server_2),K_2) in
-    {153}event serverHasAgreed(m_resource_2,m_Bagreement_2,m_Aagreement_2);
-    {154}event auth_ServerSendsLastMessageToClient(m_0_2,m_12,m_13,m_14,m_15,m_16);
-    {155}out(h, m_16);
-    {156}out(h, Server_Completes);
-    {157}if talksOnlyToHonest_2 then
-    {158}event auth_ServerCompletesProtocol(m_0_2,m_12,m_13,m_14,m_15)
+    {103}!
+    {104}let sk_s_1: SecretKey = sk_s in
+    {105}let pk_c: PublicKey = pk(sk_c) in
+    {106}let talksOnlyToHonest_2: bool = true in
+    {107}in(h, m_0_2: bitstring);
+    {108}let gx_2: G = unbitG(m_0_2) in
+    {109}new y: exponent;
+    {110}let gy_2: G = g(y) in
+    {111}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
+    {112}let m'_6: bitstring = sig((gy_2,gx_2),sk_s_1) in
+    {113}let m_12: bitstring = (bitG(gy_2),enc(m'_6,K_2)) in
+    {114}out(h, m_12);
+    {115}in(h, m_13: bitstring);
+    {116}let (sig_K: bitstring,m'_uri_2: bitstring) = dec(m_13,K_2) in
+    {117}if check((gx_2,gy_2),sig_K,pk_c) then
+    {118}if (m'_uri_2 = m_uri) then
+    {119}let sig_shape_2: bitstring = sig(m_shape,sk_s_1) in
+    {120}let sig_A_offer_2: bitstring = sig(m_A_offer,sk_s_1) in
+    {121}let sig_B_request_2: bitstring = sig(m_B_request,sk_s_1) in
+    {122}let m_14: bitstring = enc((m_uri,m_shape,sig_shape_2,m_A_offer,sig_A_offer_2,m_B_request,sig_B_request_2),K_2) in
+    {123}event Server_has_offered(sk_s_1,m_shape,m_A_offer,m_B_request);
+    {124}out(h, m_14);
+    {125}in(h, m_15: bitstring);
+    {126}let m'_7: bitstring = dec(m_15,K_2) in
+    {127}let (m''_uri: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_A_agreement_2: bitstring,sig_A_agreement_client_2: bitstring,m_B_requirement_2: bitstring,sig_B_requirement_2: bitstring) = m'_7 in
+    {128}if check(m_presentation_2,sig_presentation_2,pk_c) then
+    {129}if check(m_A_agreement_2,sig_A_agreement_client_2,pk_c) then
+    {130}if check(m_B_requirement_2,sig_B_requirement_2,pk_c) then
+    {131}if (m''_uri = m_uri) then
+    {132}if (m_A_agreement_2 = m_A_offer) then
+    {133}if (m_B_requirement_2 = m_B_request) then
+    {134}if (m_presentation_2 = m_shape) then
+    {135}new m_resource_2: bitstring;
+    {136}let m_B_agreement_2: bitstring = m_B_requirement_2 in
+    {137}let sig_B_agreement_2: bitstring = sig(m_B_agreement_2,sk_s_1) in
+    {138}let sig_A_agreement_server_2: bitstring = sig((m_A_agreement_2,sig_A_agreement_client_2),sk_s_1) in
+    {139}let m_16: bitstring = enc((m_resource_2,m_B_agreement_2,sig_B_agreement_2,m_A_agreement_2,sig_A_agreement_client_2,sig_A_agreement_server_2),K_2) in
+    (
+        {140}event Server_has_agreed(sk_s_1,m_B_agreement_2,m_A_agreement_2)
+    ) | (
+        {141}out(h, m_16);
+        {142}out(h, Server_completes);
+        {143}if talksOnlyToHonest_2 then
+        (
+            {144}out(ch(m_resource_2), resource_is_private)
+        ) | (
+            {145}event Server_received_credential(sk_s_1,m_presentation_2)
+        ) | (
+            {146}event Server_provided_resource(sk_s_1,m_resource_2)
+        ) | (
+            {147}event Server_can_prove_server_has_offered(m_shape,sig_shape_2,m_A_offer,sig_A_offer_2,m_B_request,sig_B_request_2)
+        ) | (
+            {148}event Server_can_prove_client_has_agreed(m_A_agreement_2,sig_A_agreement_client_2,m_B_requirement_2,sig_B_requirement_2)
+        ) | (
+            {149}event Server_can_prove_server_has_agreed(m_A_agreement_2,sig_A_agreement_server_2,m_B_agreement_2,sig_B_agreement_2)
+        )
+    )
 ) | (
-    {159}!
-    {160}let sk_s_2: SecretKey = sk_s in
-    {161}let pk_c_1: PublicKey = pk(sk_e) in
-    {162}let talksOnlyToHonest_3: bool = false in
-    {163}in(h, m_0_3: bitstring);
-    {164}let gx_3: G = unbitG(m_0_3) in
-    {165}new y_1: exponent;
-    {166}let gy_3: G = g(y_1) in
-    {167}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
-    {168}let m'_8: bitstring = sig((gy_3,gx_3),sk_s_2) in
-    {169}let m_17: bitstring = (bitG(gy_3),enc(m'_8,K_3)) in
-    {170}out(h, m_17);
-    {171}in(h, m_18: bitstring);
-    {172}let (sig_K_1: bitstring,nonce_0_3: bitstring,m_uri_3: bitstring,pk'_s_3: PublicKey,pk'_c_3: PublicKey) = dec(m_18,K_3) in
-    {173}if ((pk'_s_3,pk'_c_3) = (pk(sk_s_2),pk_c_1)) then
-    {174}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
-    {175}new m_shape_3: bitstring;
-    {176}new m_Aoffer_3: bitstring;
-    {177}new m_Brequest_3: bitstring;
-    {178}new nonce_6: bitstring;
-    {179}let sig_shape_3: bitstring = sig(m_shape_3,sk_s_2) in
-    {180}let sig_Aoffer_3: bitstring = sig(m_Aoffer_3,sk_s_2) in
-    {181}let sig_Brequest_3: bitstring = sig(m_Brequest_3,sk_s_2) in
-    {182}let m_19: bitstring = enc((nonce_0_3,nonce_6,pk_c_1,pk(sk_s_2),m_uri_3,m_shape_3,sig_shape_3,m_Aoffer_3,sig_Aoffer_3,m_Brequest_3,sig_Brequest_3),K_3) in
-    {183}event serverHasOffered(m_shape_3,m_Aoffer_3,m_Brequest_3);
-    {184}out(h, m_19);
-    {185}in(h, m_20: bitstring);
-    {186}let m'_9: bitstring = dec(m_20,K_3) in
-    {187}let (nonce'_3: bitstring,nonce_7: bitstring,m''_uri_3: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_Aagreement_3: bitstring,sig_Aagreement_client_3: bitstring,m_Brequirement_3: bitstring,sig_Brequirement_3: bitstring) = m'_9 in
-    {188}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
-    {189}if check(m_Aagreement_3,sig_Aagreement_client_3,pk_c_1) then
-    {190}if check(m_Brequirement_3,sig_Brequirement_3,pk_c_1) then
-    {191}if (m''_uri_3 = m_uri_3) then
-    {192}if (nonce'_3 = nonce_6) then
-    {193}if (m_Aagreement_3 = m_Aoffer_3) then
-    {194}if (m_Brequirement_3 = m_Brequest_3) then
-    {195}if (m_presentation_3 = m_shape_3) then
-    {196}new m_resource_3: bitstring;
-    {197}let m_Bagreement_3: bitstring = m_Brequirement_3 in
-    {198}let sig_Bagreement_3: bitstring = sig(m_Bagreement_3,sk_s_2) in
-    {199}let sig_Aagreement_server_3: bitstring = sig((m_Aagreement_3,sig_Aagreement_client_3),sk_s_2) in
-    {200}let m_21: bitstring = enc((nonce_7,m_uri_3,m_resource_3,m_Bagreement_3,sig_Bagreement_3,m_Aagreement_3,sig_Aagreement_client_3,sig_Aagreement_server_3),K_3) in
-    {201}event serverHasAgreed(m_resource_3,m_Bagreement_3,m_Aagreement_3);
-    {202}event auth_ServerSendsLastMessageToClient(m_0_3,m_17,m_18,m_19,m_20,m_21);
-    {203}out(h, m_21);
-    {204}out(h, Server_Completes);
-    {205}if talksOnlyToHonest_3 then
-    {206}event auth_ServerCompletesProtocol(m_0_3,m_17,m_18,m_19,m_20)
+    {150}!
+    {151}let sk_s_2: SecretKey = sk_s in
+    {152}let pk_c_1: PublicKey = pk(sk_e) in
+    {153}let talksOnlyToHonest_3: bool = false in
+    {154}in(h, m_0_3: bitstring);
+    {155}let gx_3: G = unbitG(m_0_3) in
+    {156}new y_1: exponent;
+    {157}let gy_3: G = g(y_1) in
+    {158}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
+    {159}let m'_8: bitstring = sig((gy_3,gx_3),sk_s_2) in
+    {160}let m_17: bitstring = (bitG(gy_3),enc(m'_8,K_3)) in
+    {161}out(h, m_17);
+    {162}in(h, m_18: bitstring);
+    {163}let (sig_K_1: bitstring,m'_uri_3: bitstring) = dec(m_18,K_3) in
+    {164}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
+    {165}if (m'_uri_3 = m_uri) then
+    {166}let sig_shape_3: bitstring = sig(m_shape,sk_s_2) in
+    {167}let sig_A_offer_3: bitstring = sig(m_A_offer,sk_s_2) in
+    {168}let sig_B_request_3: bitstring = sig(m_B_request,sk_s_2) in
+    {169}let m_19: bitstring = enc((m_uri,m_shape,sig_shape_3,m_A_offer,sig_A_offer_3,m_B_request,sig_B_request_3),K_3) in
+    {170}event Server_has_offered(sk_s_2,m_shape,m_A_offer,m_B_request);
+    {171}out(h, m_19);
+    {172}in(h, m_20: bitstring);
+    {173}let m'_9: bitstring = dec(m_20,K_3) in
+    {174}let (m''_uri_1: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_A_agreement_3: bitstring,sig_A_agreement_client_3: bitstring,m_B_requirement_3: bitstring,sig_B_requirement_3: bitstring) = m'_9 in
+    {175}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
+    {176}if check(m_A_agreement_3,sig_A_agreement_client_3,pk_c_1) then
+    {177}if check(m_B_requirement_3,sig_B_requirement_3,pk_c_1) then
+    {178}if (m''_uri_1 = m_uri) then
+    {179}if (m_A_agreement_3 = m_A_offer) then
+    {180}if (m_B_requirement_3 = m_B_request) then
+    {181}if (m_presentation_3 = m_shape) then
+    {182}new m_resource_3: bitstring;
+    {183}let m_B_agreement_3: bitstring = m_B_requirement_3 in
+    {184}let sig_B_agreement_3: bitstring = sig(m_B_agreement_3,sk_s_2) in
+    {185}let sig_A_agreement_server_3: bitstring = sig((m_A_agreement_3,sig_A_agreement_client_3),sk_s_2) in
+    {186}let m_21: bitstring = enc((m_resource_3,m_B_agreement_3,sig_B_agreement_3,m_A_agreement_3,sig_A_agreement_client_3,sig_A_agreement_server_3),K_3) in
+    (
+        {187}event Server_has_agreed(sk_s_2,m_B_agreement_3,m_A_agreement_3)
+    ) | (
+        {188}out(h, m_21);
+        {189}out(h, Server_completes);
+        {190}if talksOnlyToHonest_3 then
+        (
+            {191}out(ch(m_resource_3), resource_is_private)
+        ) | (
+            {192}event Server_received_credential(sk_s_2,m_presentation_3)
+        ) | (
+            {193}event Server_provided_resource(sk_s_2,m_resource_3)
+        ) | (
+            {194}event Server_can_prove_server_has_offered(m_shape,sig_shape_3,m_A_offer,sig_A_offer_3,m_B_request,sig_B_request_3)
+        ) | (
+            {195}event Server_can_prove_client_has_agreed(m_A_agreement_3,sig_A_agreement_client_3,m_B_requirement_3,sig_B_requirement_3)
+        ) | (
+            {196}event Server_can_prove_server_has_agreed(m_A_agreement_3,sig_A_agreement_server_3,m_B_agreement_3,sig_B_agreement_3)
+        )
+    )
 )
 
+File "data-usage-agreement_sig-enc.pv", line 294, characters 7-10:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 300, characters 7-10:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 306, characters 7-10:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 312, characters 7-10:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 318, characters 7-10:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 324, characters 7-10:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 331, characters 7-10:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 331, characters 23-26:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 340, characters 8-11:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 340, characters 24-27:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 347, characters 7-10:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 347, characters 23-26:
+Warning: identifier sk_s rebound.
+File "data-usage-agreement_sig-enc.pv", line 357, characters 7-10:
+Warning: identifier sk_c rebound.
+File "data-usage-agreement_sig-enc.pv", line 357, characters 23-26:
+Warning: identifier sk_s rebound.
 --  Process 1 (that is, process 0, with let moved downwards):
 {1}out(h, pk(sk_c));
 {2}out(h, pk(sk_s));
@@ -234,228 +286,247 @@ Process 0 (that is, the initial process):
     {16}let s_K: bitstring = dec(m,K) in
     {5}let pk_s: PublicKey = pk(sk_s) in
     {17}if check((gy,gx),s_K,pk_s) then
-    {18}new m_uri: bitstring;
-    {19}new nonce_0: bitstring;
     {4}let sk_c_1: SecretKey = sk_c in
-    {20}let m'_2: bitstring = (sig((gx,gy),sk_c_1),nonce_0,m_uri,pk_s,pk(sk_c_1)) in
-    {21}let m_2: bitstring = enc(m'_2,K) in
-    {22}out(h, m_2);
-    {23}in(h, m_3: bitstring);
-    {24}let m'_3: bitstring = dec(m_3,K) in
-    {25}let (nonce'_0: bitstring,nonce_1: bitstring,pk'_c: PublicKey,pk'_s: PublicKey,m'_uri: bitstring,m_shape: bitstring,sig_shape: bitstring,m_Aoffer: bitstring,sig_Aoffer: bitstring,m_Brequest: bitstring,sig_Brequest: bitstring) = m'_3 in
-    {26}if check(m_shape,sig_shape,pk_s) then
-    {27}if check(m_Aoffer,sig_Aoffer,pk_s) then
-    {28}if check(m_Brequest,sig_Brequest,pk_s) then
-    {29}if (m'_uri = m_uri) then
-    {30}if (nonce'_0 = nonce_0) then
-    {31}if (pk'_c = pk(sk_c_1)) then
-    {35}new nonce_2: bitstring;
-    {34}let m_Brequirement: bitstring = m_Brequest in
-    {33}let m_Aagreement: bitstring = m_Aoffer in
-    {32}let m_presentation: bitstring = m_shape in
-    {40}event clientHasAgreed(m_presentation,m_Aagreement,m_Brequirement);
-    {38}let sig_Brequirement: bitstring = sig(m_Brequirement,sk_c_1) in
-    {37}let sig_Aagreement_client: bitstring = sig(m_Aagreement,sk_c_1) in
-    {36}let sig_presentation: bitstring = sig(m_presentation,sk_c_1) in
-    {39}let m_4: bitstring = enc((nonce_1,nonce_2,m_uri,m_presentation,sig_presentation,m_Aagreement,sig_Aagreement_client,m_Brequirement,sig_Brequirement),K) in
-    {41}event auth_ClientSendsLastMessageToServer(m_0,m_1,m_2,m_3,m_4);
-    {42}out(h, m_4);
-    {43}in(h, m_5: bitstring);
-    {44}let m'_5: bitstring = dec(m_5,K) in
-    {45}let (nonce'_2: bitstring,m''_uri: bitstring,m_resource: bitstring,m_Bagreement: bitstring,sig_Bagreement: bitstring,m'_Aagreement: bitstring,sig'_Aagreement_client: bitstring,sig_Aagreement_server: bitstring) = m'_5 in
-    {46}if check(m_Bagreement,sig_Bagreement,pk_s) then
-    {47}if check(m'_Aagreement,sig_Aagreement_server,pk_s) then
-    {48}if (m''_uri = m_uri) then
-    {49}if (nonce'_2 = nonce_2) then
-    {50}if (m_Bagreement = m_Brequirement) then
-    {51}if (m'_Aagreement = m_Aagreement) then
-    {52}if (sig'_Aagreement_client = sig_Aagreement_server) then
-    {53}out(h, Client_Completes);
+    {18}let m'_2: bitstring = (sig((gx,gy),sk_c_1),m_uri) in
+    {19}let m_2: bitstring = enc(m'_2,K) in
+    {20}out(h, m_2);
+    {21}in(h, m_3: bitstring);
+    {22}let m'_3: bitstring = dec(m_3,K) in
+    {23}let (m'_uri: bitstring,sig_shape: bitstring,sig_A_offer: bitstring,sig_B_request: bitstring) = m'_3 in
+    {24}if check(m_shape,sig_shape,pk_s) then
+    {25}if check(m_A_offer,sig_A_offer,pk_s) then
+    {26}if check(m_B_request,sig_B_request,pk_s) then
+    {27}if (m'_uri = m_uri) then
+    {30}let m_B_requirement: bitstring = m_B_request in
+    {29}let m_A_agreement: bitstring = m_A_offer in
+    {35}event Client_has_agreed(sk_c_1,m_A_agreement,m_B_requirement);
+    {33}let sig_B_requirement: bitstring = sig(m_B_requirement,sk_c_1) in
+    {32}let sig_A_agreement_client: bitstring = sig(m_A_agreement,sk_c_1) in
+    {28}let m_presentation: bitstring = m_shape in
+    {31}let sig_presentation: bitstring = sig(m_presentation,sk_c_1) in
+    {34}let m_4: bitstring = enc((m_uri,m_presentation,sig_presentation,m_A_agreement,sig_A_agreement_client,m_B_requirement,sig_B_requirement),K) in
+    {36}out(h, m_4);
+    {37}in(h, m_5: bitstring);
+    {38}let m'_5: bitstring = dec(m_5,K) in
+    {39}let (m_resource: bitstring,m_B_agreement: bitstring,sig_B_agreement: bitstring,m'_A_agreement: bitstring,sig'_Aagreement_client: bitstring,sig_A_agreement_server: bitstring) = m'_5 in
+    {40}if check(m_B_agreement,sig_B_agreement,pk_s) then
+    {41}if check(m'_A_agreement,sig_A_agreement_server,pk_s) then
+    {42}if (m_B_agreement = m_B_requirement) then
+    {43}if (m'_A_agreement = m_A_agreement) then
+    {44}if (sig'_Aagreement_client = sig_A_agreement_server) then
+    {45}out(h, Client_completes);
     {6}let talksOnlyToHonest: bool = true in
-    {54}if talksOnlyToHonest then
-    {55}event clientReceivedResource(m_resource,m_Bagreement,m'_Aagreement);
-    {56}event auth_ClientCompletesProtocol(m_0,m_1,m_2,m_3,m_4,m_5)
+    {46}if talksOnlyToHonest then
+    (
+        {47}out(ch(m_resource), resource_is_private)
+    ) | (
+        {48}event Client_provided_credential(sk_c_1,m_presentation)
+    ) | (
+        {49}event Client_received_resource(sk_c_1,m_resource)
+    ) | (
+        {50}event Client_can_prove_server_has_offered(m_shape,sig_shape,m_A_offer,sig_A_offer,m_B_request,sig_B_request)
+    ) | (
+        {51}event Client_can_prove_server_has_agreed(m_A_agreement,sig_A_agreement_server,m_B_agreement,sig_B_agreement)
+    ) | (
+        {52}event Client_can_prove_client_has_agreed(m_A_agreement,sig_A_agreement_client,m_B_agreement,sig_B_agreement)
+    )
 ) | (
-    {57}!
-    {61}new x_1: exponent;
-    {62}let gx_1: G = g(x_1) in
-    {63}let m'_0_1: bitstring = bitG(gx_1) in
-    {64}let m_0_1: bitstring = m'_0_1 in
-    {65}out(h, m_0_1);
-    {66}in(h, m_6: bitstring);
-    {67}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
-    {68}let gy_1: G = unbitG(eGY_1) in
-    {69}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
-    {70}let s_K_1: bitstring = dec(m_7,K_1) in
-    {59}let pk_s_1: PublicKey = pk(sk_e) in
-    {71}if check((gy_1,gx_1),s_K_1,pk_s_1) then
-    {72}new m_uri_1: bitstring;
-    {73}new nonce_0_1: bitstring;
-    {58}let sk_c_2: SecretKey = sk_c in
-    {74}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),nonce_0_1,m_uri_1,pk_s_1,pk(sk_c_2)) in
-    {75}let m_8: bitstring = enc(m',K_1) in
-    {76}out(h, m_8);
-    {77}in(h, m_9: bitstring);
-    {78}let m'_1: bitstring = dec(m_9,K_1) in
-    {79}let (nonce'_0_1: bitstring,nonce: bitstring,pk'_c_1: PublicKey,pk'_s_1: PublicKey,m'_uri_1: bitstring,m_shape_1: bitstring,sig_shape_1: bitstring,m_Aoffer_1: bitstring,sig_Aoffer_1: bitstring,m_Brequest_1: bitstring,sig_Brequest_1: bitstring) = m'_1 in
-    {80}if check(m_shape_1,sig_shape_1,pk_s_1) then
-    {81}if check(m_Aoffer_1,sig_Aoffer_1,pk_s_1) then
-    {82}if check(m_Brequest_1,sig_Brequest_1,pk_s_1) then
-    {83}if (m'_uri_1 = m_uri_1) then
-    {84}if (nonce'_0_1 = nonce_0_1) then
-    {85}if (pk'_c_1 = pk(sk_c_2)) then
-    {89}new nonce_3: bitstring;
-    {88}let m_Brequirement_1: bitstring = m_Brequest_1 in
-    {87}let m_Aagreement_1: bitstring = m_Aoffer_1 in
-    {86}let m_presentation_1: bitstring = m_shape_1 in
-    {94}event clientHasAgreed(m_presentation_1,m_Aagreement_1,m_Brequirement_1);
-    {92}let sig_Brequirement_1: bitstring = sig(m_Brequirement_1,sk_c_2) in
-    {91}let sig_Aagreement_client_1: bitstring = sig(m_Aagreement_1,sk_c_2) in
-    {90}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_c_2) in
-    {93}let m_10: bitstring = enc((nonce,nonce_3,m_uri_1,m_presentation_1,sig_presentation_1,m_Aagreement_1,sig_Aagreement_client_1,m_Brequirement_1,sig_Brequirement_1),K_1) in
-    {95}event auth_ClientSendsLastMessageToServer(m_0_1,m_6,m_8,m_9,m_10);
-    {96}out(h, m_10);
-    {97}in(h, m_11: bitstring);
-    {98}let m'_4: bitstring = dec(m_11,K_1) in
-    {99}let (nonce': bitstring,m''_uri_1: bitstring,m_resource_1: bitstring,m_Bagreement_1: bitstring,sig_Bagreement_1: bitstring,m'_Aagreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_Aagreement_server_1: bitstring) = m'_4 in
-    {100}if check(m_Bagreement_1,sig_Bagreement_1,pk_s_1) then
-    {101}if check(m'_Aagreement_1,sig_Aagreement_server_1,pk_s_1) then
-    {102}if (m''_uri_1 = m_uri_1) then
-    {103}if (nonce' = nonce_3) then
-    {104}if (m_Bagreement_1 = m_Brequirement_1) then
-    {105}if (m'_Aagreement_1 = m_Aagreement_1) then
-    {106}if (sig'_Aagreement_client_1 = sig_Aagreement_server_1) then
-    {107}out(h, Client_Completes);
-    {60}let talksOnlyToHonest_1: bool = false in
-    {108}if talksOnlyToHonest_1 then
-    {109}event clientReceivedResource(m_resource_1,m_Bagreement_1,m'_Aagreement_1);
-    {110}event auth_ClientCompletesProtocol(m_0_1,m_6,m_8,m_9,m_10,m_11)
+    {53}!
+    {57}new x_1: exponent;
+    {58}let gx_1: G = g(x_1) in
+    {59}let m'_0_1: bitstring = bitG(gx_1) in
+    {60}let m_0_1: bitstring = m'_0_1 in
+    {61}out(h, m_0_1);
+    {62}in(h, m_6: bitstring);
+    {63}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
+    {64}let gy_1: G = unbitG(eGY_1) in
+    {65}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
+    {66}let s_K_1: bitstring = dec(m_7,K_1) in
+    {55}let pk_s_1: PublicKey = pk(sk_e) in
+    {67}if check((gy_1,gx_1),s_K_1,pk_s_1) then
+    {54}let sk_c_2: SecretKey = sk_c in
+    {68}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),m_uri) in
+    {69}let m_8: bitstring = enc(m',K_1) in
+    {70}out(h, m_8);
+    {71}in(h, m_9: bitstring);
+    {72}let m'_1: bitstring = dec(m_9,K_1) in
+    {73}let (m'_uri_1: bitstring,sig_shape_1: bitstring,sig_A_offer_1: bitstring,sig_B_request_1: bitstring) = m'_1 in
+    {74}if check(m_shape,sig_shape_1,pk_s_1) then
+    {75}if check(m_A_offer,sig_A_offer_1,pk_s_1) then
+    {76}if check(m_B_request,sig_B_request_1,pk_s_1) then
+    {77}if (m'_uri_1 = m_uri) then
+    {80}let m_B_requirement_1: bitstring = m_B_request in
+    {79}let m_A_agreement_1: bitstring = m_A_offer in
+    {85}event Client_has_agreed(sk_c_2,m_A_agreement_1,m_B_requirement_1);
+    {83}let sig_B_requirement_1: bitstring = sig(m_B_requirement_1,sk_c_2) in
+    {82}let sig_A_agreement_client_1: bitstring = sig(m_A_agreement_1,sk_c_2) in
+    {78}let m_presentation_1: bitstring = m_shape in
+    {81}let sig_presentation_1: bitstring = sig(m_presentation_1,sk_c_2) in
+    {84}let m_10: bitstring = enc((m_uri,m_presentation_1,sig_presentation_1,m_A_agreement_1,sig_A_agreement_client_1,m_B_requirement_1,sig_B_requirement_1),K_1) in
+    {86}out(h, m_10);
+    {87}in(h, m_11: bitstring);
+    {88}let m'_4: bitstring = dec(m_11,K_1) in
+    {89}let (m_resource_1: bitstring,m_B_agreement_1: bitstring,sig_B_agreement_1: bitstring,m'_A_agreement_1: bitstring,sig'_Aagreement_client_1: bitstring,sig_A_agreement_server_1: bitstring) = m'_4 in
+    {90}if check(m_B_agreement_1,sig_B_agreement_1,pk_s_1) then
+    {91}if check(m'_A_agreement_1,sig_A_agreement_server_1,pk_s_1) then
+    {92}if (m_B_agreement_1 = m_B_requirement_1) then
+    {93}if (m'_A_agreement_1 = m_A_agreement_1) then
+    {94}if (sig'_Aagreement_client_1 = sig_A_agreement_server_1) then
+    {95}out(h, Client_completes);
+    {56}let talksOnlyToHonest_1: bool = false in
+    {96}if talksOnlyToHonest_1 then
+    (
+        {97}out(ch(m_resource_1), resource_is_private)
+    ) | (
+        {98}event Client_provided_credential(sk_c_2,m_presentation_1)
+    ) | (
+        {99}event Client_received_resource(sk_c_2,m_resource_1)
+    ) | (
+        {100}event Client_can_prove_server_has_offered(m_shape,sig_shape_1,m_A_offer,sig_A_offer_1,m_B_request,sig_B_request_1)
+    ) | (
+        {101}event Client_can_prove_server_has_agreed(m_A_agreement_1,sig_A_agreement_server_1,m_B_agreement_1,sig_B_agreement_1)
+    ) | (
+        {102}event Client_can_prove_client_has_agreed(m_A_agreement_1,sig_A_agreement_client_1,m_B_agreement_1,sig_B_agreement_1)
+    )
 ) | (
-    {111}!
-    {115}in(h, m_0_2: bitstring);
-    {116}let gx_2: G = unbitG(m_0_2) in
-    {117}new y: exponent;
-    {118}let gy_2: G = g(y) in
-    {112}let sk_s_1: SecretKey = sk_s in
-    {120}let m'_6: bitstring = sig((gy_2,gx_2),sk_s_1) in
-    {119}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
-    {121}let m_12: bitstring = (bitG(gy_2),enc(m'_6,K_2)) in
-    {122}out(h, m_12);
-    {123}in(h, m_13: bitstring);
-    {124}let (sig_K: bitstring,nonce_0_2: bitstring,m_uri_2: bitstring,pk'_s_2: PublicKey,pk'_c_2: PublicKey) = dec(m_13,K_2) in
-    {113}let pk_c: PublicKey = pk(sk_c) in
-    {125}if ((pk'_s_2,pk'_c_2) = (pk(sk_s_1),pk_c)) then
-    {126}if check((gx_2,gy_2),sig_K,pk_c) then
-    {127}new m_shape_2: bitstring;
-    {128}new m_Aoffer_2: bitstring;
-    {129}new m_Brequest_2: bitstring;
-    {130}new nonce_4: bitstring;
-    {135}event serverHasOffered(m_shape_2,m_Aoffer_2,m_Brequest_2);
-    {133}let sig_Brequest_2: bitstring = sig(m_Brequest_2,sk_s_1) in
-    {132}let sig_Aoffer_2: bitstring = sig(m_Aoffer_2,sk_s_1) in
-    {131}let sig_shape_2: bitstring = sig(m_shape_2,sk_s_1) in
-    {134}let m_14: bitstring = enc((nonce_0_2,nonce_4,pk_c,pk(sk_s_1),m_uri_2,m_shape_2,sig_shape_2,m_Aoffer_2,sig_Aoffer_2,m_Brequest_2,sig_Brequest_2),K_2) in
-    {136}out(h, m_14);
-    {137}in(h, m_15: bitstring);
-    {138}let m'_7: bitstring = dec(m_15,K_2) in
-    {139}let (nonce'_1: bitstring,nonce_5: bitstring,m''_uri_2: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_Aagreement_2: bitstring,sig_Aagreement_client_2: bitstring,m_Brequirement_2: bitstring,sig_Brequirement_2: bitstring) = m'_7 in
-    {140}if check(m_presentation_2,sig_presentation_2,pk_c) then
-    {141}if check(m_Aagreement_2,sig_Aagreement_client_2,pk_c) then
-    {142}if check(m_Brequirement_2,sig_Brequirement_2,pk_c) then
-    {143}if (m''_uri_2 = m_uri_2) then
-    {144}if (nonce'_1 = nonce_4) then
-    {145}if (m_Aagreement_2 = m_Aoffer_2) then
-    {146}if (m_Brequirement_2 = m_Brequest_2) then
-    {147}if (m_presentation_2 = m_shape_2) then
-    {148}new m_resource_2: bitstring;
-    {149}let m_Bagreement_2: bitstring = m_Brequirement_2 in
-    {153}event serverHasAgreed(m_resource_2,m_Bagreement_2,m_Aagreement_2);
-    {151}let sig_Aagreement_server_2: bitstring = sig((m_Aagreement_2,sig_Aagreement_client_2),sk_s_1) in
-    {150}let sig_Bagreement_2: bitstring = sig(m_Bagreement_2,sk_s_1) in
-    {152}let m_16: bitstring = enc((nonce_5,m_uri_2,m_resource_2,m_Bagreement_2,sig_Bagreement_2,m_Aagreement_2,sig_Aagreement_client_2,sig_Aagreement_server_2),K_2) in
-    {154}event auth_ServerSendsLastMessageToClient(m_0_2,m_12,m_13,m_14,m_15,m_16);
-    {155}out(h, m_16);
-    {156}out(h, Server_Completes);
-    {114}let talksOnlyToHonest_2: bool = true in
-    {157}if talksOnlyToHonest_2 then
-    {158}event auth_ServerCompletesProtocol(m_0_2,m_12,m_13,m_14,m_15)
+    {103}!
+    {107}in(h, m_0_2: bitstring);
+    {108}let gx_2: G = unbitG(m_0_2) in
+    {109}new y: exponent;
+    {110}let gy_2: G = g(y) in
+    {104}let sk_s_1: SecretKey = sk_s in
+    {112}let m'_6: bitstring = sig((gy_2,gx_2),sk_s_1) in
+    {111}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
+    {113}let m_12: bitstring = (bitG(gy_2),enc(m'_6,K_2)) in
+    {114}out(h, m_12);
+    {115}in(h, m_13: bitstring);
+    {116}let (sig_K: bitstring,m'_uri_2: bitstring) = dec(m_13,K_2) in
+    {105}let pk_c: PublicKey = pk(sk_c) in
+    {117}if check((gx_2,gy_2),sig_K,pk_c) then
+    {118}if (m'_uri_2 = m_uri) then
+    {123}event Server_has_offered(sk_s_1,m_shape,m_A_offer,m_B_request);
+    {121}let sig_B_request_2: bitstring = sig(m_B_request,sk_s_1) in
+    {120}let sig_A_offer_2: bitstring = sig(m_A_offer,sk_s_1) in
+    {119}let sig_shape_2: bitstring = sig(m_shape,sk_s_1) in
+    {122}let m_14: bitstring = enc((m_uri,m_shape,sig_shape_2,m_A_offer,sig_A_offer_2,m_B_request,sig_B_request_2),K_2) in
+    {124}out(h, m_14);
+    {125}in(h, m_15: bitstring);
+    {126}let m'_7: bitstring = dec(m_15,K_2) in
+    {127}let (m''_uri: bitstring,m_presentation_2: bitstring,sig_presentation_2: bitstring,m_A_agreement_2: bitstring,sig_A_agreement_client_2: bitstring,m_B_requirement_2: bitstring,sig_B_requirement_2: bitstring) = m'_7 in
+    {128}if check(m_presentation_2,sig_presentation_2,pk_c) then
+    {129}if check(m_A_agreement_2,sig_A_agreement_client_2,pk_c) then
+    {130}if check(m_B_requirement_2,sig_B_requirement_2,pk_c) then
+    {131}if (m''_uri = m_uri) then
+    {132}if (m_A_agreement_2 = m_A_offer) then
+    {133}if (m_B_requirement_2 = m_B_request) then
+    {134}if (m_presentation_2 = m_shape) then
+    {135}new m_resource_2: bitstring;
+    {136}let m_B_agreement_2: bitstring = m_B_requirement_2 in
+    (
+        {140}event Server_has_agreed(sk_s_1,m_B_agreement_2,m_A_agreement_2)
+    ) | (
+        {138}let sig_A_agreement_server_2: bitstring = sig((m_A_agreement_2,sig_A_agreement_client_2),sk_s_1) in
+        {137}let sig_B_agreement_2: bitstring = sig(m_B_agreement_2,sk_s_1) in
+        {139}let m_16: bitstring = enc((m_resource_2,m_B_agreement_2,sig_B_agreement_2,m_A_agreement_2,sig_A_agreement_client_2,sig_A_agreement_server_2),K_2) in
+        {141}out(h, m_16);
+        {142}out(h, Server_completes);
+        {106}let talksOnlyToHonest_2: bool = true in
+        {143}if talksOnlyToHonest_2 then
+        (
+            {144}out(ch(m_resource_2), resource_is_private)
+        ) | (
+            {145}event Server_received_credential(sk_s_1,m_presentation_2)
+        ) | (
+            {146}event Server_provided_resource(sk_s_1,m_resource_2)
+        ) | (
+            {147}event Server_can_prove_server_has_offered(m_shape,sig_shape_2,m_A_offer,sig_A_offer_2,m_B_request,sig_B_request_2)
+        ) | (
+            {148}event Server_can_prove_client_has_agreed(m_A_agreement_2,sig_A_agreement_client_2,m_B_requirement_2,sig_B_requirement_2)
+        ) | (
+            {149}event Server_can_prove_server_has_agreed(m_A_agreement_2,sig_A_agreement_server_2,m_B_agreement_2,sig_B_agreement_2)
+        )
+    )
 ) | (
-    {159}!
-    {163}in(h, m_0_3: bitstring);
-    {164}let gx_3: G = unbitG(m_0_3) in
-    {165}new y_1: exponent;
-    {166}let gy_3: G = g(y_1) in
-    {160}let sk_s_2: SecretKey = sk_s in
-    {168}let m'_8: bitstring = sig((gy_3,gx_3),sk_s_2) in
-    {167}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
-    {169}let m_17: bitstring = (bitG(gy_3),enc(m'_8,K_3)) in
-    {170}out(h, m_17);
-    {171}in(h, m_18: bitstring);
-    {172}let (sig_K_1: bitstring,nonce_0_3: bitstring,m_uri_3: bitstring,pk'_s_3: PublicKey,pk'_c_3: PublicKey) = dec(m_18,K_3) in
-    {161}let pk_c_1: PublicKey = pk(sk_e) in
-    {173}if ((pk'_s_3,pk'_c_3) = (pk(sk_s_2),pk_c_1)) then
-    {174}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
-    {175}new m_shape_3: bitstring;
-    {176}new m_Aoffer_3: bitstring;
-    {177}new m_Brequest_3: bitstring;
-    {178}new nonce_6: bitstring;
-    {183}event serverHasOffered(m_shape_3,m_Aoffer_3,m_Brequest_3);
-    {181}let sig_Brequest_3: bitstring = sig(m_Brequest_3,sk_s_2) in
-    {180}let sig_Aoffer_3: bitstring = sig(m_Aoffer_3,sk_s_2) in
-    {179}let sig_shape_3: bitstring = sig(m_shape_3,sk_s_2) in
-    {182}let m_19: bitstring = enc((nonce_0_3,nonce_6,pk_c_1,pk(sk_s_2),m_uri_3,m_shape_3,sig_shape_3,m_Aoffer_3,sig_Aoffer_3,m_Brequest_3,sig_Brequest_3),K_3) in
-    {184}out(h, m_19);
-    {185}in(h, m_20: bitstring);
-    {186}let m'_9: bitstring = dec(m_20,K_3) in
-    {187}let (nonce'_3: bitstring,nonce_7: bitstring,m''_uri_3: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_Aagreement_3: bitstring,sig_Aagreement_client_3: bitstring,m_Brequirement_3: bitstring,sig_Brequirement_3: bitstring) = m'_9 in
-    {188}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
-    {189}if check(m_Aagreement_3,sig_Aagreement_client_3,pk_c_1) then
-    {190}if check(m_Brequirement_3,sig_Brequirement_3,pk_c_1) then
-    {191}if (m''_uri_3 = m_uri_3) then
-    {192}if (nonce'_3 = nonce_6) then
-    {193}if (m_Aagreement_3 = m_Aoffer_3) then
-    {194}if (m_Brequirement_3 = m_Brequest_3) then
-    {195}if (m_presentation_3 = m_shape_3) then
-    {196}new m_resource_3: bitstring;
-    {197}let m_Bagreement_3: bitstring = m_Brequirement_3 in
-    {201}event serverHasAgreed(m_resource_3,m_Bagreement_3,m_Aagreement_3);
-    {199}let sig_Aagreement_server_3: bitstring = sig((m_Aagreement_3,sig_Aagreement_client_3),sk_s_2) in
-    {198}let sig_Bagreement_3: bitstring = sig(m_Bagreement_3,sk_s_2) in
-    {200}let m_21: bitstring = enc((nonce_7,m_uri_3,m_resource_3,m_Bagreement_3,sig_Bagreement_3,m_Aagreement_3,sig_Aagreement_client_3,sig_Aagreement_server_3),K_3) in
-    {202}event auth_ServerSendsLastMessageToClient(m_0_3,m_17,m_18,m_19,m_20,m_21);
-    {203}out(h, m_21);
-    {204}out(h, Server_Completes);
-    {162}let talksOnlyToHonest_3: bool = false in
-    {205}if talksOnlyToHonest_3 then
-    {206}event auth_ServerCompletesProtocol(m_0_3,m_17,m_18,m_19,m_20)
+    {150}!
+    {154}in(h, m_0_3: bitstring);
+    {155}let gx_3: G = unbitG(m_0_3) in
+    {156}new y_1: exponent;
+    {157}let gy_3: G = g(y_1) in
+    {151}let sk_s_2: SecretKey = sk_s in
+    {159}let m'_8: bitstring = sig((gy_3,gx_3),sk_s_2) in
+    {158}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
+    {160}let m_17: bitstring = (bitG(gy_3),enc(m'_8,K_3)) in
+    {161}out(h, m_17);
+    {162}in(h, m_18: bitstring);
+    {163}let (sig_K_1: bitstring,m'_uri_3: bitstring) = dec(m_18,K_3) in
+    {152}let pk_c_1: PublicKey = pk(sk_e) in
+    {164}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
+    {165}if (m'_uri_3 = m_uri) then
+    {170}event Server_has_offered(sk_s_2,m_shape,m_A_offer,m_B_request);
+    {168}let sig_B_request_3: bitstring = sig(m_B_request,sk_s_2) in
+    {167}let sig_A_offer_3: bitstring = sig(m_A_offer,sk_s_2) in
+    {166}let sig_shape_3: bitstring = sig(m_shape,sk_s_2) in
+    {169}let m_19: bitstring = enc((m_uri,m_shape,sig_shape_3,m_A_offer,sig_A_offer_3,m_B_request,sig_B_request_3),K_3) in
+    {171}out(h, m_19);
+    {172}in(h, m_20: bitstring);
+    {173}let m'_9: bitstring = dec(m_20,K_3) in
+    {174}let (m''_uri_1: bitstring,m_presentation_3: bitstring,sig_presentation_3: bitstring,m_A_agreement_3: bitstring,sig_A_agreement_client_3: bitstring,m_B_requirement_3: bitstring,sig_B_requirement_3: bitstring) = m'_9 in
+    {175}if check(m_presentation_3,sig_presentation_3,pk_c_1) then
+    {176}if check(m_A_agreement_3,sig_A_agreement_client_3,pk_c_1) then
+    {177}if check(m_B_requirement_3,sig_B_requirement_3,pk_c_1) then
+    {178}if (m''_uri_1 = m_uri) then
+    {179}if (m_A_agreement_3 = m_A_offer) then
+    {180}if (m_B_requirement_3 = m_B_request) then
+    {181}if (m_presentation_3 = m_shape) then
+    {182}new m_resource_3: bitstring;
+    {183}let m_B_agreement_3: bitstring = m_B_requirement_3 in
+    (
+        {187}event Server_has_agreed(sk_s_2,m_B_agreement_3,m_A_agreement_3)
+    ) | (
+        {185}let sig_A_agreement_server_3: bitstring = sig((m_A_agreement_3,sig_A_agreement_client_3),sk_s_2) in
+        {184}let sig_B_agreement_3: bitstring = sig(m_B_agreement_3,sk_s_2) in
+        {186}let m_21: bitstring = enc((m_resource_3,m_B_agreement_3,sig_B_agreement_3,m_A_agreement_3,sig_A_agreement_client_3,sig_A_agreement_server_3),K_3) in
+        {188}out(h, m_21);
+        {189}out(h, Server_completes);
+        {153}let talksOnlyToHonest_3: bool = false in
+        {190}if talksOnlyToHonest_3 then
+        (
+            {191}out(ch(m_resource_3), resource_is_private)
+        ) | (
+            {192}event Server_received_credential(sk_s_2,m_presentation_3)
+        ) | (
+            {193}event Server_provided_resource(sk_s_2,m_resource_3)
+        ) | (
+            {194}event Server_can_prove_server_has_offered(m_shape,sig_shape_3,m_A_offer,sig_A_offer_3,m_B_request,sig_B_request_3)
+        ) | (
+            {195}event Server_can_prove_client_has_agreed(m_A_agreement_3,sig_A_agreement_client_3,m_B_requirement_3,sig_B_requirement_3)
+        ) | (
+            {196}event Server_can_prove_server_has_agreed(m_A_agreement_3,sig_A_agreement_server_3,m_B_agreement_3,sig_B_agreement_3)
+        )
+    )
 )
 
--- Query not attacker(Client_Completes[]) in process 1.
+-- Query not attacker(Client_completes[]) in process 1.
 Translating the process into Horn clauses...
 select attacker(bitG(gx_4))/-5000
 Completing...
 Termination warning: attacker(bitG(elem)) -> attacker(elem)
 Selecting 0
-200 rules inserted. Base: 174 rules (51 with conclusion selected). Queue: 55 rules.
-400 rules inserted. Base: 285 rules (60 with conclusion selected). Queue: 48 rules.
-600 rules inserted. Base: 382 rules (69 with conclusion selected). Queue: 50 rules.
-800 rules inserted. Base: 410 rules (86 with conclusion selected). Queue: 4 rules.
-1000 rules inserted. Base: 456 rules (99 with conclusion selected). Queue: 62 rules.
-1200 rules inserted. Base: 439 rules (116 with conclusion selected). Queue: 22 rules.
-Starting query not attacker(Client_Completes[])
-goal reachable: attacker(Client_Completes[])
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 288 rules (58 with conclusion selected). Queue: 106 rules.
+600 rules inserted. Base: 384 rules (64 with conclusion selected). Queue: 61 rules.
+800 rules inserted. Base: 403 rules (76 with conclusion selected). Queue: 23 rules.
+Starting query not attacker(Client_completes[])
+goal reachable: attacker(Client_completes[])
 
 Derivation:
 Abbreviations:
 x_2 = x_1[!1 = @sid]
-nonce_0_4 = nonce_0_1[m_6 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
-m_uri_4 = m_uri_1[m_6 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
-nonce_8 = nonce_3[m_9 = enc((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])),GtoSymK(exp(g(y_2),x_2))),m_6 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
 
-1. The attacker has some term y_2.
-attacker(y_2).
+1. The attacker has some term x_3.
+attacker(x_3).
 
-2. The message bitG(g(x_2)) may be sent to the attacker at output {65}.
+2. The message bitG(g(x_2)) may be sent to the attacker at output {61}.
 attacker(bitG(g(x_2))).
 
 3. By 2, the attacker may know bitG(g(x_2)).
@@ -463,156 +534,110 @@ Using the function unbitG the attacker may obtain g(x_2).
 attacker(g(x_2)).
 
 4. By 3, the attacker may know g(x_2).
-By 1, the attacker may know y_2.
-Using the function exp the attacker may obtain exp(g(y_2),x_2).
-attacker(exp(g(y_2),x_2)).
+By 1, the attacker may know x_3.
+Using the function exp the attacker may obtain exp(g(x_2),x_3).
+attacker(exp(g(x_2),x_3)).
 
-5. By 4, the attacker may know exp(g(y_2),x_2).
-Using the function GtoSymK the attacker may obtain GtoSymK(exp(g(y_2),x_2)).
-attacker(GtoSymK(exp(g(y_2),x_2))).
+5. By 4, the attacker may know exp(g(x_2),x_3).
+Using the function GtoSymK the attacker may obtain GtoSymK(exp(g(x_2),x_3)).
+attacker(GtoSymK(exp(g(x_2),x_3))).
 
 6. The attacker initially knows sk_e[].
 attacker(sk_e[]).
 
-7. By 1, the attacker may know y_2.
-Using the function g the attacker may obtain g(y_2).
-attacker(g(y_2)).
+7. By 1, the attacker may know x_3.
+Using the function g the attacker may obtain g(x_3).
+attacker(g(x_3)).
 
-8. By 7, the attacker may know g(y_2).
+8. By 7, the attacker may know g(x_3).
 By 3, the attacker may know g(x_2).
-Using the function 2-tuple the attacker may obtain (g(y_2),g(x_2)).
-attacker((g(y_2),g(x_2))).
+Using the function 2-tuple the attacker may obtain (g(x_3),g(x_2)).
+attacker((g(x_3),g(x_2))).
 
-9. By 8, the attacker may know (g(y_2),g(x_2)).
+9. By 8, the attacker may know (g(x_3),g(x_2)).
 By 6, the attacker may know sk_e[].
-Using the function sig the attacker may obtain sig((g(y_2),g(x_2)),sk_e[]).
-attacker(sig((g(y_2),g(x_2)),sk_e[])).
+Using the function sig the attacker may obtain sig((g(x_3),g(x_2)),sk_e[]).
+attacker(sig((g(x_3),g(x_2)),sk_e[])).
 
-10. By 9, the attacker may know sig((g(y_2),g(x_2)),sk_e[]).
-By 5, the attacker may know GtoSymK(exp(g(y_2),x_2)).
-Using the function enc the attacker may obtain enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2))).
-attacker(enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))).
+10. By 9, the attacker may know sig((g(x_3),g(x_2)),sk_e[]).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))).
 
-11. By 7, the attacker may know g(y_2).
-Using the function bitG the attacker may obtain bitG(g(y_2)).
-attacker(bitG(g(y_2))).
+11. By 7, the attacker may know g(x_3).
+Using the function bitG the attacker may obtain bitG(g(x_3)).
+attacker(bitG(g(x_3))).
 
-12. By 11, the attacker may know bitG(g(y_2)).
-By 10, the attacker may know enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2))).
-Using the function 2-tuple the attacker may obtain (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))).
-attacker((bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2))))).
+12. By 11, the attacker may know bitG(g(x_3)).
+By 10, the attacker may know enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))).
+Using the function 2-tuple the attacker may obtain (bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))).
+attacker((bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))))).
 
-13. The attacker has some term msg_1.
-attacker(msg_1).
+13. The attacker initially knows m_B_request[].
+attacker(m_B_request[]).
 
-14. By 13, the attacker may know msg_1.
+14. By 13, the attacker may know m_B_request[].
 By 6, the attacker may know sk_e[].
-Using the function sig the attacker may obtain sig(msg_1,sk_e[]).
-attacker(sig(msg_1,sk_e[])).
+Using the function sig the attacker may obtain sig(m_B_request[],sk_e[]).
+attacker(sig(m_B_request[],sk_e[])).
 
-15. The attacker has some term msg.
-attacker(msg).
+15. The attacker initially knows m_A_offer[].
+attacker(m_A_offer[]).
 
-16. By 15, the attacker may know msg.
+16. By 15, the attacker may know m_A_offer[].
 By 6, the attacker may know sk_e[].
-Using the function sig the attacker may obtain sig(msg,sk_e[]).
-attacker(sig(msg,sk_e[])).
+Using the function sig the attacker may obtain sig(m_A_offer[],sk_e[]).
+attacker(sig(m_A_offer[],sk_e[])).
 
-17. The attacker has some term m_presentation_4.
-attacker(m_presentation_4).
+17. The attacker initially knows m_shape[].
+attacker(m_shape[]).
 
-18. By 17, the attacker may know m_presentation_4.
+18. By 17, the attacker may know m_shape[].
 By 6, the attacker may know sk_e[].
-Using the function sig the attacker may obtain sig(m_presentation_4,sk_e[]).
-attacker(sig(m_presentation_4,sk_e[])).
+Using the function sig the attacker may obtain sig(m_shape[],sk_e[]).
+attacker(sig(m_shape[],sk_e[])).
 
-19. The message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))) that the attacker may have by 12 may be received at input {66}.
-So the message enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])),GtoSymK(exp(g(y_2),x_2))) may be sent to the attacker at output {76}.
-attacker(enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])),GtoSymK(exp(g(y_2),x_2)))).
+19. The attacker initially knows m_uri[].
+attacker(m_uri[]).
 
-20. By 19, the attacker may know enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])),GtoSymK(exp(g(y_2),x_2))).
-By 5, the attacker may know GtoSymK(exp(g(y_2),x_2)).
-Using the function dec the attacker may obtain (sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])).
-attacker((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[]))).
+20. By 19, the attacker may know m_uri[].
+By 18, the attacker may know sig(m_shape[],sk_e[]).
+By 16, the attacker may know sig(m_A_offer[],sk_e[]).
+By 14, the attacker may know sig(m_B_request[],sk_e[]).
+Using the function 4-tuple the attacker may obtain (m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[])).
+attacker((m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[]))).
 
-21. By 20, the attacker may know (sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])).
-Using the function 3-proj-5-tuple the attacker may obtain m_uri_4.
-attacker(m_uri_4).
+21. By 20, the attacker may know (m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[])).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc((m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[])),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc((m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[])),GtoSymK(exp(g(x_2),x_3)))).
 
-22. The attacker has some term pk'_s_4.
-attacker(pk'_s_4).
-
-23. The message pk(sk_c[]) may be sent to the attacker at output {1}.
-attacker(pk(sk_c[])).
-
-24. The attacker has some term nonce_9.
-attacker(nonce_9).
-
-25. By 20, the attacker may know (sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_e[]),pk(sk_c[])).
-Using the function 2-proj-5-tuple the attacker may obtain nonce_0_4.
-attacker(nonce_0_4).
-
-26. By 25, the attacker may know nonce_0_4.
-By 24, the attacker may know nonce_9.
-By 23, the attacker may know pk(sk_c[]).
-By 22, the attacker may know pk'_s_4.
-By 21, the attacker may know m_uri_4.
-By 17, the attacker may know m_presentation_4.
-By 18, the attacker may know sig(m_presentation_4,sk_e[]).
-By 15, the attacker may know msg.
-By 16, the attacker may know sig(msg,sk_e[]).
-By 13, the attacker may know msg_1.
-By 14, the attacker may know sig(msg_1,sk_e[]).
-Using the function 11-tuple the attacker may obtain (nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])).
-attacker((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[]))).
-
-27. By 26, the attacker may know (nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])).
-By 5, the attacker may know GtoSymK(exp(g(y_2),x_2)).
-Using the function enc the attacker may obtain enc((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])),GtoSymK(exp(g(y_2),x_2))).
-attacker(enc((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])),GtoSymK(exp(g(y_2),x_2)))).
-
-28. The attacker has some term m_resource_4.
+22. The attacker has some term m_resource_4.
 attacker(m_resource_4).
 
-29. The message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))) that the attacker may have by 12 may be received at input {66}.
-The message enc((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 27 may be received at input {77}.
-So the message enc((nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[])),GtoSymK(exp(g(y_2),x_2))) may be sent to the attacker at output {96}.
-attacker(enc((nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[])),GtoSymK(exp(g(y_2),x_2)))).
+23. By 22, the attacker may know m_resource_4.
+By 13, the attacker may know m_B_request[].
+By 14, the attacker may know sig(m_B_request[],sk_e[]).
+By 15, the attacker may know m_A_offer[].
+By 16, the attacker may know sig(m_A_offer[],sk_e[]).
+By 16, the attacker may know sig(m_A_offer[],sk_e[]).
+Using the function 6-tuple the attacker may obtain (m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[])).
+attacker((m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[]))).
 
-30. By 29, the attacker may know enc((nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[])),GtoSymK(exp(g(y_2),x_2))).
-By 5, the attacker may know GtoSymK(exp(g(y_2),x_2)).
-Using the function dec the attacker may obtain (nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[])).
-attacker((nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[]))).
+24. By 23, the attacker may know (m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[])).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc((m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[])),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc((m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[])),GtoSymK(exp(g(x_2),x_3)))).
 
-31. By 30, the attacker may know (nonce_9,nonce_8,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_c[]),msg,sig(msg,sk_c[]),msg_1,sig(msg_1,sk_c[])).
-Using the function 2-proj-9-tuple the attacker may obtain nonce_8.
-attacker(nonce_8).
+25. The message (bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))) that the attacker may have by 12 may be received at input {62}.
+The message enc((m_uri[],sig(m_shape[],sk_e[]),sig(m_A_offer[],sk_e[]),sig(m_B_request[],sk_e[])),GtoSymK(exp(g(x_2),x_3))) that the attacker may have by 21 may be received at input {71}.
+The message enc((m_resource_4,m_B_request[],sig(m_B_request[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),sig(m_A_offer[],sk_e[])),GtoSymK(exp(g(x_2),x_3))) that the attacker may have by 24 may be received at input {87}.
+So the message Client_completes[] may be sent to the attacker at output {95}.
+attacker(Client_completes[]).
 
-32. By 31, the attacker may know nonce_8.
-By 21, the attacker may know m_uri_4.
-By 28, the attacker may know m_resource_4.
-By 13, the attacker may know msg_1.
-By 14, the attacker may know sig(msg_1,sk_e[]).
-By 15, the attacker may know msg.
-By 16, the attacker may know sig(msg,sk_e[]).
-By 16, the attacker may know sig(msg,sk_e[]).
-Using the function 8-tuple the attacker may obtain (nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[])).
-attacker((nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[]))).
-
-33. By 32, the attacker may know (nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[])).
-By 5, the attacker may know GtoSymK(exp(g(y_2),x_2)).
-Using the function enc the attacker may obtain enc((nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[])),GtoSymK(exp(g(y_2),x_2))).
-attacker(enc((nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[])),GtoSymK(exp(g(y_2),x_2)))).
-
-34. The message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_e[]),GtoSymK(exp(g(y_2),x_2)))) that the attacker may have by 12 may be received at input {66}.
-The message enc((nonce_0_4,nonce_9,pk(sk_c[]),pk'_s_4,m_uri_4,m_presentation_4,sig(m_presentation_4,sk_e[]),msg,sig(msg,sk_e[]),msg_1,sig(msg_1,sk_e[])),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 27 may be received at input {77}.
-The message enc((nonce_8,m_uri_4,m_resource_4,msg_1,sig(msg_1,sk_e[]),msg,sig(msg,sk_e[]),sig(msg,sk_e[])),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 33 may be received at input {97}.
-So the message Client_Completes[] may be sent to the attacker at output {107}.
-attacker(Client_Completes[]).
-
-35. By 34, attacker(Client_Completes[]).
+26. By 25, attacker(Client_completes[]).
 The goal is reached, represented in the following fact:
-attacker(Client_Completes[]).
+attacker(Client_completes[]).
 
 
 A more detailed output of the traces is available with
@@ -622,105 +647,150 @@ out(h, ~M) with ~M = pk(sk_c) at {1}
 
 out(h, ~M_1) with ~M_1 = pk(sk_s) at {2}
 
-new x_1: exponent creating x_2 at {61} in copy a
+new x_1: exponent creating x_2 at {57} in copy a
 
-out(h, ~M_2) with ~M_2 = bitG(g(x_2)) at {65} in copy a
+out(h, ~M_2) with ~M_2 = bitG(g(x_2)) at {61} in copy a
 
-in(h, (bitG(g(a_1)),enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))))) with enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))) = enc(sig((g(a_1),g(x_2)),sk_e),GtoSymK(exp(g(a_1),x_2))) at {66} in copy a
+in(h, (bitG(g(a_1)),enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))))) with enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))) = enc(sig((g(a_1),g(x_2)),sk_e),GtoSymK(exp(g(x_2),a_1))) at {62} in copy a
 
-new m_uri_1: bitstring creating m_uri_4 at {72} in copy a
+out(h, ~M_3) with ~M_3 = enc((sig((g(x_2),g(a_1)),sk_c),m_uri),GtoSymK(exp(g(a_1),x_2))) at {70} in copy a
 
-new nonce_0_1: bitstring creating nonce_0_4 at {73} in copy a
+in(h, enc((m_uri,sig(m_shape,sk_e),sig(m_A_offer,sk_e),sig(m_B_request,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc((m_uri,sig(m_shape,sk_e),sig(m_A_offer,sk_e),sig(m_B_request,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc((m_uri,sig(m_shape,sk_e),sig(m_A_offer,sk_e),sig(m_B_request,sk_e)),GtoSymK(exp(g(x_2),a_1))) at {71} in copy a
 
-out(h, ~M_3) with ~M_3 = enc((sig((g(x_2),g(a_1)),sk_c),nonce_0_4,m_uri_4,pk(sk_e),pk(sk_c)),GtoSymK(exp(g(a_1),x_2))) at {76} in copy a
+event Client_has_agreed(sk_c,m_A_offer,m_B_request) at {85} in copy a
 
-in(h, enc((2-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_2,~M,a_3,3-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_4,sig(a_4,sk_e),a_5,sig(a_5,sk_e),a_6,sig(a_6,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc((2-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_2,~M,a_3,3-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_4,sig(a_4,sk_e),a_5,sig(a_5,sk_e),a_6,sig(a_6,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc((nonce_0_4,a_2,pk(sk_c),a_3,m_uri_4,a_4,sig(a_4,sk_e),a_5,sig(a_5,sk_e),a_6,sig(a_6,sk_e)),GtoSymK(exp(g(a_1),x_2))) at {77} in copy a
+out(h, ~M_4) with ~M_4 = enc((m_uri,m_shape,sig(m_shape,sk_c),m_A_offer,sig(m_A_offer,sk_c),m_B_request,sig(m_B_request,sk_c)),GtoSymK(exp(g(a_1),x_2))) at {86} in copy a
 
-new nonce_3: bitstring creating nonce_8 at {89} in copy a
+in(h, enc((a_2,m_B_request,sig(m_B_request,sk_e),m_A_offer,sig(m_A_offer,sk_e),sig(m_A_offer,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc((a_2,m_B_request,sig(m_B_request,sk_e),m_A_offer,sig(m_A_offer,sk_e),sig(m_A_offer,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc((a_2,m_B_request,sig(m_B_request,sk_e),m_A_offer,sig(m_A_offer,sk_e),sig(m_A_offer,sk_e)),GtoSymK(exp(g(x_2),a_1))) at {87} in copy a
 
-event clientHasAgreed(a_4,a_5,a_6) at {94} in copy a
+out(h, ~M_5) with ~M_5 = Client_completes at {95} in copy a
 
-event auth_ClientSendsLastMessageToServer(bitG(g(x_2)),(bitG(g(a_1)),enc(sig((g(a_1),g(x_2)),sk_e),GtoSymK(exp(g(a_1),x_2)))),enc((sig((g(x_2),g(a_1)),sk_c),nonce_0_4,m_uri_4,pk(sk_e),pk(sk_c)),GtoSymK(exp(g(a_1),x_2))),enc((nonce_0_4,a_2,pk(sk_c),a_3,m_uri_4,a_4,sig(a_4,sk_e),a_5,sig(a_5,sk_e),a_6,sig(a_6,sk_e)),GtoSymK(exp(g(a_1),x_2))),enc((a_2,nonce_8,m_uri_4,a_4,sig(a_4,sk_c),a_5,sig(a_5,sk_c),a_6,sig(a_6,sk_c)),GtoSymK(exp(g(a_1),x_2)))) at {95} in copy a
-
-out(h, ~M_4) with ~M_4 = enc((a_2,nonce_8,m_uri_4,a_4,sig(a_4,sk_c),a_5,sig(a_5,sk_c),a_6,sig(a_6,sk_c)),GtoSymK(exp(g(a_1),x_2))) at {96} in copy a
-
-in(h, enc((2-proj-9-tuple(dec(~M_4,GtoSymK(exp(unbitG(~M_2),a_1)))),3-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_7,a_6,sig(a_6,sk_e),a_5,sig(a_5,sk_e),sig(a_5,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc((2-proj-9-tuple(dec(~M_4,GtoSymK(exp(unbitG(~M_2),a_1)))),3-proj-5-tuple(dec(~M_3,GtoSymK(exp(unbitG(~M_2),a_1)))),a_7,a_6,sig(a_6,sk_e),a_5,sig(a_5,sk_e),sig(a_5,sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc((nonce_8,m_uri_4,a_7,a_6,sig(a_6,sk_e),a_5,sig(a_5,sk_e),sig(a_5,sk_e)),GtoSymK(exp(g(a_1),x_2))) at {97} in copy a
-
-out(h, ~M_5) with ~M_5 = Client_Completes at {107} in copy a
-
-The attacker has the message ~M_5 = Client_Completes.
+The attacker has the message ~M_5 = Client_completes.
 A trace has been found.
-RESULT not attacker(Client_Completes[]) is false.
--- Query not attacker(Server_Completes[]) in process 1.
+RESULT not attacker(Client_completes[]) is false.
+-- Query not attacker(Server_completes[]) in process 1.
 Translating the process into Horn clauses...
 select attacker(bitG(gx_4))/-5000
 Completing...
 Termination warning: attacker(bitG(elem)) -> attacker(elem)
 Selecting 0
-200 rules inserted. Base: 174 rules (51 with conclusion selected). Queue: 55 rules.
-400 rules inserted. Base: 285 rules (60 with conclusion selected). Queue: 48 rules.
-600 rules inserted. Base: 382 rules (69 with conclusion selected). Queue: 50 rules.
-800 rules inserted. Base: 410 rules (86 with conclusion selected). Queue: 4 rules.
-1000 rules inserted. Base: 456 rules (99 with conclusion selected). Queue: 62 rules.
-1200 rules inserted. Base: 439 rules (116 with conclusion selected). Queue: 22 rules.
-Starting query not attacker(Server_Completes[])
-goal reachable: attacker(Server_Completes[])
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 288 rules (58 with conclusion selected). Queue: 106 rules.
+600 rules inserted. Base: 384 rules (64 with conclusion selected). Queue: 61 rules.
+800 rules inserted. Base: 403 rules (76 with conclusion selected). Queue: 23 rules.
+Starting query not attacker(Server_completes[])
+goal reachable: attacker(Server_completes[])
 
 Derivation:
 Abbreviations:
-x_2 = x[!1 = @sid]
-y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
-nonce_0_4 = nonce_0[m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))),!1 = @sid]
-m_uri_4 = m_uri[m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))),!1 = @sid]
-nonce_8 = nonce_4[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
-m_shape_4 = m_shape_2[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
-m_Aoffer_4 = m_Aoffer_2[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
-m_Brequest_4 = m_Brequest_2[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
-nonce_9 = nonce_2[m_3 = enc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_uri_4,m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])),GtoSymK(exp(g(x_2),y_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))),!1 = @sid]
+y_2 = y_1[m_0_3 = bitG(g(x_2)),!1 = @sid]
 
-1. The message bitG(g(x_2)) may be sent to the attacker at output {11}.
+1. The attacker has some term x_2.
+attacker(x_2).
+
+2. By 1, the attacker may know x_2.
+Using the function g the attacker may obtain g(x_2).
+attacker(g(x_2)).
+
+3. By 2, the attacker may know g(x_2).
+Using the function bitG the attacker may obtain bitG(g(x_2)).
 attacker(bitG(g(x_2))).
 
-2. The message bitG(g(x_2)) that the attacker may have by 1 may be received at input {115}.
-So the message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))) may be sent to the attacker at output {122}.
+4. The message bitG(g(x_2)) that the attacker may have by 3 may be received at input {154}.
+So the message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))) may be sent to the attacker at output {161}.
 attacker((bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2))))).
 
-3. By 2, the attacker may know (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
-Using the function 2-proj-2-tuple the attacker may obtain enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2))).
-attacker(enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
-
-4. By 2, the attacker may know (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
+5. By 4, the attacker may know (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
 Using the function 1-proj-2-tuple the attacker may obtain bitG(g(y_2)).
 attacker(bitG(g(y_2))).
 
-5. By 4, the attacker may know bitG(g(y_2)).
-By 3, the attacker may know enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2))).
-Using the function 2-tuple the attacker may obtain (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
-attacker((bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2))))).
+6. By 5, the attacker may know bitG(g(y_2)).
+Using the function unbitG the attacker may obtain g(y_2).
+attacker(g(y_2)).
 
-6. The message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))) that the attacker may have by 5 may be received at input {12}.
-So the message enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))) may be sent to the attacker at output {22}.
-attacker(enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2)))).
+7. By 6, the attacker may know g(y_2).
+By 1, the attacker may know x_2.
+Using the function exp the attacker may obtain exp(g(y_2),x_2).
+attacker(exp(g(y_2),x_2)).
 
-7. The message bitG(g(x_2)) that the attacker may have by 1 may be received at input {115}.
-The message enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))) that the attacker may have by 6 may be received at input {123}.
-So the message enc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_uri_4,m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])),GtoSymK(exp(g(x_2),y_2))) may be sent to the attacker at output {136}.
-attacker(enc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_uri_4,m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])),GtoSymK(exp(g(x_2),y_2)))).
+8. By 7, the attacker may know exp(g(y_2),x_2).
+Using the function GtoSymK the attacker may obtain GtoSymK(exp(g(y_2),x_2)).
+attacker(GtoSymK(exp(g(y_2),x_2))).
 
-8. The message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))) that the attacker may have by 5 may be received at input {12}.
-The message enc((nonce_0_4,nonce_8,pk(sk_c[]),pk(sk_s[]),m_uri_4,m_shape_4,sig(m_shape_4,sk_s[]),m_Aoffer_4,sig(m_Aoffer_4,sk_s[]),m_Brequest_4,sig(m_Brequest_4,sk_s[])),GtoSymK(exp(g(x_2),y_2))) that the attacker may have by 7 may be received at input {23}.
-So the message enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),GtoSymK(exp(g(x_2),y_2))) may be sent to the attacker at output {42}.
-attacker(enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),GtoSymK(exp(g(x_2),y_2)))).
+9. The attacker initially knows m_uri[].
+attacker(m_uri[]).
 
-9. The message bitG(g(x_2)) that the attacker may have by 1 may be received at input {115}.
-The message enc((sig((g(x_2),g(y_2)),sk_c[]),nonce_0_4,m_uri_4,pk(sk_s[]),pk(sk_c[])),GtoSymK(exp(g(x_2),y_2))) that the attacker may have by 6 may be received at input {123}.
-The message enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c[]),m_Aoffer_4,sig(m_Aoffer_4,sk_c[]),m_Brequest_4,sig(m_Brequest_4,sk_c[])),GtoSymK(exp(g(x_2),y_2))) that the attacker may have by 8 may be received at input {137}.
-So the message Server_Completes[] may be sent to the attacker at output {156}.
-attacker(Server_Completes[]).
+10. The attacker initially knows sk_e[].
+attacker(sk_e[]).
 
-10. By 9, attacker(Server_Completes[]).
+11. By 2, the attacker may know g(x_2).
+By 6, the attacker may know g(y_2).
+Using the function 2-tuple the attacker may obtain (g(x_2),g(y_2)).
+attacker((g(x_2),g(y_2))).
+
+12. By 11, the attacker may know (g(x_2),g(y_2)).
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((g(x_2),g(y_2)),sk_e[]).
+attacker(sig((g(x_2),g(y_2)),sk_e[])).
+
+13. By 12, the attacker may know sig((g(x_2),g(y_2)),sk_e[]).
+By 9, the attacker may know m_uri[].
+Using the function 2-tuple the attacker may obtain (sig((g(x_2),g(y_2)),sk_e[]),m_uri[]).
+attacker((sig((g(x_2),g(y_2)),sk_e[]),m_uri[])).
+
+14. By 13, the attacker may know (sig((g(x_2),g(y_2)),sk_e[]),m_uri[]).
+By 8, the attacker may know GtoSymK(exp(g(y_2),x_2)).
+Using the function enc the attacker may obtain enc((sig((g(x_2),g(y_2)),sk_e[]),m_uri[]),GtoSymK(exp(g(y_2),x_2))).
+attacker(enc((sig((g(x_2),g(y_2)),sk_e[]),m_uri[]),GtoSymK(exp(g(y_2),x_2)))).
+
+15. The attacker initially knows m_B_request[].
+attacker(m_B_request[]).
+
+16. By 15, the attacker may know m_B_request[].
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig(m_B_request[],sk_e[]).
+attacker(sig(m_B_request[],sk_e[])).
+
+17. The attacker initially knows m_A_offer[].
+attacker(m_A_offer[]).
+
+18. By 17, the attacker may know m_A_offer[].
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig(m_A_offer[],sk_e[]).
+attacker(sig(m_A_offer[],sk_e[])).
+
+19. The attacker initially knows m_shape[].
+attacker(m_shape[]).
+
+20. By 19, the attacker may know m_shape[].
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig(m_shape[],sk_e[]).
+attacker(sig(m_shape[],sk_e[])).
+
+21. By 9, the attacker may know m_uri[].
+By 19, the attacker may know m_shape[].
+By 20, the attacker may know sig(m_shape[],sk_e[]).
+By 17, the attacker may know m_A_offer[].
+By 18, the attacker may know sig(m_A_offer[],sk_e[]).
+By 15, the attacker may know m_B_request[].
+By 16, the attacker may know sig(m_B_request[],sk_e[]).
+Using the function 7-tuple the attacker may obtain (m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[])).
+attacker((m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[]))).
+
+22. By 21, the attacker may know (m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[])).
+By 8, the attacker may know GtoSymK(exp(g(y_2),x_2)).
+Using the function enc the attacker may obtain enc((m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[])),GtoSymK(exp(g(y_2),x_2))).
+attacker(enc((m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[])),GtoSymK(exp(g(y_2),x_2)))).
+
+23. The message bitG(g(x_2)) that the attacker may have by 3 may be received at input {154}.
+The message enc((sig((g(x_2),g(y_2)),sk_e[]),m_uri[]),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 14 may be received at input {162}.
+The message enc((m_uri[],m_shape[],sig(m_shape[],sk_e[]),m_A_offer[],sig(m_A_offer[],sk_e[]),m_B_request[],sig(m_B_request[],sk_e[])),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 22 may be received at input {172}.
+So the message Server_completes[] may be sent to the attacker at output {189}.
+attacker(Server_completes[]).
+
+24. By 23, attacker(Server_completes[]).
 The goal is reached, represented in the following fact:
-attacker(Server_Completes[]).
+attacker(Server_completes[]).
 
 
 A more detailed output of the traces is available with
@@ -730,109 +800,202 @@ out(h, ~M) with ~M = pk(sk_c) at {1}
 
 out(h, ~M_1) with ~M_1 = pk(sk_s) at {2}
 
-new x: exponent creating x_2 at {7} in copy a
+in(h, bitG(g(a))) at {154} in copy a_1
 
-out(h, ~M_2) with ~M_2 = bitG(g(x_2)) at {11} in copy a
+new y_1: exponent creating y_2 at {156} in copy a_1
 
-in(h, ~M_2) with ~M_2 = bitG(g(x_2)) at {115} in copy a_1
+out(h, (~M_2,~M_3)) with ~M_2 = bitG(g(y_2)), ~M_3 = enc(sig((g(y_2),g(a)),sk_s),GtoSymK(exp(g(a),y_2))) at {161} in copy a_1
 
-new y: exponent creating y_2 at {117} in copy a_1
+in(h, enc((sig((g(a),unbitG(~M_2)),sk_e),m_uri),GtoSymK(exp(unbitG(~M_2),a)))) with enc((sig((g(a),unbitG(~M_2)),sk_e),m_uri),GtoSymK(exp(unbitG(~M_2),a))) = enc((sig((g(a),g(y_2)),sk_e),m_uri),GtoSymK(exp(g(y_2),a))) at {162} in copy a_1
 
-out(h, (~M_3,~M_4)) with ~M_3 = bitG(g(y_2)), ~M_4 = enc(sig((g(y_2),g(x_2)),sk_s),GtoSymK(exp(g(x_2),y_2))) at {122} in copy a_1
+event Server_has_offered(sk_s,m_shape,m_A_offer,m_B_request) at {170} in copy a_1
 
-in(h, (~M_3,~M_4)) with ~M_3 = bitG(g(y_2)), ~M_4 = enc(sig((g(y_2),g(x_2)),sk_s),GtoSymK(exp(g(x_2),y_2))) at {12} in copy a
+out(h, ~M_4) with ~M_4 = enc((m_uri,m_shape,sig(m_shape,sk_s),m_A_offer,sig(m_A_offer,sk_s),m_B_request,sig(m_B_request,sk_s)),GtoSymK(exp(g(a),y_2))) at {171} in copy a_1
 
-new m_uri: bitstring creating m_uri_4 at {18} in copy a
+in(h, enc((m_uri,m_shape,sig(m_shape,sk_e),m_A_offer,sig(m_A_offer,sk_e),m_B_request,sig(m_B_request,sk_e)),GtoSymK(exp(unbitG(~M_2),a)))) with enc((m_uri,m_shape,sig(m_shape,sk_e),m_A_offer,sig(m_A_offer,sk_e),m_B_request,sig(m_B_request,sk_e)),GtoSymK(exp(unbitG(~M_2),a))) = enc((m_uri,m_shape,sig(m_shape,sk_e),m_A_offer,sig(m_A_offer,sk_e),m_B_request,sig(m_B_request,sk_e)),GtoSymK(exp(g(y_2),a))) at {172} in copy a_1
 
-new nonce_0: bitstring creating nonce_0_4 at {19} in copy a
+new m_resource_3: bitstring creating m_resource_4 at {182} in copy a_1
 
-out(h, ~M_5) with ~M_5 = enc((sig((g(x_2),g(y_2)),sk_c),nonce_0_4,m_uri_4,pk(sk_s),pk(sk_c)),GtoSymK(exp(g(y_2),x_2))) at {22} in copy a
+out(h, ~M_5) with ~M_5 = enc((m_resource_4,m_B_request,sig(m_B_request,sk_s),m_A_offer,sig(m_A_offer,sk_e),sig((m_A_offer,sig(m_A_offer,sk_e)),sk_s)),GtoSymK(exp(g(a),y_2))) at {188} in copy a_1
 
-in(h, ~M_5) with ~M_5 = enc((sig((g(x_2),g(y_2)),sk_c),nonce_0_4,m_uri_4,pk(sk_s),pk(sk_c)),GtoSymK(exp(g(x_2),y_2))) at {123} in copy a_1
+out(h, ~M_6) with ~M_6 = Server_completes at {189} in copy a_1
 
-new m_shape_2: bitstring creating m_shape_4 at {127} in copy a_1
+event Server_has_agreed(sk_s,m_B_request,m_A_offer) at {187} in copy a_1
 
-new m_Aoffer_2: bitstring creating m_Aoffer_4 at {128} in copy a_1
-
-new m_Brequest_2: bitstring creating m_Brequest_4 at {129} in copy a_1
-
-new nonce_4: bitstring creating nonce_8 at {130} in copy a_1
-
-event serverHasOffered(m_shape_4,m_Aoffer_4,m_Brequest_4) at {135} in copy a_1
-
-out(h, ~M_6) with ~M_6 = enc((nonce_0_4,nonce_8,pk(sk_c),pk(sk_s),m_uri_4,m_shape_4,sig(m_shape_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_s),m_Brequest_4,sig(m_Brequest_4,sk_s)),GtoSymK(exp(g(x_2),y_2))) at {136} in copy a_1
-
-in(h, ~M_6) with ~M_6 = enc((nonce_0_4,nonce_8,pk(sk_c),pk(sk_s),m_uri_4,m_shape_4,sig(m_shape_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_s),m_Brequest_4,sig(m_Brequest_4,sk_s)),GtoSymK(exp(g(x_2),y_2))) at {23} in copy a
-
-new nonce_2: bitstring creating nonce_9 at {35} in copy a
-
-event clientHasAgreed(m_shape_4,m_Aoffer_4,m_Brequest_4) at {40} in copy a
-
-event auth_ClientSendsLastMessageToServer(bitG(g(x_2)),(bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s),GtoSymK(exp(g(x_2),y_2)))),enc((sig((g(x_2),g(y_2)),sk_c),nonce_0_4,m_uri_4,pk(sk_s),pk(sk_c)),GtoSymK(exp(g(y_2),x_2))),enc((nonce_0_4,nonce_8,pk(sk_c),pk(sk_s),m_uri_4,m_shape_4,sig(m_shape_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_s),m_Brequest_4,sig(m_Brequest_4,sk_s)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c),m_Aoffer_4,sig(m_Aoffer_4,sk_c),m_Brequest_4,sig(m_Brequest_4,sk_c)),GtoSymK(exp(g(y_2),x_2)))) at {41} in copy a
-
-out(h, ~M_7) with ~M_7 = enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c),m_Aoffer_4,sig(m_Aoffer_4,sk_c),m_Brequest_4,sig(m_Brequest_4,sk_c)),GtoSymK(exp(g(y_2),x_2))) at {42} in copy a
-
-in(h, ~M_7) with ~M_7 = enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c),m_Aoffer_4,sig(m_Aoffer_4,sk_c),m_Brequest_4,sig(m_Brequest_4,sk_c)),GtoSymK(exp(g(x_2),y_2))) at {137} in copy a_1
-
-new m_resource_2: bitstring creating m_resource_4 at {148} in copy a_1
-
-event serverHasAgreed(m_resource_4,m_Brequest_4,m_Aoffer_4) at {153} in copy a_1
-
-event auth_ServerSendsLastMessageToClient(bitG(g(x_2)),(bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s),GtoSymK(exp(g(x_2),y_2)))),enc((sig((g(x_2),g(y_2)),sk_c),nonce_0_4,m_uri_4,pk(sk_s),pk(sk_c)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_0_4,nonce_8,pk(sk_c),pk(sk_s),m_uri_4,m_shape_4,sig(m_shape_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_s),m_Brequest_4,sig(m_Brequest_4,sk_s)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c),m_Aoffer_4,sig(m_Aoffer_4,sk_c),m_Brequest_4,sig(m_Brequest_4,sk_c)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_9,m_uri_4,m_resource_4,m_Brequest_4,sig(m_Brequest_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_c),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c)),sk_s)),GtoSymK(exp(g(x_2),y_2)))) at {154} in copy a_1
-
-out(h, ~M_8) with ~M_8 = enc((nonce_9,m_uri_4,m_resource_4,m_Brequest_4,sig(m_Brequest_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_c),sig((m_Aoffer_4,sig(m_Aoffer_4,sk_c)),sk_s)),GtoSymK(exp(g(x_2),y_2))) at {155} in copy a_1
-
-out(h, ~M_9) with ~M_9 = Server_Completes at {156} in copy a_1
-
-event auth_ServerCompletesProtocol(bitG(g(x_2)),(bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s),GtoSymK(exp(g(x_2),y_2)))),enc((sig((g(x_2),g(y_2)),sk_c),nonce_0_4,m_uri_4,pk(sk_s),pk(sk_c)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_0_4,nonce_8,pk(sk_c),pk(sk_s),m_uri_4,m_shape_4,sig(m_shape_4,sk_s),m_Aoffer_4,sig(m_Aoffer_4,sk_s),m_Brequest_4,sig(m_Brequest_4,sk_s)),GtoSymK(exp(g(x_2),y_2))),enc((nonce_8,nonce_9,m_uri_4,m_shape_4,sig(m_shape_4,sk_c),m_Aoffer_4,sig(m_Aoffer_4,sk_c),m_Brequest_4,sig(m_Brequest_4,sk_c)),GtoSymK(exp(g(x_2),y_2)))) at {158} in copy a_1
-
-The attacker has the message ~M_9 = Server_Completes.
+The attacker has the message ~M_6 = Server_completes.
 A trace has been found.
-RESULT not attacker(Server_Completes[]) is false.
--- Query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) in process 1.
+RESULT not attacker(Server_completes[]) is false.
+-- Query not attacker(resource_is_private[]) in process 1.
 Translating the process into Horn clauses...
 select attacker(bitG(gx_4))/-5000
 Completing...
 Termination warning: attacker(bitG(elem)) -> attacker(elem)
 Selecting 0
-200 rules inserted. Base: 176 rules (51 with conclusion selected). Queue: 53 rules.
-400 rules inserted. Base: 285 rules (60 with conclusion selected). Queue: 50 rules.
-600 rules inserted. Base: 395 rules (69 with conclusion selected). Queue: 50 rules.
-800 rules inserted. Base: 420 rules (87 with conclusion selected). Queue: 8 rules.
-1000 rules inserted. Base: 444 rules (102 with conclusion selected). Queue: 15 rules.
-1200 rules inserted. Base: 445 rules (117 with conclusion selected). Queue: 12 rules.
-Starting query event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5))
-RESULT event(auth_ClientCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) ==> event(auth_ServerSendsLastMessageToClient(msg_0,msg_1,msg_2,msg_3,msg_4,msg_5)) is true.
--- Query event(auth_ServerCompletesProtocol(msg_0,msg_1,msg_2,msg_3,msg_4)) ==> event(auth_ClientSendsLastMessageToServer(msg_0,msg_1,msg_2,msg_3,msg_4)) in process 1.
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 288 rules (58 with conclusion selected). Queue: 106 rules.
+600 rules inserted. Base: 384 rules (64 with conclusion selected). Queue: 61 rules.
+800 rules inserted. Base: 403 rules (76 with conclusion selected). Queue: 23 rules.
+Starting query not attacker(resource_is_private[])
+RESULT not attacker(resource_is_private[]) is true.
+-- Query inj-event(Client_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) in process 1.
 Translating the process into Horn clauses...
 select attacker(bitG(gx_4))/-5000
 Completing...
 Termination warning: attacker(bitG(elem)) -> attacker(elem)
 Selecting 0
-200 rules inserted. Base: 174 rules (51 with conclusion selected). Queue: 55 rules.
-400 rules inserted. Base: 281 rules (60 with conclusion selected). Queue: 44 rules.
-600 rules inserted. Base: 396 rules (69 with conclusion selected). Queue: 57 rules.
-800 rules inserted. Base: 424 rules (89 with conclusion selected). Queue: 8 rules.
-1000 rules inserted. Base: 519 rules (100 with conclusion selected). Queue: 407 rules.
-1200 rules inserted. Base: 710 rules (100 with conclusion selected). Queue: 404 rules.
-1400 rules inserted. Base: 868 rules (100 with conclusion selected). Queue: 369 rules.
-1600 rules inserted. Base: 1061 rules (100 with conclusion selected). Queue: 473 rules.
-1800 rules inserted. Base: 1251 rules (102 with conclusion selected). Queue: 299 rules.
-2000 rules inserted. Base: 1447 rules (102 with conclusion selected). Queue: 105 rules.
-2200 rules inserted. Base: 1555 rules (110 with conclusion selected). Queue: 50 rules.
-2400 rules inserted. Base: 1691 rules (116 with conclusion selected). Queue: 207 rules.
-2600 rules inserted. Base: 1705 rules (116 with conclusion selected). Queue: 258 rules.
-2800 rules inserted. Base: 1741 rules (130 with conclusion selected). Queue: 1101 rules.
-3000 rules inserted. Base: 1648 rules (137 with conclusion selected). Queue: 1441 rules.
-3200 rules inserted. Base: 1650 rules (137 with conclusion selected). Queue: 1457 rules.
-3400 rules inserted. Base: 1650 rules (137 with conclusion selected). Queue: 1457 rules.
-3600 rules inserted. Base: 1657 rules (144 with conclusion selected). Queue: 1886 rules.
-3800 rules inserted. Base: 1657 rules (144 with conclusion selected). Queue: 1886 rules.
-4000 rules inserted. Base: 1664 rules (151 with conclusion selected). Queue: 2315 rules.
-4200 rules inserted. Base: 1664 rules (151 with conclusion selected). Queue: 2315 rules.
-4400 rules inserted. Base: 1649 rules (171 with conclusion selected). Queue: 3575 rules.
-4600 rules inserted. Base: 1588 rules (180 with conclusion selected). Queue: 3946 rules.
-4800 rules inserted. Base: 1588 rules (180 with conclusion selected). Queue: 3946 rules.
-5000 rules inserted. Base: 1588 rules (180 with conclusion selected). Queue: 3946 rules.
-5200 rules inserted. Base: 1588 rules (180 with conclusion selected). Queue: 3946 rules.
-5400 rules inserted. Base: 1588 rules (180 with conclusion selected). Queue: 3946 rules.
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 71 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 118 rules.
+600 rules inserted. Base: 383 rules (62 with conclusion selected). Queue: 80 rules.
+800 rules inserted. Base: 412 rules (72 with conclusion selected). Queue: 65 rules.
+Starting query inj-event(Client_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB))
+RESULT inj-event(Client_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) is true.
+-- Query inj-event(Server_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 67 rules.
+400 rules inserted. Base: 292 rules (58 with conclusion selected). Queue: 123 rules.
+600 rules inserted. Base: 385 rules (62 with conclusion selected). Queue: 82 rules.
+800 rules inserted. Base: 446 rules (73 with conclusion selected). Queue: 91 rules.
+1000 rules inserted. Base: 486 rules (77 with conclusion selected). Queue: 39 rules.
+Starting query inj-event(Server_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB))
+RESULT inj-event(Server_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+-- Query inj-event(Client_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 71 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 118 rules.
+600 rules inserted. Base: 387 rules (62 with conclusion selected). Queue: 84 rules.
+800 rules inserted. Base: 441 rules (73 with conclusion selected). Queue: 70 rules.
+1000 rules inserted. Base: 489 rules (80 with conclusion selected). Queue: 35 rules.
+Starting query inj-event(Client_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB))
+RESULT inj-event(Client_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+-- Query inj-event(Server_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 67 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 116 rules.
+600 rules inserted. Base: 391 rules (62 with conclusion selected). Queue: 70 rules.
+800 rules inserted. Base: 436 rules (73 with conclusion selected). Queue: 68 rules.
+1000 rules inserted. Base: 446 rules (85 with conclusion selected). Queue: 20 rules.
+Starting query inj-event(Server_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB))
+RESULT inj-event(Server_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+-- Query inj-event(Server_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 67 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 116 rules.
+600 rules inserted. Base: 387 rules (63 with conclusion selected). Queue: 70 rules.
+800 rules inserted. Base: 405 rules (73 with conclusion selected). Queue: 42 rules.
+Starting query inj-event(Server_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB))
+RESULT inj-event(Server_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) is true.
+-- Query inj-event(Client_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 71 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 124 rules.
+600 rules inserted. Base: 386 rules (62 with conclusion selected). Queue: 87 rules.
+800 rules inserted. Base: 450 rules (71 with conclusion selected). Queue: 97 rules.
+1000 rules inserted. Base: 528 rules (74 with conclusion selected). Queue: 57 rules.
+Starting query inj-event(Client_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB))
+RESULT inj-event(Client_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+-- Query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 71 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 118 rules.
+600 rules inserted. Base: 387 rules (62 with conclusion selected). Queue: 84 rules.
+800 rules inserted. Base: 441 rules (73 with conclusion selected). Queue: 70 rules.
+1000 rules inserted. Base: 489 rules (80 with conclusion selected). Queue: 35 rules.
+Starting query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB))
+RESULT inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+-- Query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 67 rules.
+400 rules inserted. Base: 292 rules (58 with conclusion selected). Queue: 123 rules.
+600 rules inserted. Base: 385 rules (62 with conclusion selected). Queue: 82 rules.
+800 rules inserted. Base: 446 rules (73 with conclusion selected). Queue: 91 rules.
+1000 rules inserted. Base: 486 rules (77 with conclusion selected). Queue: 39 rules.
+Starting query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB))
+RESULT inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+-- Query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 71 rules.
+400 rules inserted. Base: 297 rules (58 with conclusion selected). Queue: 124 rules.
+600 rules inserted. Base: 386 rules (62 with conclusion selected). Queue: 95 rules.
+800 rules inserted. Base: 490 rules (72 with conclusion selected). Queue: 109 rules.
+1000 rules inserted. Base: 563 rules (75 with conclusion selected). Queue: 78 rules.
+1200 rules inserted. Base: 586 rules (89 with conclusion selected). Queue: 46 rules.
+Starting query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB))
+RESULT inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+-- Query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (54 with conclusion selected). Queue: 67 rules.
+400 rules inserted. Base: 292 rules (58 with conclusion selected). Queue: 123 rules.
+600 rules inserted. Base: 386 rules (62 with conclusion selected). Queue: 88 rules.
+800 rules inserted. Base: 486 rules (72 with conclusion selected). Queue: 115 rules.
+1000 rules inserted. Base: 572 rules (75 with conclusion selected). Queue: 70 rules.
+1200 rules inserted. Base: 573 rules (91 with conclusion selected). Queue: 40 rules.
+Starting query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB))
+RESULT inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not attacker(Client_completes[]) is false.
+
+Query not attacker(Server_completes[]) is false.
+
+Query not attacker(resource_is_private[]) is true.
+
+Query inj-event(Client_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) is true.
+
+Query inj-event(Server_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+
+Query inj-event(Client_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+Query inj-event(Server_can_prove_server_has_offered(credential,sig_credential,policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+Query inj-event(Server_can_prove_server_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) is true.
+
+Query inj-event(Client_can_prove_client_has_agreed(policyA,sig_policyA,policyB,sig_policyB)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+
+Query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+Query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) is true.
+
+Query inj-event(Client_received_resource(sk_c_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+Query inj-event(Server_provided_resource(sk_s_3,resource)) ==> inj-event(Server_has_agreed(sk_s_3,policyA,policyB)) && inj-event(Client_has_agreed(sk_c_3,policyA,policyB)) && inj-event(Server_has_offered(sk_s_3,credential,policyA,policyB)) is true.
+
+--------------------------------------------------------------
+

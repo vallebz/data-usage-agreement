@@ -1,0 +1,271 @@
+(* This is a ProVerif description of the Protocol Flow from the SISSI architecture. *)
+
+(* START keys *)
+type SecretKey.
+type PublicKey.
+type SymmetricKey.
+fun pk(SecretKey):PublicKey.
+(* END keys *)
+
+(* START group *)
+type G.
+type exponent.
+fun exp(G, exponent): G.
+fun g(exponent): G.
+equation forall x: exponent, y: exponent; exp(g(x),y) = exp(g(y),x).
+fun GtoSymK(G): SymmetricKey.
+fun bitG(G):bitstring.
+reduc forall elem:G; unbitG(bitG(elem))=elem.
+(* END group *)
+
+(* START symmetric encryption *)
+fun enc(bitstring(*the message*), SymmetricKey):bitstring (*symmetric encrypt input msg*).
+reduc forall msg:bitstring,symk:SymmetricKey; dec(enc(msg,symk),symk)=msg (*symmetric decrypt*).
+(* END symmetric encryption *)
+
+(* START asymmetric encryption *)
+fun aenc(bitstring(*the message*), PublicKey):bitstring (*asymmetric encrypt input msg*).
+reduc forall msg:bitstring,sk:SecretKey; adec(aenc(msg,pk(sk)),sk)=msg (*asymmetric decrypt*).
+(* END Asymmetric encryption *)
+
+(* START digital signature *)
+fun sig(bitstring(*the message*), SecretKey):bitstring(*the signature value*).
+reduc forall msg:bitstring,sk:SecretKey; check(msg,sig(msg,sk),pk(sk))=true (*check(msg,sigVal,pk)*).
+(* END digital signature *)
+
+
+(*DEFS*)
+
+(* Communication *)
+free h:channel.
+free uri:bitstring.
+free vc_shape:bitstring.
+free A_offer:bitstring.
+free B_request:bitstring.
+(* free resource:bitstring [private]. *)
+
+free Client_does_complete:bitstring [private].
+free Server_does_complete:bitstring [private].
+
+fun ch(bitstring): channel.
+free resource_is_private: bitstring [private].
+
+(* Non-Repudiation Events *)
+event Client_Received_Resource(SecretKey).
+event Server_Provided_Resource(SecretKey).
+event Client_Can_Prove_Server_Has_Agreed(bitstring(*signature on (A_agreement, B_agreement, client signature on (vc_presentation,A_agreement,B_requirement)) *)).
+event Server_Agrees(SecretKey(*server*),bitstring(*data agreed on*)).
+event Server_Can_Prove_Client_Has_Agreed(bitstring(*client signature on (vc_presentation,A_agreement,B_requirement)*)).
+event Client_Agrees(SecretKey(*client*),bitstring(*data agreed on*)).
+event Client_Can_Prove_Server_Has_Offered(bitstring(*server signature on (vc_shape,A_offer,B_request)*)).
+event Server_Offers(SecretKey(*server*),bitstring(*data offered on*)).
+
+
+
+
+
+(* START process macros ~ agent *)
+
+(** START Client **)
+let client(sk_c:SecretKey, pk_s:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
+    (**)
+    new x:exponent;
+    let gx = g(x) in
+    let m'_0 = bitG(gx) in
+    let m_0 = m'_0 in
+    out(h, m_0);
+    (* Sent out Handshake-Request *)
+    (**)
+    (**)
+    (* Receive Handshake-Response *)
+    (* receive let m_1 = (gy,enc(sign((gy,gx),sk_s),K)) in *)
+    in(h,m_1:bitstring);
+    let (eGY:bitstring,m:bitstring) = m_1 in
+    let gy = unbitG(eGY) in
+    let K = GtoSymK(exp(gy,x)) in
+    let s_K = dec(m,K) in
+    if check((gy,gx),s_K,pk_s) then 
+    let m'_2 = (sig((gx,gy),sk_c),uri) in
+    let m_2 = enc( m'_2 , K) in
+    out(h, m_2);
+    (* Sent out data request (enc) *)
+    (**)
+    (**)
+    (* Receive data usage offer (enc) *)
+    (* receive let m_3 = enc( (m'_3 , K) in *)
+    in(h,m_3:bitstring);
+    let ((vc_shape:bitstring,A_offer:bitstring,B_request:bitstring),sigVal_data_usage_offer:bitstring) = dec(m_3,K) in
+    if check((vc_shape,A_offer,B_request),sigVal_data_usage_offer,pk_s) then
+    let vc_presentation = vc_shape in
+    let A_agreement = A_offer in
+    let B_requirement = B_request in
+    let m'_4 = (uri,(vc_presentation,A_agreement,B_requirement),sig((vc_presentation,A_agreement,B_requirement),sk_c)) in
+    let m_4 = enc( m'_4, K) in
+    event Client_Agrees(sk_c,(vc_presentation,A_agreement,B_requirement));
+    out(h,m_4);
+    (* Sent out data usage request (enc) *)
+    (**)
+    (**)
+    (* Receive data response (enc) *)
+    (* receive let m_5 = enc( (m'_5 , K) in *)
+    in(h,m_5:bitstring);
+    let (resource:bitstring,(A'_agreement:bitstring,B_agreement:bitstring,sigVal_data_usage_agreement_client:bitstring),sigVal_data_usage_agreement_server:bitstring) = dec(m_5,K) in
+    if check((A'_agreement,B_agreement,sigVal_data_usage_agreement_client),sigVal_data_usage_agreement_server,pk_s) then
+    if (A'_agreement,B_agreement) = (A_agreement,B_requirement) then
+    (* event Client_Can_Prove_Server_Has_Agreed(resource,sig((A_agreement,B_agreement,sigVal_data_usage_agreement_client),sk_s)); *)
+
+    (* Client about to complete protocol! *)
+    out(h, Client_does_complete);
+    if talksOnlyToHonest then
+    out(ch(resource),resource_is_private) |
+    (* event_at_the_very_end_of_role_R *)
+    event Client_Received_Resource(sk_c) |
+    event Client_Can_Prove_Server_Has_Agreed(sigVal_data_usage_agreement_server) |
+    event Client_Can_Prove_Server_Has_Offered(sigVal_data_usage_offer);
+    0.
+(** END Client **)
+
+(** START Server **)
+let server(sk_s:SecretKey, pk_c:PublicKey, talksOnlyToHonest:bool) (* input ~ what the agent starts with in private*) =
+    (**)
+    (**)
+    (* Receive Handshake-Request *)
+    (* receive  m'_0 = g(x) in *)
+    in(h, m_0:bitstring);
+    let gx= unbitG(m_0) in
+    new y:exponent;
+    let gy = g(y) in
+    let K = GtoSymK(exp(gx,y)) in
+    let m'_1 = sig((gy,gx),sk_s) in
+    let m_1 = (bitG(gy),enc(m'_1, K)) in
+    out(h,m_1); 
+    (* Sent out Handshake-Response *)
+    (**)
+    (**)
+    (* Receive data request (enc) *)
+    (* receive let m_2 = enc( (sig_K,uri) ,K) in *)
+    in(h,m_2:bitstring);
+    let (sig_K:bitstring, uri':bitstring) = dec(m_2,K) in
+    if check((gx,gy),sig_K,pk_c) then
+    if uri' = uri then
+    let m'_3 = ((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s)) in
+    let m_3 = enc( m'_3, K) in
+    event Server_Offers(sk_s,(vc_shape,A_offer,B_request));
+    out(h, m_3);
+    (* Sent out data usage offer (enc) *)   
+    (**)
+    (**)
+    (* Receive data usage request (enc) *)
+    (* receive let m_4 = enc( (m'_4 , K) in *)
+    in(h,m_4:bitstring);
+    let (uri'':bitstring,(vc_presentation:bitstring,A_agreement:bitstring,B_requirement:bitstring),sigVal_data_usage_agreement_client:bitstring) = dec(m_4,K) in
+    if uri'' = uri then
+    if check((vc_presentation,A_agreement,B_requirement),sigVal_data_usage_agreement_client,pk_c) then
+    if (vc_presentation,A_agreement,B_requirement) = (vc_shape,A_offer,B_request) then
+    new resource:bitstring;
+    let B_agreement = B_requirement in
+    let m'_5 = (resource,(A_agreement,B_agreement,sigVal_data_usage_agreement_client),sig((A_agreement,B_agreement,sigVal_data_usage_agreement_client),sk_s)) in
+    let m_5 = enc( m'_5, K) in
+    event Server_Agrees(sk_s,(A_agreement,B_agreement,sigVal_data_usage_agreement_client));
+    out(h, m_5);
+    (* Sent out data response (enc) *)
+
+    (* Server about to complete the protocol *)
+    out(h, Server_does_complete); 
+    if talksOnlyToHonest then
+    out(ch(resource),resource_is_private) |
+    (* event_at_the_very_end_of_role_R *)
+    event Server_Provided_Resource(sk_s) |
+    event Server_Can_Prove_Client_Has_Agreed(sigVal_data_usage_agreement_client);
+    0.
+(** END Server **)
+
+(* END process macros *)
+
+
+
+(* "Do the processes complete?" - sanity check*)
+query attacker(Client_does_complete).
+query attacker(Server_does_complete).
+query attacker(resource_is_private).
+
+(* Checking for non-repudiation = Unforgibility + Agreement *)
+
+(* IF somebody can prove in the end that the other has agreed, they indeed have agreed. *)
+
+query sk_s:SecretKey, dataToBeAgreedOn:bitstring;
+    inj-event(Client_Can_Prove_Server_Has_Agreed(sig(dataToBeAgreedOn,sk_s)))
+    ==> 
+    inj-event(Server_Agrees(sk_s,dataToBeAgreedOn))
+    .
+
+query sk_c:SecretKey, dataToBeAgreedOn:bitstring;
+    inj-event(Server_Can_Prove_Client_Has_Agreed(sig(dataToBeAgreedOn,sk_c)))
+    ==> 
+    inj-event(Client_Agrees(sk_c,dataToBeAgreedOn))
+    .
+
+query sk_s:SecretKey, dataToBeAgreedOn:bitstring;
+    inj-event(Client_Can_Prove_Server_Has_Offered(sig(dataToBeAgreedOn,sk_s)))
+    ==> 
+    inj-event(Server_Offers(sk_s,dataToBeAgreedOn))
+    .
+
+(* IF client received, the server has offered and agreed *)
+query sk_c:SecretKey, sk_s:SecretKey, vc_shape:bitstring, A_offer:bitstring, B_request:bitstring;
+    inj-event(Client_Received_Resource(sk_c))
+    ==>
+    inj-event(Server_Agrees(sk_s,(A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_c))))
+    &&
+    inj-event(Server_Offers(sk_s,(vc_shape,A_offer,B_request)))
+    .
+
+(* IF server served, the client has agreed *)
+ query sk_c:SecretKey, sk_s:SecretKey, vc_shape:bitstring, A_offer:bitstring, B_request:bitstring;
+    inj-event(Server_Provided_Resource(sk_s))
+    ==> 
+    inj-event(Client_Agrees(sk_c,(vc_shape,A_offer,B_request)))
+    .
+
+(* IF protocol fullfilled, everyone agreed *)
+query sk_c:SecretKey, sk_s:SecretKey, vc_shape:bitstring, A_offer:bitstring, B_request:bitstring;
+    inj-event(Client_Received_Resource(sk_c))
+    ==>
+    inj-event(Server_Agrees(sk_s,(A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_c))))
+    &&
+    inj-event(Client_Agrees(sk_c,(vc_shape,A_offer,B_request)))
+    &&
+    inj-event(Server_Offers(sk_s,(vc_shape,A_offer,B_request)))
+    . 
+
+query sk_c:SecretKey, sk_s:SecretKey, vc_shape:bitstring, A_offer:bitstring, B_request:bitstring;
+    inj-event(Server_Provided_Resource(sk_s))
+    ==>
+    inj-event(Server_Agrees(sk_s,(A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_c))))
+    &&
+    inj-event(Client_Agrees(sk_c,(vc_shape,A_offer,B_request)))
+    &&
+    inj-event(Server_Offers(sk_s,(vc_shape,A_offer,B_request)))
+    . 
+
+
+(* MAIN *)
+
+
+    (*declare secret keys*)
+free sk_e:SecretKey.
+free sk_c:SecretKey [private].
+free sk_s:SecretKey [private].
+
+process (*use root process for setup *)
+    (*advertise public keys*)
+    out(h,pk(sk_c));
+    out(h,pk(sk_s));
+    (*let agents dance*)
+    ( (
+         !client   (sk_c, pk(sk_s), true)
+       | !client   (sk_c, pk(sk_e), false)
+       | !server   (sk_s, pk(sk_c), true)
+       | !server   (sk_s, pk(sk_e), false)
+       (* dishonest clients and dishonest servers are impersonated by "the attacker" *)
+    ) )

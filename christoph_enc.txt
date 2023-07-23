@@ -1,0 +1,924 @@
+File "christoph_enc.pv", line 97, characters 11-18:
+Warning: identifier vc_shape rebound.
+File "christoph_enc.pv", line 97, characters 30-36:
+Warning: identifier A_offer rebound.
+File "christoph_enc.pv", line 97, characters 48-56:
+Warning: identifier B_request rebound.
+Linear part:
+exp(g(x),y) = exp(g(y),x)
+Completing equations...
+Completed equations:
+exp(g(x),y) = exp(g(y),x)
+Convergent part: No equation.
+Process 0 (that is, the initial process):
+{1}out(h, pk(sk_c));
+{2}out(h, pk(sk_s));
+(
+    {3}!
+    {4}let sk_c_1: SecretKey = sk_c in
+    {5}let pk_s: PublicKey = pk(sk_s) in
+    {6}let talksOnlyToHonest: bool = true in
+    {7}new x: exponent;
+    {8}let gx: G = g(x) in
+    {9}let m'_0: bitstring = bitG(gx) in
+    {10}let m_0: bitstring = m'_0 in
+    {11}out(h, m_0);
+    {12}in(h, m_1: bitstring);
+    {13}let (eGY: bitstring,m: bitstring) = m_1 in
+    {14}let gy: G = unbitG(eGY) in
+    {15}let K: SymmetricKey = GtoSymK(exp(gy,x)) in
+    {16}let s_K: bitstring = dec(m,K) in
+    {17}if check((gy,gx),s_K,pk_s) then
+    {18}let m'_2: bitstring = (sig((gx,gy),sk_c_1),uri) in
+    {19}let m_2: bitstring = enc(m'_2,K) in
+    {20}out(h, m_2);
+    {21}in(h, m_3: bitstring);
+    {22}let ((vc_shape_1: bitstring,A_offer_1: bitstring,B_request_1: bitstring),sigVal_data_usage_offer: bitstring) = dec(m_3,K) in
+    {23}if check((vc_shape_1,A_offer_1,B_request_1),sigVal_data_usage_offer,pk_s) then
+    {24}let vc_presentation: bitstring = vc_shape_1 in
+    {25}let A_agreement: bitstring = A_offer_1 in
+    {26}let B_requirement: bitstring = B_request_1 in
+    {27}let m'_4: bitstring = (uri,(vc_presentation,A_agreement,B_requirement),sig((vc_presentation,A_agreement,B_requirement),sk_c_1)) in
+    {28}let m_4: bitstring = enc(m'_4,K) in
+    {29}event Client_Agrees(sk_c_1,(vc_presentation,A_agreement,B_requirement));
+    {30}out(h, m_4);
+    {31}in(h, m_5: bitstring);
+    {32}let (resource: bitstring,(A'_agreement: bitstring,B_agreement: bitstring,sigVal_data_usage_agreement_client: bitstring),sigVal_data_usage_agreement_server: bitstring) = dec(m_5,K) in
+    {33}if check((A'_agreement,B_agreement,sigVal_data_usage_agreement_client),sigVal_data_usage_agreement_server,pk_s) then
+    {34}if ((A'_agreement,B_agreement) = (A_agreement,B_requirement)) then
+    {35}out(h, Client_does_complete);
+    {36}if talksOnlyToHonest then
+    (
+        {37}out(ch(resource), resource_is_private)
+    ) | (
+        {38}event Client_Received_Resource(sk_c_1)
+    ) | (
+        {39}event Client_Can_Prove_Server_Has_Agreed(sigVal_data_usage_agreement_server)
+    ) | (
+        {40}event Client_Can_Prove_Server_Has_Offered(sigVal_data_usage_offer)
+    )
+) | (
+    {41}!
+    {42}let sk_c_2: SecretKey = sk_c in
+    {43}let pk_s_1: PublicKey = pk(sk_e) in
+    {44}let talksOnlyToHonest_1: bool = false in
+    {45}new x_1: exponent;
+    {46}let gx_1: G = g(x_1) in
+    {47}let m'_0_1: bitstring = bitG(gx_1) in
+    {48}let m_0_1: bitstring = m'_0_1 in
+    {49}out(h, m_0_1);
+    {50}in(h, m_6: bitstring);
+    {51}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
+    {52}let gy_1: G = unbitG(eGY_1) in
+    {53}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
+    {54}let s_K_1: bitstring = dec(m_7,K_1) in
+    {55}if check((gy_1,gx_1),s_K_1,pk_s_1) then
+    {56}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),uri) in
+    {57}let m_8: bitstring = enc(m',K_1) in
+    {58}out(h, m_8);
+    {59}in(h, m_9: bitstring);
+    {60}let ((vc_shape_2: bitstring,A_offer_2: bitstring,B_request_2: bitstring),sigVal_data_usage_offer_1: bitstring) = dec(m_9,K_1) in
+    {61}if check((vc_shape_2,A_offer_2,B_request_2),sigVal_data_usage_offer_1,pk_s_1) then
+    {62}let vc_presentation_1: bitstring = vc_shape_2 in
+    {63}let A_agreement_1: bitstring = A_offer_2 in
+    {64}let B_requirement_1: bitstring = B_request_2 in
+    {65}let m'_1: bitstring = (uri,(vc_presentation_1,A_agreement_1,B_requirement_1),sig((vc_presentation_1,A_agreement_1,B_requirement_1),sk_c_2)) in
+    {66}let m_10: bitstring = enc(m'_1,K_1) in
+    {67}event Client_Agrees(sk_c_2,(vc_presentation_1,A_agreement_1,B_requirement_1));
+    {68}out(h, m_10);
+    {69}in(h, m_11: bitstring);
+    {70}let (resource_1: bitstring,(A'_agreement_1: bitstring,B_agreement_1: bitstring,sigVal_data_usage_agreement_client_1: bitstring),sigVal_data_usage_agreement_server_1: bitstring) = dec(m_11,K_1) in
+    {71}if check((A'_agreement_1,B_agreement_1,sigVal_data_usage_agreement_client_1),sigVal_data_usage_agreement_server_1,pk_s_1) then
+    {72}if ((A'_agreement_1,B_agreement_1) = (A_agreement_1,B_requirement_1)) then
+    {73}out(h, Client_does_complete);
+    {74}if talksOnlyToHonest_1 then
+    (
+        {75}out(ch(resource_1), resource_is_private)
+    ) | (
+        {76}event Client_Received_Resource(sk_c_2)
+    ) | (
+        {77}event Client_Can_Prove_Server_Has_Agreed(sigVal_data_usage_agreement_server_1)
+    ) | (
+        {78}event Client_Can_Prove_Server_Has_Offered(sigVal_data_usage_offer_1)
+    )
+) | (
+    {79}!
+    {80}let sk_s_1: SecretKey = sk_s in
+    {81}let pk_c: PublicKey = pk(sk_c) in
+    {82}let talksOnlyToHonest_2: bool = true in
+    {83}in(h, m_0_2: bitstring);
+    {84}let gx_2: G = unbitG(m_0_2) in
+    {85}new y: exponent;
+    {86}let gy_2: G = g(y) in
+    {87}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
+    {88}let m'_3: bitstring = sig((gy_2,gx_2),sk_s_1) in
+    {89}let m_12: bitstring = (bitG(gy_2),enc(m'_3,K_2)) in
+    {90}out(h, m_12);
+    {91}in(h, m_13: bitstring);
+    {92}let (sig_K: bitstring,uri': bitstring) = dec(m_13,K_2) in
+    {93}if check((gx_2,gy_2),sig_K,pk_c) then
+    {94}if (uri' = uri) then
+    {95}let m'_5: bitstring = ((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s_1)) in
+    {96}let m_14: bitstring = enc(m'_5,K_2) in
+    {97}event Server_Offers(sk_s_1,(vc_shape,A_offer,B_request));
+    {98}out(h, m_14);
+    {99}in(h, m_15: bitstring);
+    {100}let (uri'': bitstring,(vc_presentation_2: bitstring,A_agreement_2: bitstring,B_requirement_2: bitstring),sigVal_data_usage_agreement_client_2: bitstring) = dec(m_15,K_2) in
+    {101}if (uri'' = uri) then
+    {102}if check((vc_presentation_2,A_agreement_2,B_requirement_2),sigVal_data_usage_agreement_client_2,pk_c) then
+    {103}if ((vc_presentation_2,A_agreement_2,B_requirement_2) = (vc_shape,A_offer,B_request)) then
+    {104}new resource_2: bitstring;
+    {105}let B_agreement_2: bitstring = B_requirement_2 in
+    {106}let m'_6: bitstring = (resource_2,(A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2),sig((A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2),sk_s_1)) in
+    {107}let m_16: bitstring = enc(m'_6,K_2) in
+    {108}event Server_Agrees(sk_s_1,(A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2));
+    {109}out(h, m_16);
+    {110}out(h, Server_does_complete);
+    {111}if talksOnlyToHonest_2 then
+    (
+        {112}out(ch(resource_2), resource_is_private)
+    ) | (
+        {113}event Server_Provided_Resource(sk_s_1)
+    ) | (
+        {114}event Server_Can_Prove_Client_Has_Agreed(sigVal_data_usage_agreement_client_2)
+    )
+) | (
+    {115}!
+    {116}let sk_s_2: SecretKey = sk_s in
+    {117}let pk_c_1: PublicKey = pk(sk_e) in
+    {118}let talksOnlyToHonest_3: bool = false in
+    {119}in(h, m_0_3: bitstring);
+    {120}let gx_3: G = unbitG(m_0_3) in
+    {121}new y_1: exponent;
+    {122}let gy_3: G = g(y_1) in
+    {123}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
+    {124}let m'_7: bitstring = sig((gy_3,gx_3),sk_s_2) in
+    {125}let m_17: bitstring = (bitG(gy_3),enc(m'_7,K_3)) in
+    {126}out(h, m_17);
+    {127}in(h, m_18: bitstring);
+    {128}let (sig_K_1: bitstring,uri'_1: bitstring) = dec(m_18,K_3) in
+    {129}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
+    {130}if (uri'_1 = uri) then
+    {131}let m'_8: bitstring = ((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s_2)) in
+    {132}let m_19: bitstring = enc(m'_8,K_3) in
+    {133}event Server_Offers(sk_s_2,(vc_shape,A_offer,B_request));
+    {134}out(h, m_19);
+    {135}in(h, m_20: bitstring);
+    {136}let (uri''_1: bitstring,(vc_presentation_3: bitstring,A_agreement_3: bitstring,B_requirement_3: bitstring),sigVal_data_usage_agreement_client_3: bitstring) = dec(m_20,K_3) in
+    {137}if (uri''_1 = uri) then
+    {138}if check((vc_presentation_3,A_agreement_3,B_requirement_3),sigVal_data_usage_agreement_client_3,pk_c_1) then
+    {139}if ((vc_presentation_3,A_agreement_3,B_requirement_3) = (vc_shape,A_offer,B_request)) then
+    {140}new resource_3: bitstring;
+    {141}let B_agreement_3: bitstring = B_requirement_3 in
+    {142}let m'_9: bitstring = (resource_3,(A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3),sig((A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3),sk_s_2)) in
+    {143}let m_21: bitstring = enc(m'_9,K_3) in
+    {144}event Server_Agrees(sk_s_2,(A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3));
+    {145}out(h, m_21);
+    {146}out(h, Server_does_complete);
+    {147}if talksOnlyToHonest_3 then
+    (
+        {148}out(ch(resource_3), resource_is_private)
+    ) | (
+        {149}event Server_Provided_Resource(sk_s_2)
+    ) | (
+        {150}event Server_Can_Prove_Client_Has_Agreed(sigVal_data_usage_agreement_client_3)
+    )
+)
+
+File "christoph_enc.pv", line 196, characters 7-10:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 202, characters 7-10:
+Warning: identifier sk_c rebound.
+File "christoph_enc.pv", line 208, characters 7-10:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 215, characters 7-10:
+Warning: identifier sk_c rebound.
+File "christoph_enc.pv", line 215, characters 23-26:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 215, characters 39-46:
+Warning: identifier vc_shape rebound.
+File "christoph_enc.pv", line 215, characters 59-65:
+Warning: identifier A_offer rebound.
+File "christoph_enc.pv", line 215, characters 78-86:
+Warning: identifier B_request rebound.
+File "christoph_enc.pv", line 224, characters 8-11:
+Warning: identifier sk_c rebound.
+File "christoph_enc.pv", line 224, characters 24-27:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 224, characters 40-47:
+Warning: identifier vc_shape rebound.
+File "christoph_enc.pv", line 224, characters 60-66:
+Warning: identifier A_offer rebound.
+File "christoph_enc.pv", line 224, characters 79-87:
+Warning: identifier B_request rebound.
+File "christoph_enc.pv", line 231, characters 7-10:
+Warning: identifier sk_c rebound.
+File "christoph_enc.pv", line 231, characters 23-26:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 231, characters 39-46:
+Warning: identifier vc_shape rebound.
+File "christoph_enc.pv", line 231, characters 59-65:
+Warning: identifier A_offer rebound.
+File "christoph_enc.pv", line 231, characters 78-86:
+Warning: identifier B_request rebound.
+File "christoph_enc.pv", line 241, characters 7-10:
+Warning: identifier sk_c rebound.
+File "christoph_enc.pv", line 241, characters 23-26:
+Warning: identifier sk_s rebound.
+File "christoph_enc.pv", line 241, characters 39-46:
+Warning: identifier vc_shape rebound.
+File "christoph_enc.pv", line 241, characters 59-65:
+Warning: identifier A_offer rebound.
+File "christoph_enc.pv", line 241, characters 78-86:
+Warning: identifier B_request rebound.
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}out(h, pk(sk_c));
+{2}out(h, pk(sk_s));
+(
+    {3}!
+    {7}new x: exponent;
+    {8}let gx: G = g(x) in
+    {9}let m'_0: bitstring = bitG(gx) in
+    {10}let m_0: bitstring = m'_0 in
+    {11}out(h, m_0);
+    {12}in(h, m_1: bitstring);
+    {13}let (eGY: bitstring,m: bitstring) = m_1 in
+    {14}let gy: G = unbitG(eGY) in
+    {15}let K: SymmetricKey = GtoSymK(exp(gy,x)) in
+    {16}let s_K: bitstring = dec(m,K) in
+    {5}let pk_s: PublicKey = pk(sk_s) in
+    {17}if check((gy,gx),s_K,pk_s) then
+    {4}let sk_c_1: SecretKey = sk_c in
+    {18}let m'_2: bitstring = (sig((gx,gy),sk_c_1),uri) in
+    {19}let m_2: bitstring = enc(m'_2,K) in
+    {20}out(h, m_2);
+    {21}in(h, m_3: bitstring);
+    {22}let ((vc_shape_1: bitstring,A_offer_1: bitstring,B_request_1: bitstring),sigVal_data_usage_offer: bitstring) = dec(m_3,K) in
+    {23}if check((vc_shape_1,A_offer_1,B_request_1),sigVal_data_usage_offer,pk_s) then
+    {26}let B_requirement: bitstring = B_request_1 in
+    {25}let A_agreement: bitstring = A_offer_1 in
+    {24}let vc_presentation: bitstring = vc_shape_1 in
+    {29}event Client_Agrees(sk_c_1,(vc_presentation,A_agreement,B_requirement));
+    {27}let m'_4: bitstring = (uri,(vc_presentation,A_agreement,B_requirement),sig((vc_presentation,A_agreement,B_requirement),sk_c_1)) in
+    {28}let m_4: bitstring = enc(m'_4,K) in
+    {30}out(h, m_4);
+    {31}in(h, m_5: bitstring);
+    {32}let (resource: bitstring,(A'_agreement: bitstring,B_agreement: bitstring,sigVal_data_usage_agreement_client: bitstring),sigVal_data_usage_agreement_server: bitstring) = dec(m_5,K) in
+    {33}if check((A'_agreement,B_agreement,sigVal_data_usage_agreement_client),sigVal_data_usage_agreement_server,pk_s) then
+    {34}if ((A'_agreement,B_agreement) = (A_agreement,B_requirement)) then
+    {35}out(h, Client_does_complete);
+    {6}let talksOnlyToHonest: bool = true in
+    {36}if talksOnlyToHonest then
+    (
+        {37}out(ch(resource), resource_is_private)
+    ) | (
+        {38}event Client_Received_Resource(sk_c_1)
+    ) | (
+        {39}event Client_Can_Prove_Server_Has_Agreed(sigVal_data_usage_agreement_server)
+    ) | (
+        {40}event Client_Can_Prove_Server_Has_Offered(sigVal_data_usage_offer)
+    )
+) | (
+    {41}!
+    {45}new x_1: exponent;
+    {46}let gx_1: G = g(x_1) in
+    {47}let m'_0_1: bitstring = bitG(gx_1) in
+    {48}let m_0_1: bitstring = m'_0_1 in
+    {49}out(h, m_0_1);
+    {50}in(h, m_6: bitstring);
+    {51}let (eGY_1: bitstring,m_7: bitstring) = m_6 in
+    {52}let gy_1: G = unbitG(eGY_1) in
+    {53}let K_1: SymmetricKey = GtoSymK(exp(gy_1,x_1)) in
+    {54}let s_K_1: bitstring = dec(m_7,K_1) in
+    {43}let pk_s_1: PublicKey = pk(sk_e) in
+    {55}if check((gy_1,gx_1),s_K_1,pk_s_1) then
+    {42}let sk_c_2: SecretKey = sk_c in
+    {56}let m': bitstring = (sig((gx_1,gy_1),sk_c_2),uri) in
+    {57}let m_8: bitstring = enc(m',K_1) in
+    {58}out(h, m_8);
+    {59}in(h, m_9: bitstring);
+    {60}let ((vc_shape_2: bitstring,A_offer_2: bitstring,B_request_2: bitstring),sigVal_data_usage_offer_1: bitstring) = dec(m_9,K_1) in
+    {61}if check((vc_shape_2,A_offer_2,B_request_2),sigVal_data_usage_offer_1,pk_s_1) then
+    {64}let B_requirement_1: bitstring = B_request_2 in
+    {63}let A_agreement_1: bitstring = A_offer_2 in
+    {62}let vc_presentation_1: bitstring = vc_shape_2 in
+    {67}event Client_Agrees(sk_c_2,(vc_presentation_1,A_agreement_1,B_requirement_1));
+    {65}let m'_1: bitstring = (uri,(vc_presentation_1,A_agreement_1,B_requirement_1),sig((vc_presentation_1,A_agreement_1,B_requirement_1),sk_c_2)) in
+    {66}let m_10: bitstring = enc(m'_1,K_1) in
+    {68}out(h, m_10);
+    {69}in(h, m_11: bitstring);
+    {70}let (resource_1: bitstring,(A'_agreement_1: bitstring,B_agreement_1: bitstring,sigVal_data_usage_agreement_client_1: bitstring),sigVal_data_usage_agreement_server_1: bitstring) = dec(m_11,K_1) in
+    {71}if check((A'_agreement_1,B_agreement_1,sigVal_data_usage_agreement_client_1),sigVal_data_usage_agreement_server_1,pk_s_1) then
+    {72}if ((A'_agreement_1,B_agreement_1) = (A_agreement_1,B_requirement_1)) then
+    {73}out(h, Client_does_complete);
+    {44}let talksOnlyToHonest_1: bool = false in
+    {74}if talksOnlyToHonest_1 then
+    (
+        {75}out(ch(resource_1), resource_is_private)
+    ) | (
+        {76}event Client_Received_Resource(sk_c_2)
+    ) | (
+        {77}event Client_Can_Prove_Server_Has_Agreed(sigVal_data_usage_agreement_server_1)
+    ) | (
+        {78}event Client_Can_Prove_Server_Has_Offered(sigVal_data_usage_offer_1)
+    )
+) | (
+    {79}!
+    {83}in(h, m_0_2: bitstring);
+    {84}let gx_2: G = unbitG(m_0_2) in
+    {85}new y: exponent;
+    {86}let gy_2: G = g(y) in
+    {80}let sk_s_1: SecretKey = sk_s in
+    {88}let m'_3: bitstring = sig((gy_2,gx_2),sk_s_1) in
+    {87}let K_2: SymmetricKey = GtoSymK(exp(gx_2,y)) in
+    {89}let m_12: bitstring = (bitG(gy_2),enc(m'_3,K_2)) in
+    {90}out(h, m_12);
+    {91}in(h, m_13: bitstring);
+    {92}let (sig_K: bitstring,uri': bitstring) = dec(m_13,K_2) in
+    {81}let pk_c: PublicKey = pk(sk_c) in
+    {93}if check((gx_2,gy_2),sig_K,pk_c) then
+    {94}if (uri' = uri) then
+    {97}event Server_Offers(sk_s_1,(vc_shape,A_offer,B_request));
+    {95}let m'_5: bitstring = ((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s_1)) in
+    {96}let m_14: bitstring = enc(m'_5,K_2) in
+    {98}out(h, m_14);
+    {99}in(h, m_15: bitstring);
+    {100}let (uri'': bitstring,(vc_presentation_2: bitstring,A_agreement_2: bitstring,B_requirement_2: bitstring),sigVal_data_usage_agreement_client_2: bitstring) = dec(m_15,K_2) in
+    {101}if (uri'' = uri) then
+    {102}if check((vc_presentation_2,A_agreement_2,B_requirement_2),sigVal_data_usage_agreement_client_2,pk_c) then
+    {103}if ((vc_presentation_2,A_agreement_2,B_requirement_2) = (vc_shape,A_offer,B_request)) then
+    {104}new resource_2: bitstring;
+    {105}let B_agreement_2: bitstring = B_requirement_2 in
+    {108}event Server_Agrees(sk_s_1,(A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2));
+    {106}let m'_6: bitstring = (resource_2,(A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2),sig((A_agreement_2,B_agreement_2,sigVal_data_usage_agreement_client_2),sk_s_1)) in
+    {107}let m_16: bitstring = enc(m'_6,K_2) in
+    {109}out(h, m_16);
+    {110}out(h, Server_does_complete);
+    {82}let talksOnlyToHonest_2: bool = true in
+    {111}if talksOnlyToHonest_2 then
+    (
+        {112}out(ch(resource_2), resource_is_private)
+    ) | (
+        {113}event Server_Provided_Resource(sk_s_1)
+    ) | (
+        {114}event Server_Can_Prove_Client_Has_Agreed(sigVal_data_usage_agreement_client_2)
+    )
+) | (
+    {115}!
+    {119}in(h, m_0_3: bitstring);
+    {120}let gx_3: G = unbitG(m_0_3) in
+    {121}new y_1: exponent;
+    {122}let gy_3: G = g(y_1) in
+    {116}let sk_s_2: SecretKey = sk_s in
+    {124}let m'_7: bitstring = sig((gy_3,gx_3),sk_s_2) in
+    {123}let K_3: SymmetricKey = GtoSymK(exp(gx_3,y_1)) in
+    {125}let m_17: bitstring = (bitG(gy_3),enc(m'_7,K_3)) in
+    {126}out(h, m_17);
+    {127}in(h, m_18: bitstring);
+    {128}let (sig_K_1: bitstring,uri'_1: bitstring) = dec(m_18,K_3) in
+    {117}let pk_c_1: PublicKey = pk(sk_e) in
+    {129}if check((gx_3,gy_3),sig_K_1,pk_c_1) then
+    {130}if (uri'_1 = uri) then
+    {133}event Server_Offers(sk_s_2,(vc_shape,A_offer,B_request));
+    {131}let m'_8: bitstring = ((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s_2)) in
+    {132}let m_19: bitstring = enc(m'_8,K_3) in
+    {134}out(h, m_19);
+    {135}in(h, m_20: bitstring);
+    {136}let (uri''_1: bitstring,(vc_presentation_3: bitstring,A_agreement_3: bitstring,B_requirement_3: bitstring),sigVal_data_usage_agreement_client_3: bitstring) = dec(m_20,K_3) in
+    {137}if (uri''_1 = uri) then
+    {138}if check((vc_presentation_3,A_agreement_3,B_requirement_3),sigVal_data_usage_agreement_client_3,pk_c_1) then
+    {139}if ((vc_presentation_3,A_agreement_3,B_requirement_3) = (vc_shape,A_offer,B_request)) then
+    {140}new resource_3: bitstring;
+    {141}let B_agreement_3: bitstring = B_requirement_3 in
+    {144}event Server_Agrees(sk_s_2,(A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3));
+    {142}let m'_9: bitstring = (resource_3,(A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3),sig((A_agreement_3,B_agreement_3,sigVal_data_usage_agreement_client_3),sk_s_2)) in
+    {143}let m_21: bitstring = enc(m'_9,K_3) in
+    {145}out(h, m_21);
+    {146}out(h, Server_does_complete);
+    {118}let talksOnlyToHonest_3: bool = false in
+    {147}if talksOnlyToHonest_3 then
+    (
+        {148}out(ch(resource_3), resource_is_private)
+    ) | (
+        {149}event Server_Provided_Resource(sk_s_2)
+    ) | (
+        {150}event Server_Can_Prove_Client_Has_Agreed(sigVal_data_usage_agreement_client_3)
+    )
+)
+
+-- Query not attacker(Client_does_complete[]) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 192 rules (52 with conclusion selected). Queue: 68 rules.
+400 rules inserted. Base: 294 rules (58 with conclusion selected). Queue: 112 rules.
+600 rules inserted. Base: 392 rules (62 with conclusion selected). Queue: 79 rules.
+800 rules inserted. Base: 379 rules (73 with conclusion selected). Queue: 33 rules.
+Starting query not attacker(Client_does_complete[])
+goal reachable: attacker(Client_does_complete[])
+
+Derivation:
+Abbreviations:
+x_2 = x_1[!1 = @sid]
+
+1. The attacker has some term x_3.
+attacker(x_3).
+
+2. The message bitG(g(x_2)) may be sent to the attacker at output {49}.
+attacker(bitG(g(x_2))).
+
+3. By 2, the attacker may know bitG(g(x_2)).
+Using the function unbitG the attacker may obtain g(x_2).
+attacker(g(x_2)).
+
+4. By 3, the attacker may know g(x_2).
+By 1, the attacker may know x_3.
+Using the function exp the attacker may obtain exp(g(x_2),x_3).
+attacker(exp(g(x_2),x_3)).
+
+5. By 4, the attacker may know exp(g(x_2),x_3).
+Using the function GtoSymK the attacker may obtain GtoSymK(exp(g(x_2),x_3)).
+attacker(GtoSymK(exp(g(x_2),x_3))).
+
+6. The attacker initially knows sk_e[].
+attacker(sk_e[]).
+
+7. By 1, the attacker may know x_3.
+Using the function g the attacker may obtain g(x_3).
+attacker(g(x_3)).
+
+8. By 7, the attacker may know g(x_3).
+By 3, the attacker may know g(x_2).
+Using the function 2-tuple the attacker may obtain (g(x_3),g(x_2)).
+attacker((g(x_3),g(x_2))).
+
+9. By 8, the attacker may know (g(x_3),g(x_2)).
+By 6, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((g(x_3),g(x_2)),sk_e[]).
+attacker(sig((g(x_3),g(x_2)),sk_e[])).
+
+10. By 9, the attacker may know sig((g(x_3),g(x_2)),sk_e[]).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))).
+
+11. By 7, the attacker may know g(x_3).
+Using the function bitG the attacker may obtain bitG(g(x_3)).
+attacker(bitG(g(x_3))).
+
+12. By 11, the attacker may know bitG(g(x_3)).
+By 10, the attacker may know enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))).
+Using the function 2-tuple the attacker may obtain (bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))).
+attacker((bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3))))).
+
+13. The attacker has some term B_agreement_4.
+attacker(B_agreement_4).
+
+14. The attacker has some term A'_agreement_2.
+attacker(A'_agreement_2).
+
+15. The attacker has some term vc_presentation_4.
+attacker(vc_presentation_4).
+
+16. By 15, the attacker may know vc_presentation_4.
+By 14, the attacker may know A'_agreement_2.
+By 13, the attacker may know B_agreement_4.
+Using the function 3-tuple the attacker may obtain (vc_presentation_4,A'_agreement_2,B_agreement_4).
+attacker((vc_presentation_4,A'_agreement_2,B_agreement_4)).
+
+17. By 16, the attacker may know (vc_presentation_4,A'_agreement_2,B_agreement_4).
+By 6, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[]).
+attacker(sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])).
+
+18. By 16, the attacker may know (vc_presentation_4,A'_agreement_2,B_agreement_4).
+By 17, the attacker may know sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[]).
+Using the function 2-tuple the attacker may obtain ((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])).
+attacker(((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[]))).
+
+19. By 18, the attacker may know ((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc(((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc(((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])),GtoSymK(exp(g(x_2),x_3)))).
+
+20. The attacker has some term sigVal_data_usage_agreement_client_4.
+attacker(sigVal_data_usage_agreement_client_4).
+
+21. By 14, the attacker may know A'_agreement_2.
+By 13, the attacker may know B_agreement_4.
+By 20, the attacker may know sigVal_data_usage_agreement_client_4.
+Using the function 3-tuple the attacker may obtain (A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4).
+attacker((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4)).
+
+22. By 21, the attacker may know (A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4).
+By 6, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[]).
+attacker(sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])).
+
+23. The attacker has some term resource_4.
+attacker(resource_4).
+
+24. By 23, the attacker may know resource_4.
+By 21, the attacker may know (A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4).
+By 22, the attacker may know sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[]).
+Using the function 3-tuple the attacker may obtain (resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])).
+attacker((resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[]))).
+
+25. By 24, the attacker may know (resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])).
+By 5, the attacker may know GtoSymK(exp(g(x_2),x_3)).
+Using the function enc the attacker may obtain enc((resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])),GtoSymK(exp(g(x_2),x_3))).
+attacker(enc((resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])),GtoSymK(exp(g(x_2),x_3)))).
+
+26. The message (bitG(g(x_3)),enc(sig((g(x_3),g(x_2)),sk_e[]),GtoSymK(exp(g(x_2),x_3)))) that the attacker may have by 12 may be received at input {50}.
+The message enc(((vc_presentation_4,A'_agreement_2,B_agreement_4),sig((vc_presentation_4,A'_agreement_2,B_agreement_4),sk_e[])),GtoSymK(exp(g(x_2),x_3))) that the attacker may have by 19 may be received at input {59}.
+The message enc((resource_4,(A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sig((A'_agreement_2,B_agreement_4,sigVal_data_usage_agreement_client_4),sk_e[])),GtoSymK(exp(g(x_2),x_3))) that the attacker may have by 25 may be received at input {69}.
+So the message Client_does_complete[] may be sent to the attacker at output {73}.
+attacker(Client_does_complete[]).
+
+27. By 26, attacker(Client_does_complete[]).
+The goal is reached, represented in the following fact:
+attacker(Client_does_complete[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+out(h, ~M) with ~M = pk(sk_c) at {1}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s) at {2}
+
+new x_1: exponent creating x_2 at {45} in copy a
+
+out(h, ~M_2) with ~M_2 = bitG(g(x_2)) at {49} in copy a
+
+in(h, (bitG(g(a_1)),enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))))) with enc(sig((g(a_1),unbitG(~M_2)),sk_e),GtoSymK(exp(unbitG(~M_2),a_1))) = enc(sig((g(a_1),g(x_2)),sk_e),GtoSymK(exp(g(x_2),a_1))) at {50} in copy a
+
+out(h, ~M_3) with ~M_3 = enc((sig((g(x_2),g(a_1)),sk_c),uri),GtoSymK(exp(g(a_1),x_2))) at {58} in copy a
+
+in(h, enc(((a_2,a_3,a_4),sig((a_2,a_3,a_4),sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc(((a_2,a_3,a_4),sig((a_2,a_3,a_4),sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc(((a_2,a_3,a_4),sig((a_2,a_3,a_4),sk_e)),GtoSymK(exp(g(x_2),a_1))) at {59} in copy a
+
+event Client_Agrees(sk_c,(a_2,a_3,a_4)) at {67} in copy a
+
+out(h, ~M_4) with ~M_4 = enc((uri,(a_2,a_3,a_4),sig((a_2,a_3,a_4),sk_c)),GtoSymK(exp(g(a_1),x_2))) at {68} in copy a
+
+in(h, enc((a_5,(a_3,a_4,a_6),sig((a_3,a_4,a_6),sk_e)),GtoSymK(exp(unbitG(~M_2),a_1)))) with enc((a_5,(a_3,a_4,a_6),sig((a_3,a_4,a_6),sk_e)),GtoSymK(exp(unbitG(~M_2),a_1))) = enc((a_5,(a_3,a_4,a_6),sig((a_3,a_4,a_6),sk_e)),GtoSymK(exp(g(x_2),a_1))) at {69} in copy a
+
+out(h, ~M_5) with ~M_5 = Client_does_complete at {73} in copy a
+
+The attacker has the message ~M_5 = Client_does_complete.
+A trace has been found.
+RESULT not attacker(Client_does_complete[]) is false.
+-- Query not attacker(Server_does_complete[]) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 192 rules (52 with conclusion selected). Queue: 68 rules.
+400 rules inserted. Base: 294 rules (58 with conclusion selected). Queue: 112 rules.
+600 rules inserted. Base: 392 rules (62 with conclusion selected). Queue: 79 rules.
+800 rules inserted. Base: 379 rules (73 with conclusion selected). Queue: 33 rules.
+Starting query not attacker(Server_does_complete[])
+goal reachable: attacker(Server_does_complete[])
+
+Derivation:
+Abbreviations:
+y_2 = y_1[m_0_3 = bitG(g(x_2)),!1 = @sid]
+
+1. The attacker has some term x_2.
+attacker(x_2).
+
+2. By 1, the attacker may know x_2.
+Using the function g the attacker may obtain g(x_2).
+attacker(g(x_2)).
+
+3. By 2, the attacker may know g(x_2).
+Using the function bitG the attacker may obtain bitG(g(x_2)).
+attacker(bitG(g(x_2))).
+
+4. The message bitG(g(x_2)) that the attacker may have by 3 may be received at input {119}.
+So the message (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))) may be sent to the attacker at output {126}.
+attacker((bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2))))).
+
+5. By 4, the attacker may know (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(x_2),y_2)))).
+Using the function 1-proj-2-tuple the attacker may obtain bitG(g(y_2)).
+attacker(bitG(g(y_2))).
+
+6. By 5, the attacker may know bitG(g(y_2)).
+Using the function unbitG the attacker may obtain g(y_2).
+attacker(g(y_2)).
+
+7. By 6, the attacker may know g(y_2).
+By 1, the attacker may know x_2.
+Using the function exp the attacker may obtain exp(g(y_2),x_2).
+attacker(exp(g(y_2),x_2)).
+
+8. By 7, the attacker may know exp(g(y_2),x_2).
+Using the function GtoSymK the attacker may obtain GtoSymK(exp(g(y_2),x_2)).
+attacker(GtoSymK(exp(g(y_2),x_2))).
+
+9. The attacker initially knows uri[].
+attacker(uri[]).
+
+10. The attacker initially knows sk_e[].
+attacker(sk_e[]).
+
+11. By 2, the attacker may know g(x_2).
+By 6, the attacker may know g(y_2).
+Using the function 2-tuple the attacker may obtain (g(x_2),g(y_2)).
+attacker((g(x_2),g(y_2))).
+
+12. By 11, the attacker may know (g(x_2),g(y_2)).
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((g(x_2),g(y_2)),sk_e[]).
+attacker(sig((g(x_2),g(y_2)),sk_e[])).
+
+13. By 12, the attacker may know sig((g(x_2),g(y_2)),sk_e[]).
+By 9, the attacker may know uri[].
+Using the function 2-tuple the attacker may obtain (sig((g(x_2),g(y_2)),sk_e[]),uri[]).
+attacker((sig((g(x_2),g(y_2)),sk_e[]),uri[])).
+
+14. By 13, the attacker may know (sig((g(x_2),g(y_2)),sk_e[]),uri[]).
+By 8, the attacker may know GtoSymK(exp(g(y_2),x_2)).
+Using the function enc the attacker may obtain enc((sig((g(x_2),g(y_2)),sk_e[]),uri[]),GtoSymK(exp(g(y_2),x_2))).
+attacker(enc((sig((g(x_2),g(y_2)),sk_e[]),uri[]),GtoSymK(exp(g(y_2),x_2)))).
+
+15. The attacker initially knows B_request[].
+attacker(B_request[]).
+
+16. The attacker initially knows A_offer[].
+attacker(A_offer[]).
+
+17. The attacker initially knows vc_shape[].
+attacker(vc_shape[]).
+
+18. By 17, the attacker may know vc_shape[].
+By 16, the attacker may know A_offer[].
+By 15, the attacker may know B_request[].
+Using the function 3-tuple the attacker may obtain (vc_shape[],A_offer[],B_request[]).
+attacker((vc_shape[],A_offer[],B_request[])).
+
+19. By 18, the attacker may know (vc_shape[],A_offer[],B_request[]).
+By 10, the attacker may know sk_e[].
+Using the function sig the attacker may obtain sig((vc_shape[],A_offer[],B_request[]),sk_e[]).
+attacker(sig((vc_shape[],A_offer[],B_request[]),sk_e[])).
+
+20. By 9, the attacker may know uri[].
+By 18, the attacker may know (vc_shape[],A_offer[],B_request[]).
+By 19, the attacker may know sig((vc_shape[],A_offer[],B_request[]),sk_e[]).
+Using the function 3-tuple the attacker may obtain (uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[])).
+attacker((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[]))).
+
+21. By 20, the attacker may know (uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[])).
+By 8, the attacker may know GtoSymK(exp(g(y_2),x_2)).
+Using the function enc the attacker may obtain enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[])),GtoSymK(exp(g(y_2),x_2))).
+attacker(enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[])),GtoSymK(exp(g(y_2),x_2)))).
+
+22. The message bitG(g(x_2)) that the attacker may have by 3 may be received at input {119}.
+The message enc((sig((g(x_2),g(y_2)),sk_e[]),uri[]),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 14 may be received at input {127}.
+The message enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_e[])),GtoSymK(exp(g(y_2),x_2))) that the attacker may have by 21 may be received at input {135}.
+So the message Server_does_complete[] may be sent to the attacker at output {146}.
+attacker(Server_does_complete[]).
+
+23. By 22, attacker(Server_does_complete[]).
+The goal is reached, represented in the following fact:
+attacker(Server_does_complete[]).
+
+
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+out(h, ~M) with ~M = pk(sk_c) at {1}
+
+out(h, ~M_1) with ~M_1 = pk(sk_s) at {2}
+
+in(h, bitG(g(a))) at {119} in copy a_1
+
+new y_1: exponent creating y_2 at {121} in copy a_1
+
+out(h, (~M_2,~M_3)) with ~M_2 = bitG(g(y_2)), ~M_3 = enc(sig((g(y_2),g(a)),sk_s),GtoSymK(exp(g(a),y_2))) at {126} in copy a_1
+
+in(h, enc((sig((g(a),unbitG(~M_2)),sk_e),uri),GtoSymK(exp(unbitG(~M_2),a)))) with enc((sig((g(a),unbitG(~M_2)),sk_e),uri),GtoSymK(exp(unbitG(~M_2),a))) = enc((sig((g(a),g(y_2)),sk_e),uri),GtoSymK(exp(g(y_2),a))) at {127} in copy a_1
+
+event Server_Offers(sk_s,(vc_shape,A_offer,B_request)) at {133} in copy a_1
+
+out(h, ~M_4) with ~M_4 = enc(((vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_s)),GtoSymK(exp(g(a),y_2))) at {134} in copy a_1
+
+in(h, enc((uri,(vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_e)),GtoSymK(exp(unbitG(~M_2),a)))) with enc((uri,(vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_e)),GtoSymK(exp(unbitG(~M_2),a))) = enc((uri,(vc_shape,A_offer,B_request),sig((vc_shape,A_offer,B_request),sk_e)),GtoSymK(exp(g(y_2),a))) at {135} in copy a_1
+
+new resource_3: bitstring creating resource_4 at {140} in copy a_1
+
+event Server_Agrees(sk_s,(A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_e))) at {144} in copy a_1
+
+out(h, ~M_5) with ~M_5 = enc((resource_4,(A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_e)),sig((A_offer,B_request,sig((vc_shape,A_offer,B_request),sk_e)),sk_s)),GtoSymK(exp(g(a),y_2))) at {145} in copy a_1
+
+out(h, ~M_6) with ~M_6 = Server_does_complete at {146} in copy a_1
+
+The attacker has the message ~M_6 = Server_does_complete.
+A trace has been found.
+RESULT not attacker(Server_does_complete[]) is false.
+-- Query not attacker(resource_is_private[]) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 192 rules (52 with conclusion selected). Queue: 68 rules.
+400 rules inserted. Base: 294 rules (58 with conclusion selected). Queue: 112 rules.
+600 rules inserted. Base: 392 rules (62 with conclusion selected). Queue: 79 rules.
+800 rules inserted. Base: 379 rules (73 with conclusion selected). Queue: 33 rules.
+Starting query not attacker(resource_is_private[])
+RESULT not attacker(resource_is_private[]) is true.
+-- Query inj-event(Client_Can_Prove_Server_Has_Agreed(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Agrees(sk_s_3,dataToBeAgreedOn)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 194 rules (52 with conclusion selected). Queue: 70 rules.
+400 rules inserted. Base: 300 rules (56 with conclusion selected). Queue: 109 rules.
+600 rules inserted. Base: 397 rules (60 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 503 rules (69 with conclusion selected). Queue: 90 rules.
+1000 rules inserted. Base: 494 rules (77 with conclusion selected). Queue: 45 rules.
+1200 rules inserted. Base: 559 rules (87 with conclusion selected). Queue: 35 rules.
+Starting query inj-event(Client_Can_Prove_Server_Has_Agreed(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Agrees(sk_s_3,dataToBeAgreedOn))
+goal reachable: begin(Server_Agrees(sk_s[],(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[]))),@occ108_1) -> end(@occ39_1,Client_Can_Prove_Server_Has_Agreed(sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])))
+The hypothesis occurs strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+resource_4 = resource_2[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ39_1 = @occ39[m_5 = enc((resource_4,(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ108_1 = @occ108[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+RESULT inj-event(Client_Can_Prove_Server_Has_Agreed(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Agrees(sk_s_3,dataToBeAgreedOn)) is true.
+-- Query inj-event(Server_Can_Prove_Client_Has_Agreed(sig(dataToBeAgreedOn,sk_c_3))) ==> inj-event(Client_Agrees(sk_c_3,dataToBeAgreedOn)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (52 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 299 rules (57 with conclusion selected). Queue: 130 rules.
+600 rules inserted. Base: 393 rules (62 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 469 rules (69 with conclusion selected). Queue: 97 rules.
+1000 rules inserted. Base: 573 rules (74 with conclusion selected). Queue: 67 rules.
+1200 rules inserted. Base: 659 rules (85 with conclusion selected). Queue: 85 rules.
+Starting query inj-event(Server_Can_Prove_Client_Has_Agreed(sig(dataToBeAgreedOn,sk_c_3))) ==> inj-event(Client_Agrees(sk_c_3,dataToBeAgreedOn))
+goal reachable: begin(Client_Agrees(sk_c[],(vc_shape[],A_offer[],B_request[])),@occ29_1) -> end(@occ114_1,Server_Can_Prove_Client_Has_Agreed(sig((vc_shape[],A_offer[],B_request[]),sk_c[])))
+The hypothesis occurs strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ114_1 = @occ114[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ29_1 = @occ29[m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+RESULT inj-event(Server_Can_Prove_Client_Has_Agreed(sig(dataToBeAgreedOn,sk_c_3))) ==> inj-event(Client_Agrees(sk_c_3,dataToBeAgreedOn)) is true.
+-- Query inj-event(Client_Can_Prove_Server_Has_Offered(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Offers(sk_s_3,dataToBeAgreedOn)) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 194 rules (52 with conclusion selected). Queue: 70 rules.
+400 rules inserted. Base: 300 rules (56 with conclusion selected). Queue: 109 rules.
+600 rules inserted. Base: 397 rules (60 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 504 rules (69 with conclusion selected). Queue: 94 rules.
+1000 rules inserted. Base: 492 rules (77 with conclusion selected). Queue: 55 rules.
+1200 rules inserted. Base: 562 rules (88 with conclusion selected). Queue: 78 rules.
+Starting query inj-event(Client_Can_Prove_Server_Has_Offered(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Offers(sk_s_3,dataToBeAgreedOn))
+goal reachable: begin(@p_act(@occ99_1,enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))))) && begin(Server_Offers(sk_s[],(vc_shape[],A_offer[],B_request[])),@occ97_1) -> end(@occ40_1,Client_Can_Prove_Server_Has_Offered(sig((vc_shape[],A_offer[],B_request[]),sk_s[])))
+The 1st, 2nd hypotheses occur strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+resource_4 = resource_2[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ40_1 = @occ40[m_5 = enc((resource_4,(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ99_1 = @occ99[!1 = @sid_1]
+@occ97_1 = @occ97[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+RESULT inj-event(Client_Can_Prove_Server_Has_Offered(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Offers(sk_s_3,dataToBeAgreedOn)) is true.
+-- Query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 194 rules (52 with conclusion selected). Queue: 70 rules.
+400 rules inserted. Base: 300 rules (56 with conclusion selected). Queue: 109 rules.
+600 rules inserted. Base: 397 rules (60 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 504 rules (69 with conclusion selected). Queue: 94 rules.
+1000 rules inserted. Base: 492 rules (77 with conclusion selected). Queue: 55 rules.
+1200 rules inserted. Base: 562 rules (88 with conclusion selected). Queue: 78 rules.
+Starting query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3)))
+goal reachable: begin(Server_Agrees(sk_s[],(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[]))),@occ108_2) && begin(@p_act(@occ99_2,enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))))) && begin(Server_Offers(sk_s[],(vc_shape[],A_offer[],B_request[])),@occ97_2) -> end(@occ38_1,Client_Received_Resource(sk_c[]))
+The 1st, 2nd, 3rd hypotheses occur strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+resource_4 = resource_2[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ38_1 = @occ38[m_5 = enc((resource_4,(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ108_2 = @occ108_1[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ99_2 = @occ99_1[!1 = @sid_1]
+@occ97_2 = @occ97_1[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+RESULT inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+-- Query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (52 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 299 rules (57 with conclusion selected). Queue: 130 rules.
+600 rules inserted. Base: 393 rules (62 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 469 rules (69 with conclusion selected). Queue: 97 rules.
+1000 rules inserted. Base: 573 rules (74 with conclusion selected). Queue: 67 rules.
+1200 rules inserted. Base: 659 rules (85 with conclusion selected). Queue: 85 rules.
+Starting query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3)))
+goal reachable: begin(Client_Agrees(sk_c[],(vc_shape[],A_offer[],B_request[])),@occ29_2) -> end(@occ113_1,Server_Provided_Resource(sk_s[]))
+The hypothesis occurs strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ113_1 = @occ113[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ29_2 = @occ29_1[m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+RESULT inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+-- Query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 194 rules (52 with conclusion selected). Queue: 70 rules.
+400 rules inserted. Base: 300 rules (56 with conclusion selected). Queue: 113 rules.
+600 rules inserted. Base: 394 rules (60 with conclusion selected). Queue: 117 rules.
+800 rules inserted. Base: 503 rules (65 with conclusion selected). Queue: 117 rules.
+1000 rules inserted. Base: 581 rules (72 with conclusion selected). Queue: 113 rules.
+1200 rules inserted. Base: 696 rules (79 with conclusion selected). Queue: 96 rules.
+1400 rules inserted. Base: 798 rules (87 with conclusion selected). Queue: 132 rules.
+1600 rules inserted. Base: 906 rules (91 with conclusion selected). Queue: 125 rules.
+1800 rules inserted. Base: 1004 rules (93 with conclusion selected). Queue: 0 rules.
+Starting query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3)))
+goal reachable: begin(Server_Agrees(sk_s[],(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[]))),@occ108_3) && begin(@p_act(@occ99_3,enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))))) && begin(@p_act(@occ31_3,enc((resource_4,(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])),GtoSymK(exp(g(y_2),x_2))))) && begin(Client_Agrees(sk_c[],(vc_shape[],A_offer[],B_request[])),@occ29_3) && begin(Server_Offers(sk_s[],(vc_shape[],A_offer[],B_request[])),@occ97_3) -> end(@occ38_2,Client_Received_Resource(sk_c[]))
+The 1st, 2nd, 3rd, 4th, 5th hypotheses occur strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+resource_4 = resource_2[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ38_2 = @occ38_1[m_5 = enc((resource_4,(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sig((A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[])),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ108_3 = @occ108_2[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ99_3 = @occ99_2[!1 = @sid_1]
+@occ31_3 = @occ31_2[!1 = @sid]
+@occ29_3 = @occ29_2[m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ97_3 = @occ97_2[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+RESULT inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+-- Query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) in process 1.
+Translating the process into Horn clauses...
+select attacker(bitG(gx_4))/-5000
+Completing...
+Termination warning: attacker(bitG(elem)) -> attacker(elem)
+Selecting 0
+200 rules inserted. Base: 193 rules (52 with conclusion selected). Queue: 66 rules.
+400 rules inserted. Base: 299 rules (57 with conclusion selected). Queue: 130 rules.
+600 rules inserted. Base: 396 rules (61 with conclusion selected). Queue: 116 rules.
+800 rules inserted. Base: 503 rules (69 with conclusion selected). Queue: 99 rules.
+1000 rules inserted. Base: 590 rules (73 with conclusion selected). Queue: 95 rules.
+1200 rules inserted. Base: 694 rules (86 with conclusion selected). Queue: 97 rules.
+1400 rules inserted. Base: 806 rules (92 with conclusion selected). Queue: 99 rules.
+Starting query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3)))
+goal reachable: begin(Server_Agrees(sk_s[],(A_offer[],B_request[],sig((vc_shape[],A_offer[],B_request[]),sk_c[]))),@occ108_4) && begin(Client_Agrees(sk_c[],(vc_shape[],A_offer[],B_request[])),@occ29_4) && begin(@p_act(@occ99_4,enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))))) && begin(Server_Offers(sk_s[],(vc_shape[],A_offer[],B_request[])),@occ97_4) -> end(@occ113_2,Server_Provided_Resource(sk_s[]))
+The 1st, 2nd, 3rd, 4th hypotheses occur strictly before the conclusion.
+Abbreviations:
+x_2 = x[!1 = @sid]
+y_2 = y[m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ113_2 = @occ113_1[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ108_4 = @occ108_3[m_15 = enc((uri[],(vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_c[])),GtoSymK(exp(g(y_2),x_2))),m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+@occ29_4 = @occ29_3[m_3 = enc(((vc_shape[],A_offer[],B_request[]),sig((vc_shape[],A_offer[],B_request[]),sk_s[])),GtoSymK(exp(g(y_2),x_2))),m_1 = (bitG(g(y_2)),enc(sig((g(y_2),g(x_2)),sk_s[]),GtoSymK(exp(g(y_2),x_2)))),!1 = @sid]
+@occ99_4 = @occ99_3[!1 = @sid_1]
+@occ97_4 = @occ97_3[m_13 = enc((sig((g(x_2),g(y_2)),sk_c[]),uri[]),GtoSymK(exp(g(y_2),x_2))),m_0_2 = bitG(g(x_2)),!1 = @sid_1]
+RESULT inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not attacker(Client_does_complete[]) is false.
+
+Query not attacker(Server_does_complete[]) is false.
+
+Query not attacker(resource_is_private[]) is true.
+
+Query inj-event(Client_Can_Prove_Server_Has_Agreed(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Agrees(sk_s_3,dataToBeAgreedOn)) is true.
+
+Query inj-event(Server_Can_Prove_Client_Has_Agreed(sig(dataToBeAgreedOn,sk_c_3))) ==> inj-event(Client_Agrees(sk_c_3,dataToBeAgreedOn)) is true.
+
+Query inj-event(Client_Can_Prove_Server_Has_Offered(sig(dataToBeAgreedOn,sk_s_3))) ==> inj-event(Server_Offers(sk_s_3,dataToBeAgreedOn)) is true.
+
+Query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+
+Query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+
+Query inj-event(Client_Received_Resource(sk_c_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+
+Query inj-event(Server_Provided_Resource(sk_s_3)) ==> inj-event(Server_Agrees(sk_s_3,(A_offer_3,B_request_3,sig((vc_shape_3,A_offer_3,B_request_3),sk_c_3)))) && inj-event(Client_Agrees(sk_c_3,(vc_shape_3,A_offer_3,B_request_3))) && inj-event(Server_Offers(sk_s_3,(vc_shape_3,A_offer_3,B_request_3))) is true.
+
+--------------------------------------------------------------
+
